@@ -1,0 +1,50 @@
+﻿[
+    {
+        "category_id": 1,
+        "category_name": "Beverages",
+        "description": "Soft drinks, coffees, teas, beers, and ales",
+        "picture": [100,97,116,97,98,97,115,101,32,100,105,32,116,101,115,116]
+    },
+    {
+        "category_id": 2,
+        "category_name": "Condiments",
+        "description": "Sweet and savory sauces, relishes, spreads, and seasonings",
+        "picture": [100,97,116,97,98,97,115,101,32,100,105,32,116,101,115,116]
+    },
+    {
+        "category_id": 3,
+        "category_name": "Confections",
+        "description": "Desserts, candies, and sweet breads",
+        "picture": [100,97,116,97,98,97,115,101,32,100,105,32,116,101,115,116]
+    },
+    {
+        "category_id": 4,
+        "category_name": "Dairy Products",
+        "description": "Cheeses",
+        "picture": [100,97,116,97,98,97,115,101,32,100,105,32,116,101,115,116]
+    },
+    {
+        "category_id": 5,
+        "category_name": "Grains/Cereals",
+        "description": "Breads, crackers, pasta, and cereal",
+        "picture": [100,97,116,97,98,97,115,101,32,100,105,32,116,101,115,116]
+    },
+    {
+        "category_id": 6,
+        "category_name": "Meat/Poultry",
+        "description": "Prepared meats",
+        "picture": [100,97,116,97,98,97,115,101,32,100,105,32,116,101,115,116]
+    },
+    {
+        "category_id": 7,
+        "category_name": "Produce",
+        "description": "Dried fruit and bean curd",
+        "picture": [100,97,116,97,98,97,115,101,32,100,105,32,116,101,115,116]
+    },
+    {
+        "category_id": 8,
+        "category_name": "Seafood",
+        "description": "Seaweed and fish",
+        "picture": [100,97,116,97,98,97,115,101,32,100,105,32,116,101,115,116]
+    }
+]

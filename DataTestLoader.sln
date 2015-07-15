@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTestLoader", "DataTestLoader\DataTestLoader.csproj", "{33B37D29-CB5B-4BB7-9202-186030FB42DB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4B0B3D0C-239B-44BC-AA4F-71EA10CA91EA}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleModel", "SampleModel\SampleModel.csproj", "{5FB2A1E2-F93C-4832-B26E-DFC7EFC567DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppTest", "ConsoleAppTest\ConsoleAppTest.csproj", "{01E152EE-17DC-4CBC-B864-CB9A061D14DD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5FB2A1E2-F93C-4832-B26E-DFC7EFC567DC} = {5FB2A1E2-F93C-4832-B26E-DFC7EFC567DC}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{33B37D29-CB5B-4BB7-9202-186030FB42DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33B37D29-CB5B-4BB7-9202-186030FB42DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33B37D29-CB5B-4BB7-9202-186030FB42DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33B37D29-CB5B-4BB7-9202-186030FB42DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FB2A1E2-F93C-4832-B26E-DFC7EFC567DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FB2A1E2-F93C-4832-B26E-DFC7EFC567DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FB2A1E2-F93C-4832-B26E-DFC7EFC567DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FB2A1E2-F93C-4832-B26E-DFC7EFC567DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01E152EE-17DC-4CBC-B864-CB9A061D14DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01E152EE-17DC-4CBC-B864-CB9A061D14DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01E152EE-17DC-4CBC-B864-CB9A061D14DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01E152EE-17DC-4CBC-B864-CB9A061D14DD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
