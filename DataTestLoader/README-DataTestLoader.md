@@ -14,7 +14,7 @@ Il nuovo database avrà struttura identica al database di origine e conterrà so
 ###Prerequisiti###
 1. .NET Framework 4.5
 2. NpgSql
-3. Postgresql DB server 
+3. Postgresql DB server 9.4+
 
 ###Librerie di terze parti###
 
@@ -146,16 +146,14 @@ Sono previste le seguenti features aggiuntive:
 
 > L'errore più comune che capita è dimenticarsi di mettere in CopyToOutput tutti i files delle cartelle DataTestFiles e DatabaseScripts.
 
-> Messaggio *Assembly Model SampleModel was not found on D:\svn-TIERRA\TSShield\TokyoAccess\trunk\TokyoAccess.UnitTest\bin\Debug* 
+> Messaggio *Assembly Model SampleModel was not found ...* 
 > Il messaggio indica che è necessario specificare l'assembly contenente le classi POCO. se non viene usato il caricamento dei dati in formato .JSON, disattivare il flag loadJsonData. 
 
 ----------------
 Questo documento è stato creato nel formato [Markdown](http://en.wikipedia.org/wiki/Markdown). 
 Per modificare questo file potete usare Notepad oppure installare [MarkdownPad](http://markdownpad.com/)
 
-Per informazioni ulteriori, non esitate a contattarmi, ciao.
-
-[Claudio Barca](mailto:claudio.barca@synthesis3.it) 
+[Claudio Barca](mailto:c.barca@gmail.com) 
 
 ----------------
-Last revision document: 7/9/2015 10:19:24 AM 
+Last revision document: 7/16/2015 9:19:36 AM 
