@@ -41,8 +41,7 @@ Per convenzione, il nome del database di test deve terminare con "_test".
  
 4. **FileSchema** - Nome del file schema da usare per la definizione del db di test (valido soltanto in caso di riutilizzo di uno schema esistente)  
 
-5. **FolderSchema** - In questa folder viene creato lo schema del database "source". Il file viene salvato con nome {server}-{dbname}-{YYYYMMDD}-{HHMMSS}.sql
- (es.TIERRA-PGSQL-94-DEV-tsshield-20150616-101815.sql). Il nuovo file viene creato soltanto in caso di riutilizzo di uno schema esistente. 
+5. **FolderSchema** - In questa folder viene creato lo schema del database "source". Il file viene salvato con nome {server}-{dbname}-{YYYYMMDD}-{HHMMSS}.sql. Il nuovo file viene creato soltanto in caso di riutilizzo di uno schema esistente. 
 
 6. **AssemblyModel** - Nome della libreria .dll esterna che contiene le [classi POCO](https://en.wikipedia.org/wiki/Plain_Old_CLR_Object) corrispondenti alle entità da creare nel database. 
  
