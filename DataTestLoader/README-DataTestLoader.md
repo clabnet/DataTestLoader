@@ -120,18 +120,34 @@ This folder contains all .JSON files with the data to be inserted on test databa
 
 ###How to use DataTestLoader
 
-Here are described a couple of ways to run the project:
+Here are described a few ways to use the project:
 
-**1. Console Application**
+**1. Using ConsoleAppTest project**
 
-Open ConsoleApptest project. Set properly the connections strings and set it as the Default Startup Project. Press F5. On the console you will see the messages Log. 
+Open project. Set properly the connections strings and set it as the Default Startup Project. Press F5. On the console you will see the messages Log. 
 (see also log files on C:\Temp\SchemaDB folder).
 
 **2. Run Unit Test**
 
-The project is provided with a set of unit tests NUnit 2.6. Set the connection strings properly. Run Test. See the log on Debug Window.
+The source project is provided with a set of unit tests NUnit 2.6. Set the connection strings properly. Run Test. See the log on Debug Window.
 (see also log files on C:\Temp\SchemaDB folder)
 
+**3. Using NuGet packages**
+
+Main prerequisites : PostgreSql v9.4+ database instance.
+
+- Open a new console application project C# on Visual Studio 2013. 
+- Run Enable NuGet Package Restore.
+- Launch Manage NuGet packages for solution. 
+- Find and install DataTestLoader project on NuGet.org repository. 
+- Build current project. 
+- Copy SampleModel.dll assembly from packages\lib\net45\ to bin\Debug folder.
+- Copy AppConfigSample\app.config.txt\app.config file to replace app.config file; update the configuration values.
+- Add this command to Main method of Program.cs: - new DataTestLoader(refreshSchema : true, initDatabase: true, loadJsonData: true);
+- Set CopyToOutputDirectoy = CopyAlways on all files contained on DatabaseScripts and DataTestFiles folder. 
+- Run F5.  
+- See DTL-DataTestLoader.log on C:\temp\SchemaDB\log folder. 
+- That's all.
 
 
 ###Tips - Quick fix
@@ -147,4 +163,4 @@ In case of translation or coding errors, please feel free to contact me.
 Claudio Barca 
 c.barca at gmail dot com
 
-Last revision document : 7/26/2015 5:06:49 PM  
+Last revision document : 7/26/2015 6:02:07 PM   
