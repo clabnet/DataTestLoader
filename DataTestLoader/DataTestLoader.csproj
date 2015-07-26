@@ -108,6 +108,7 @@
     <None Include="nuspec\DataTestLoader.nuspec">
       <SubType>Designer</SubType>
     </None>
+    <None Include="README-DataTestLoader-it.md" />
     <None Include="README-DataTestLoader.md" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
@@ -128,6 +129,7 @@
     <Content Include="DataTestLoader.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="README-DataTestLoader-it.html" />
     <Content Include="README-DataTestLoader.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

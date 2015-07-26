@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>DataTestLoader</id>
-        <version>0.1.10</version>
+        <version>0.1.11</version>
         <title>DataTestLoader</title>
         <authors>Claudio Barca</authors>
         <owners>clabnet</owners>
@@ -29,16 +29,20 @@ The idea is simple: the data is exported from the development database based on 
         </dependencies>
     </metadata>
     <files>
-        <file src="content\AppConfigSample\app.config.txt\app.config" target="content\AppConfigSample\app.config.txt\app.config" />
-        <file src="content\DatabaseScripts\01. DB List constraints drop.sql" target="content\DatabaseScripts\01. DB List constraints drop.sql" />
-        <file src="content\DatabaseScripts\99. DB List constraints add.sql" target="content\DatabaseScripts\99. DB List constraints add.sql" />
-        <file src="content\DataTestFiles\category.json" target="content\DataTestFiles\category.json" />
-        <file src="content\DataTestFiles\customer.json" target="content\DataTestFiles\customer.json" />
-        <file src="content\DataTestFiles\product.json" target="content\DataTestFiles\product.json" />
-        <file src="content\DataTestFiles\TablesToLoad.json" target="content\DataTestFiles\TablesToLoad.json" />
-        <file src="content\README-DataTestLoader.html" target="content\README-DataTestLoader.html" />
-        <file src="lib\net45\DataTestLoader.dll" target="lib\net45\DataTestLoader.dll" />
-        <file src="lib\net45\DataTestLoader.pdb" target="lib\net45\DataTestLoader.pdb" />
-        <file src="lib\net45\SampleModel.dll" target="lib\net45\SampleModel.dll" />
+    	<file src="..\app.config" target="content\AppConfigSample\app.config.txt" />
+        <file src="..\DatabaseScripts\01. DB List constraints drop.sql" target="content\DatabaseScripts\01. DB List constraints drop.sql" />
+        <file src="..\DatabaseScripts\99. DB List constraints add.sql" target="content\DatabaseScripts\99. DB List constraints add.sql" />
+        <file src="..\..\SampleModel\DatabaseScript\northwind-mini.sql" target="content\DatabaseScripts\northwind-mini.sql" />
+        <file src="..\DataTestFiles\category.json" target="content\DataTestFiles\category.json" />
+        <file src="..\DataTestFiles\customer.json" target="content\DataTestFiles\customer.json" />
+        <file src="..\DataTestFiles\product.json" target="content\DataTestFiles\product.json" />
+        <file src="..\DataTestFiles\TablesToLoad.json" target="content\DataTestFiles\TablesToLoad.json" />
+
+        <file src="..\README-DataTestLoader.html" target="content\README-DataTestLoader.html" />
+        <file src="..\README-DataTestLoader-it.html" target="content\README-DataTestLoader-it.html" />
+
+        <file src="..\bin\debug\DataTestLoader.dll" target="lib\net45\DataTestLoader.dll" />
+        <file src="..\bin\debug\DataTestLoader.pdb" target="lib\net45\DataTestLoader.pdb" />
+        <file src="..\bin\debug\SampleModel.dll" target="lib\net45\SampleModel.dll" />
     </files>
 </package>
