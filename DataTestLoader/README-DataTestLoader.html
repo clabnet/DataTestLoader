@@ -294,10 +294,10 @@ img {
 <p><img src="http://icons.iconarchive.com/icons/gakuseisean/ivista-2/64/Misc-New-Database-icon.png" /></p>
 <h1>DataTestLoader</h1>
 <hr />
-<p>To obtain <strong>Integration Test</strong> effective and consistent, these must always be performed in isolated environments, in order to ensure the existence of the expected data and to ensure the possibility to modify them if necessary.</p>
-<p>Unfortunately, the creation of databases for tests is an activity time-consuming and repetitive. This project was created <strong>to facilitate the creation of database test</strong>.</p>
-<p>The idea is simple: the data is exported from the development database based on .json format and then recreated in another database created ad-hoc.
-The new database will have an identical structure to source database and will contain only the data you need to test. This can be reproduced several times, since the test database, if any, is deleted, created and loaded with all data provided by the developer. </p>
+<p>To obtain <strong>Integration Test</strong> effective and consistent, they must always be performed in isolated environments, in order to ensure the existence of the expected data and to grant the possibility to modify them if necessary.</p>
+<p>Unfortunately, the creation of databases for tests is a time-consuming and repetitive activity. This project was created <strong>to facilitate the creation of database test</strong>.</p>
+<p>The idea is simple: the data are exported from the development database based on .json format and then recreated in another database created ad-hoc.
+The new database will have an identical structure to the source database and will contain only the data you need to test. This can be reproduced several times, since the test database is deleted, created and reloaded with all data provided by the developer. </p>
 <h3>Prerequisites</h3>
 <ol>
 <li>.NET Framework 4.5</li>
@@ -305,7 +305,7 @@ The new database will have an identical structure to source database and will co
 <li>Postgresql DB server 9.4+</li>
 </ol>
 <h3>Third parts libraries</h3>
-<p>The code is based on two libraries:</p>
+<p>The code is based mainly on two libraries:</p>
 <ol>
 <li><a href="https://github.com/StackExchange/dapper-dot-net">Dapper.net</a> </li>
 <li>Dapper.SimpleCRUD <strong><a href="https://github.com/clabnet/Dapper.SimpleCRUD">clabnet edition</a></strong></li>
@@ -313,8 +313,8 @@ The new database will have an identical structure to source database and will co
 <p>Other references are <strong>Nunit e FluentAssertions</strong> for Unit Test and driver .NET <strong>Npgsql</strong> for access to Postgresql database.  </p>
 <h3>Configuration</h3>
 <blockquote>
-<p><strong>Important</strong> Please attention to settings of connection strings, in particular that relating to the database of Test. </p>
-<p><strong>The test database will be deleted and recreated</strong> during the initialization phase of DataTestLoader. For convention, the name of the test database must end with &quot;_test&quot; word.</p>
+<p><strong>Important</strong> Please pay attention to the settings of connection strings, in particular to that related to the Test database. </p>
+<p><strong>The test database will be deleted and recreated</strong> during the initialization phase of DataTestLoader. By convention, the name of the test database must end with &quot;_test&quot; word.</p>
 </blockquote>
 <ol>
 <li>
@@ -324,16 +324,16 @@ The new database will have an identical structure to source database and will co
 <p><strong>DbTest</strong> - Connection string of test database.</p>
 </li>
 <li>
-<p><strong>DBPostgres</strong> - Connection string to Postgres databse. It is required to drop of the test database.</p>
+<p><strong>DBPostgres</strong> - Connection string to Postgres database. It is required to drop the test database.</p>
 </li>
 <li>
 <p><strong>FileSchema</strong> - Name of the file required for definition of test db (valid only in case of re-use of an existing schema, for performance reasons.)</p>
 </li>
 <li>
-<p><strong>FolderSchema</strong> - The file with source database schema will be saved on this folder. using name as {server}-{dbname}-{YYYYMMDD-HHMMSS}.sql. </p>
+<p><strong>FolderSchema</strong> - The file with source database schema will be saved on this folder, using name such as {server}-{dbname}-{YYYYMMDD-HHMMSS}.sql. </p>
 </li>
 <li>
-<p><strong>AssemblyModel</strong> - Name of the library that contains the external .dll <a href="https://en.wikipedia.org/wiki/Plain_Old_CLR_Object">POCO classes</a> corresponding to the entity to be created in the database.</p>
+<p><strong>AssemblyModel</strong> - Name of the library that contains the external .dll <a href="https://en.wikipedia.org/wiki/Plain_Old_CLR_Object">POCO classes</a> corresponding to the entities to be created in the database.</p>
 </li>
 <li>
 <p><strong>AssemblyModelNamespace</strong> - Namespace of POCO classes.</p>
@@ -341,7 +341,7 @@ The new database will have an identical structure to source database and will co
 </ol>
 <blockquote>
 <p>The AssemblyModel assembly contains the POCO classes for tables to be loaded. <em>The name of these classes must be equal to the table name to be loaded, with Public Properties corresponding to the table structure</em>.</p>
-<p>This assembly is only necessary if required loading data from files in the folder .json  <strong>DataTestFiles</strong>. (loadJsonData flag = true)</p>
+<p>This assembly is necessary only if the loading data from .json files in the folder  <strong>DataTestFiles</strong>. (loadJsonData flag = true) is required.</p>
 <p>This .dll <strong>must be located in the .bin DataTestLoader.</strong></p>
 </blockquote>
 <h3>POCO class</h3>
@@ -358,12 +358,11 @@ The new database will have an identical structure to source database and will co
 
 <blockquote>
 <p>To define automagically a POCO class in C# language you can use also the online tool <a href="http://json2csharp.com/">json2csharp</a></p>
-<p><strong>To massive generation of POCO class</strong> corresponding to database entities it is useful use a MS technology <a href="https://en.wikipedia.org/wiki/Text_Template_Transformation_Toolkit"><strong>Text Template Transformation Toolkit</strong></a> also know as <strong>T4</strong>.</p>
+<p><strong>To massive generation of POCO class</strong> corresponding to database entities, it is useful to use MS technology <a href="https://en.wikipedia.org/wiki/Text_Template_Transformation_Toolkit"><strong>Text Template Transformation Toolkit</strong></a> also known as <strong>T4</strong>.</p>
 </blockquote>
 <h5>Automatic regeneration of POCO class</h5>
-<p>Manually define the POCO classes corresponding to database entities is an operation laborious and unnecessary.</p>
-<p>From time ago are present on the market several types of code generators,
-including the excellent <a href="http://www.codesmithtools.com/product/generator"><strong>CodeSmith</strong></a> and the most common <a href="https://en.wikipedia.org/wiki/Text_Template_Transformation_Toolkit"><strong>T4</strong></a> (because integrated in the Visual Studio).</p>
+<p>To manually define the POCO classes corresponding to database entities is a long and time-consuming activity.</p>
+<p>Several types of code generators are available on the market, including the excellent <a href="http://www.codesmithtools.com/product/generator"><strong>CodeSmith</strong></a> and the most popular <a href="https://en.wikipedia.org/wiki/Text_Template_Transformation_Toolkit"><strong>T4</strong></a> (because integrated in the Visual Studio).</p>
 <p>You can auto-generate POCO classes directly from the database by executing a T4 Template. The operation to generate (or regenerate) the POCO classes of an entire database is extremely simple and easy: right-click the template T4 (.tt extension) and run Run Custom Tool.</p>
 <h3>SampleModel project</h3>
 <p>The sample project contains a T4 OrmLite based template and its EntityModel generated from the database specified in the configuration file. It can be used to automatically create a model from the database on the <em>ConnectionStringDBSource</em>.
@@ -371,9 +370,9 @@ The example database is a Northwind mini version, you can find the creation scri
 <h3>ConsoleApptest project</h3>
 <p>This project contains an example to instantiate correctly DataTestLoader.</p>
 <h3>DataTestFiles folder</h3>
-<p>This folder contains all .JSON files with the data to insert on test database.</p>
+<p>This folder contains all .JSON files with the data to be inserted on test database.</p>
 <blockquote>
-<p>For convention, <em>the name of this file must be corresponding to table name where insert the data</em> (with .json extension). </p>
+<p>By convention, <em>the name of this file must correspond to table name where data will be inserted</em> (with .json extension). </p>
 <p>The names of these files are case-sensitive.</p>
 <p><strong>TablesToLoad.json</strong> contains the <em>sequence order to loading the tables</em>. See this example:</p>
 </blockquote>
@@ -386,39 +385,35 @@ The example database is a Northwind mini version, you can find the creation scri
 </code></pre>
 
 <blockquote>
-<p>In order to easily extract data from the database and export .json format, you can also use <a href="http://fishcodelib.com/database.htm">Database.NET</a>. It is admitted any other way to create these files .json, manual or automatic mode.</p>
-<p>To generate automatically format data files .json you can also use the online tool <a href="http://www.json-generator.com/">JSON generator</a>.</p>
-<p>Entity with &quot;Identity&quot; key value in the .json file is not required; if this key it is present, the value will be discarded.</p>
-<p>To load data in ByteArray in entities that require it, you can use the online tool <a href="http://tools.thebuzzmedia.com/bytechar">AJAX ByteChar Converter</a></p>
+<p>In order to extract data from the database and export .json format easily, you can also use <a href="http://fishcodelib.com/database.htm">Database.NET</a>. Any other way to create these files .json, manual or automatic mode is admitted.</p>
+<p>In order to generate automatically data files .json you can also use the online tool <a href="http://www.json-generator.com/">JSON generator</a>.</p>
+<p>Entity with &quot;Identity&quot; key value in the .json file is not required; if this key is present, the value will be discarded.</p>
+<p>To load data in ByteArray type format in entities that require it, you can use the online tool <a href="http://tools.thebuzzmedia.com/bytechar">AJAX ByteChar Converter</a></p>
 </blockquote>
 <h3>How to use DataTestLoader</h3>
-<p>Here they are described in a couple of ways to run the project:</p>
-<ol>
-<li><strong>Console Application</strong></li>
-</ol>
+<p>Here are described a couple of ways to run the project:</p>
+<p><strong>1. Console Application</strong></p>
 <p>Open ConsoleApptest project. Set properly the connections strings and set it as the Default Startup Project. Press F5. On the console you will see the messages Log. 
-(see also log files on C:\Temp\SchemaDB\ folder)</p>
-<ol>
-<li><strong>Run Unit Test</strong></li>
-</ol>
-<p>The project is accompanied by a set of unit tests NUnit format 2.6. Properly set the connection strings. Run Test. See the log on Debug Window.
-(see also log files on C:\Temp\SchemaDB\ folder)</p>
+(see also log files on C:\Temp\SchemaDB folder).</p>
+<p><strong>2. Run Unit Test</strong></p>
+<p>The project is provided with a set of unit tests NUnit 2.6. Set the connection strings properly. Run Test. See the log on Debug Window.
+(see also log files on C:\Temp\SchemaDB folder)</p>
 <h3>Tips - Quick fix</h3>
 <blockquote>
 <ol>
 <li>
-<p>The most common mistake that happens you forget to put in CopyToOutput all files contained into DataTestFiles and DatabaseScripts folders.</p>
+<p>The most common mistake that happens is to forget to put in CopyToOutput all files contained into DataTestFiles and DatabaseScripts folders.</p>
 </li>
 <li>
-<p><strong>Message Assembly Model SampleModel was not found</strong>. This message indicates that you must specify the assembly containing the POCO classes. if not used in loading data format .json, disable the flag loadJsonData.</p>
+<p><strong>Message Assembly Model SampleModel was not found</strong>. This message indicates that you must specify the assembly containing the POCO classes. If loading data format is not used, disable the flag loadJsonData.</p>
 </li>
 </ol>
 </blockquote>
 <hr />
-<p>In case of translation or coding errors, please contact me.</p>
+<p>In case of translation or coding errors, please feel free to contact me.</p>
 <p>Claudio Barca 
 c.barca at gmail dot com</p>
-<p>Last revision document : 7/26/2015 10:56:35 AM </p>
+<p>Last revision document : 7/26/2015 5:06:49 PM  </p>
 
 </body>
 </html>

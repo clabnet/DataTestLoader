@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>DataTestLoader</id>
-        <version>0.1.11</version>
+        <version>0.1.13</version>
         <title>DataTestLoader</title>
         <authors>Claudio Barca</authors>
         <owners>clabnet</owners>
@@ -11,11 +11,11 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Test database loader facility</description>
         <summary>Automatically creation and loading Postgresql database test data for integration tests</summary>
-        <releaseNotes>To obtain Integration Test effective and consistent, these must always be performed in isolated environments, in order to ensure the existence of the expected data and to ensure the possibility to modify them if necessary.
+        <releaseNotes>To obtain Integration Test effective and consistent, they must always be performed in isolated environments, in order to ensure the existence of the expected data and to grant the possibility to modify them if necessary.
 
-Unfortunately, the creation of databases for tests is an activity time-consuming and repetitive. This project was created to facilitate the creation of database test.
+Unfortunately, the creation of databases for tests is a time-consuming and repetitive activity. This project was created to facilitate the creation of database test.
 
-The idea is simple: the data is exported from the development database based on .json format and then recreated in another database created ad-hoc. The new database will have an identical structure to source database and will contain only the data you need to test. This can be reproduced several times, since the test database, if any, is deleted, created and loaded with all data provided by the developer.</releaseNotes>
+The idea is simple: the data are exported from the development database based on .json format and then recreated in another database created ad-hoc. The new database will have an identical structure to the source database and will contain only the data you need to test. This can be reproduced several times, since the test database is deleted, created and reloaded with all data provided by the developer.</releaseNotes>
         <copyright>©2015 Claudio Barca</copyright>
         <language>it-IT</language>
         <tags>Dapper Dapper.SimpleCRUD postgresql test data Npgsql</tags>
@@ -29,20 +29,18 @@ The idea is simple: the data is exported from the development database based on 
         </dependencies>
     </metadata>
     <files>
-    	<file src="..\app.config" target="content\AppConfigSample\app.config.txt" />
-        <file src="..\DatabaseScripts\01. DB List constraints drop.sql" target="content\DatabaseScripts\01. DB List constraints drop.sql" />
-        <file src="..\DatabaseScripts\99. DB List constraints add.sql" target="content\DatabaseScripts\99. DB List constraints add.sql" />
-        <file src="..\..\SampleModel\DatabaseScript\northwind-mini.sql" target="content\DatabaseScripts\northwind-mini.sql" />
-        <file src="..\DataTestFiles\category.json" target="content\DataTestFiles\category.json" />
-        <file src="..\DataTestFiles\customer.json" target="content\DataTestFiles\customer.json" />
-        <file src="..\DataTestFiles\product.json" target="content\DataTestFiles\product.json" />
-        <file src="..\DataTestFiles\TablesToLoad.json" target="content\DataTestFiles\TablesToLoad.json" />
-
-        <file src="..\README-DataTestLoader.html" target="content\README-DataTestLoader.html" />
-        <file src="..\README-DataTestLoader-it.html" target="content\README-DataTestLoader-it.html" />
-
-        <file src="..\bin\debug\DataTestLoader.dll" target="lib\net45\DataTestLoader.dll" />
-        <file src="..\bin\debug\DataTestLoader.pdb" target="lib\net45\DataTestLoader.pdb" />
-        <file src="..\bin\debug\SampleModel.dll" target="lib\net45\SampleModel.dll" />
+        <file src="content\AppConfigSample\app.config.txt\app.config" target="content\AppConfigSample\app.config.txt\app.config" />
+        <file src="content\DatabaseScripts\01. DB List constraints drop.sql" target="content\DatabaseScripts\01. DB List constraints drop.sql" />
+        <file src="content\DatabaseScripts\99. DB List constraints add.sql" target="content\DatabaseScripts\99. DB List constraints add.sql" />
+        <file src="content\DatabaseScripts\northwind-mini.sql" target="content\DatabaseScripts\northwind-mini.sql" />
+        <file src="content\DataTestFiles\category.json" target="content\DataTestFiles\category.json" />
+        <file src="content\DataTestFiles\customer.json" target="content\DataTestFiles\customer.json" />
+        <file src="content\DataTestFiles\product.json" target="content\DataTestFiles\product.json" />
+        <file src="content\DataTestFiles\TablesToLoad.json" target="content\DataTestFiles\TablesToLoad.json" />
+        <file src="content\README-DataTestLoader-it.html" target="content\README-DataTestLoader-it.html" />
+        <file src="content\README-DataTestLoader.html" target="content\README-DataTestLoader.html" />
+        <file src="lib\net45\DataTestLoader.dll" target="lib\net45\DataTestLoader.dll" />
+        <file src="lib\net45\DataTestLoader.pdb" target="lib\net45\DataTestLoader.pdb" />
+        <file src="lib\net45\SampleModel.dll" target="lib\net45\SampleModel.dll" />
     </files>
 </package>
