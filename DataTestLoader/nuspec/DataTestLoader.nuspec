@@ -2,21 +2,23 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>DataTestLoader</id>
-        <version>0.1.9</version>
+        <version>0.1.10</version>
         <title>DataTestLoader</title>
         <authors>Claudio Barca</authors>
         <owners>clabnet</owners>
-        <iconUrl>http://trr-build-slv1/Tierra.NuGet/tierra.ico</iconUrl>
+        <projectUrl>https://github.com/clabnet/DataTestLoader</projectUrl>
+        <iconUrl>http://icons.iconarchive.com/icons/gakuseisean/ivista-2/64/Misc-New-Database-icon.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Test database loader facility</description>
-        <summary>Creato per facilitare la creazione di basi dati di test.</summary>
-        <releaseNotes>Questo progetto è stato creato per facilitare la creazione di basi dati di test. Generalmente creare basi dati di test è un'operazione lunga e ripetitiva. 
-Con questo applicativo è possibile inserire i dati esportati in formato JSON dal db di sviluppo in un altro database creato ad-hoc.  
-Il nuovo database avrà struttura identica al database di origine e conterrà solo i dati che servono ai test di integrazione con il database.
-Questa fase è rieseguibile più volte: il database di test, se presente, viene eliminato, creato e ricaricato con i dati previsti dal developer.</releaseNotes>
+        <summary>Automatically creation and loading Postgresql database test data for integration tests</summary>
+        <releaseNotes>To obtain Integration Test effective and consistent, these must always be performed in isolated environments, in order to ensure the existence of the expected data and to ensure the possibility to modify them if necessary.
+
+Unfortunately, the creation of databases for tests is an activity time-consuming and repetitive. This project was created to facilitate the creation of database test.
+
+The idea is simple: the data is exported from the development database based on .json format and then recreated in another database created ad-hoc. The new database will have an identical structure to source database and will contain only the data you need to test. This can be reproduced several times, since the test database, if any, is deleted, created and loaded with all data provided by the developer.</releaseNotes>
         <copyright>©2015 Claudio Barca</copyright>
         <language>it-IT</language>
-        <tags>Dapper Dapper.SimpleCRUD clabnet</tags>
+        <tags>Dapper Dapper.SimpleCRUD postgresql test data Npgsql</tags>
         <dependencies>
             <dependency id="Newtonsoft.Json" version="6.0.8" />
             <dependency id="Npgsql" version="2.2.5" />
@@ -27,29 +29,16 @@ Questa fase è rieseguibile più volte: il database di test, se presente, viene 
         </dependencies>
     </metadata>
     <files>
-        <file src="..\app.config" target="content\AppConfigSample\app.config.txt" />
-        <file src="..\bin\Debug\DatabaseScripts\01. DB List constraints drop.sql" target="content\DatabaseScripts\01. DB List constraints drop.sql" />
-        <file src="..\bin\Debug\DatabaseScripts\02. DB Fill data except geometries.sql" target="content\DatabaseScripts\02. DB Fill data except geometries.sql" />
-        <file src="..\bin\Debug\DatabaseScripts\03. DB Insert initial data.sql" target="content\DatabaseScripts\03. DB Insert initial data.sql" />
-        <file src="..\bin\Debug\DatabaseScripts\99. DB List constraints add.sql" target="content\DatabaseScripts\99. DB List constraints add.sql" />
-        <file src="..\DataTestFiles\dv_device.json" target="content\DataTestFiles\dv_device.json" />
-        <file src="..\DataTestFiles\in_flag.json" target="content\DataTestFiles\in_flag.json" />
-        <file src="..\DataTestFiles\in_flag_setting.json" target="content\DataTestFiles\in_flag_setting.json" />
-        <file src="..\DataTestFiles\in_h_registry.json" target="content\DataTestFiles\in_h_registry.json" />
-        <file src="..\DataTestFiles\in_model.json" target="content\DataTestFiles\in_model.json" />
-        <file src="..\DataTestFiles\in_serie.json" target="content\DataTestFiles\in_serie.json" />
-        <file src="..\DataTestFiles\in_special_serie.json" target="content\DataTestFiles\in_special_serie.json" />
-        <file src="..\DataTestFiles\in_type.json" target="content\DataTestFiles\in_type.json" />
-        <file src="..\DataTestFiles\sw_additional_software.json" target="content\DataTestFiles\sw_additional_software.json" />
-        <file src="..\DataTestFiles\sw_additional_software_items.json" target="content\DataTestFiles\sw_additional_software_items.json" />
-        <file src="..\DataTestFiles\sw_category.json" target="content\DataTestFiles\sw_category.json" />
-        <file src="..\DataTestFiles\sw_region.json" target="content\DataTestFiles\sw_region.json" />
-        <file src="..\DataTestFiles\sw_software.json" target="content\DataTestFiles\sw_software.json" />
-        <file src="..\DataTestFiles\sw_software_version.json" target="content\DataTestFiles\sw_software_version.json" />
-        <file src="..\DataTestFiles\TablesToLoad.json" target="content\DataTestFiles\TablesToLoad.json" />
-        <file src="..\README-DataTestLoader.html" target="content\README-DataTestLoader.html" />
-        <file src="..\bin\Debug\DataTestLoader.dll" target="lib\net45\DataTestLoader.dll" />
-        <file src="..\bin\Debug\DataTestLoader.pdb" target="lib\net45\DataTestLoader.pdb" />
-        <file src="..\bin\Debug\SampleModel.dll" target="lib\net45\SampleModel.dll" />
+        <file src="content\AppConfigSample\app.config.txt\app.config" target="content\AppConfigSample\app.config.txt\app.config" />
+        <file src="content\DatabaseScripts\01. DB List constraints drop.sql" target="content\DatabaseScripts\01. DB List constraints drop.sql" />
+        <file src="content\DatabaseScripts\99. DB List constraints add.sql" target="content\DatabaseScripts\99. DB List constraints add.sql" />
+        <file src="content\DataTestFiles\category.json" target="content\DataTestFiles\category.json" />
+        <file src="content\DataTestFiles\customer.json" target="content\DataTestFiles\customer.json" />
+        <file src="content\DataTestFiles\product.json" target="content\DataTestFiles\product.json" />
+        <file src="content\DataTestFiles\TablesToLoad.json" target="content\DataTestFiles\TablesToLoad.json" />
+        <file src="content\README-DataTestLoader.html" target="content\README-DataTestLoader.html" />
+        <file src="lib\net45\DataTestLoader.dll" target="lib\net45\DataTestLoader.dll" />
+        <file src="lib\net45\DataTestLoader.pdb" target="lib\net45\DataTestLoader.pdb" />
+        <file src="lib\net45\SampleModel.dll" target="lib\net45\SampleModel.dll" />
     </files>
 </package>
