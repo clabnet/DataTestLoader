@@ -153,7 +153,8 @@ Sono previste le seguenti features aggiuntive:
 Questo documento è stato creato nel formato [Markdown](http://en.wikipedia.org/wiki/Markdown). 
 Per modificare questo file potete usare Notepad oppure installare [MarkdownPad](http://markdownpad.com/)
 
-[Claudio Barca](mailto:c.barca@gmail.com) 
+Claudio Barca 
+c.barca at gmail dot com
 
 ----------------
-Last revision document: 7/26/2015 10:43:15 AM 
+Last revision document: 7/26/2015 10:59:32 AM 
