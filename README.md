@@ -33,19 +33,22 @@ Other references are **Nunit e FluentAssertions** for Unit Test and driver .NET 
 > 
 **The test database will be deleted and recreated** during the initialization phase of DataTestLoader. By convention, the name of the test database must end with "_test" word.
 
-1.  **DBSource** - Database source from which to infer the schema that will be used in the creation of the test database.
+1.  **DBSource** - Database source from which to infer the 
+2.  schema that will be used in the creation of the test database.
 
 2.  **DbTest** - Connection string of test database.
 
 3.  **DBPostgres** - Connection string to Postgres database. It is required to drop the test database.
  
-4.  **FileSchema** - Name of the file required for definition of test db (valid only in case of re-use of an existing schema, for performance reasons.)
+4.  **FileSchemaPreData** - Name of the file required for initial definition of test db (used only in case of re-use of an existing schema, for performance reasons. This is the file returned by *pg_dump* command with *section=pre-data* arguments.)
 
-5.  **FolderSchema** - The file with source database schema will be saved on this folder, using name such as {server}-{dbname}-{YYYYMMDD-HHMMSS}.sql. 
+5.  **FileSchemaPostData** - Name of the file required for post definition of test db (used only in case of re-use of an existing schema, for performance reasons. file returned by *pg_dump* command with *section=post-data* arguments.)
 
-6.  **AssemblyModel** - Name of the library that contains the external .dll [POCO classes](https://en.wikipedia.org/wiki/Plain_Old_CLR_Object) corresponding to the entities to be created in the database.
+6.  **FolderSchema** - The file with source database schema will be saved on this folder, using name such as *SERVERDBNAME-PRE-DATA|POSTDATA-YYYYMMDD-HHMMSS.sql*. 
+
+7.  **AssemblyModel** - Name of the library that contains the external .dll [POCO classes](https://en.wikipedia.org/wiki/Plain_Old_CLR_Object) corresponding to the entities to be created in the database.
  
-7. **AssemblyModelNamespace** - Namespace of POCO classes.
+8. **AssemblyModelNamespace** - Namespace of POCO classes contained into AssemblyModel.
 
 > The AssemblyModel assembly contains the POCO classes for tables to be loaded. *The name of these classes must be equal to the table name to be loaded, with Public Properties corresponding to the table structure*.
 
@@ -70,7 +73,7 @@ This is a simple example of [POCO class](https://en.wikipedia.org/wiki/Plain_Old
 
 >To define automagically a POCO class in C# language you can use also the online tool [json2csharp](http://json2csharp.com/)
 
->**To massive generation of POCO class** corresponding to database entities, it is useful to use MS technology [**Text Template Transformation Toolkit**](https://en.wikipedia.org/wiki/Text_Template_Transformation_Toolkit) also known as **T4**.
+>**To massive generation of POCO class** corresponding to database entities, it is useful to use MS technology [**Text Translate Transformation Toolkit**](https://en.wikipedia.org/wiki/Text_Template_Transformation_Toolkit) also known as **T4**.
 
  
 #####Automatic regeneration of POCO class#####
@@ -113,33 +116,61 @@ This folder contains all .JSON files with the data to be inserted on test databa
  
 > In order to generate automatically data files .json you can also use the online tool [JSON generator](http://www.json-generator.com/).
 
-> Entity with "Identity" key value in the .json file is not required; if this key is present, the value will be discarded.
-
 > To load data in ByteArray type format in entities that require it, you can use the online tool [AJAX ByteChar Converter](http://tools.thebuzzmedia.com/bytechar)
 
 
 ###How to use DataTestLoader
 
-Here are described a couple of ways to run the project:
+Here are described a few ways to use the project:
 
-1. **Console Application**
+**1. Using ConsoleAppTest project**
 
-Open ConsoleApptest project. Set properly the connections strings and set it as the Default Startup Project. Press F5. On the console you will see the messages Log. 
-(see also log files on C:\Temp\SchemaDB\ folder)
+- Open project. 
+- Set properly the connections strings and set it as the Default Startup Project. 
+- Press F5. On the console you will see the messages Log. (see also log files on *C:\Temp\DataTestLoader* folder).
 
-2. **Run Unit Test**
+**2. Run Unit Test**
 
-The project is provided with a set of unit tests NUnit 2.6. Set the connection strings properly. Run Test. See the log on Debug Window.
-(see also log files on C:\Temp\SchemaDB\ folder)
+The source project is provided with a set of unit tests NUnit 2.6. Set the connection strings properly. Run Test. See the log on Debug Window.
+(see also log files on *C:\Temp\DataTestLoader* folder)
 
+**3. Using NuGet packages**
 
+Main prerequisites : PostgreSql v9.4+ database instance.
+
+- Open a new console application project C# on Visual Studio 2013. 
+- Run Enable NuGet Package Restore.
+- Launch Manage NuGet packages for solution. 
+- Find and install DataTestLoader project on NuGet.org repository. 
+- Copy SampleModel.dll assembly from packages\lib\net45\ to bin\Debug folder.
+- Copy AppConfigSample\app.config.txt\app.config file to replace app.config file; update the configuration values.
+- Add this command to Main method of Program.cs:
+- **new DataTestLoader(refreshSchema : true, initDatabase: true, loadJsonData: true);**
+- Set CopyToOutputDirectoy = CopyAlways on all files contained on DatabaseScripts and DataTestFiles folder. 
+- Build current project and execute it. 
+- See DTL-DataTestLoader.log on C:\temp\DataTestLoader\log folder.
+- Finished, that's all.
+
+> **DataTestLoader method arguments**
+> 
+> - **refreshSchema** = If true will export the shema from remote database; false = will be reuse the file schema located into FolderSchema path 
+> - **initDatabase** = If true will drop, create and apply the schema.
+> - **loadJsonData** = If true will add data present in DataTestFiles folder to tables specified into TablesToLoad.json file. If data are already found on database, and loadJsonData is the unique value setting as true, will be occurs a duplicate key errors.
 
 ###Tips - Quick fix
 
-> 1. The most common mistake that happens is to forget to put in CopyToOutput all files contained into DataTestFiles and DatabaseScripts folders.
+> 1. The most common mistake that happens is to forget to put in **CopyToOutput all files into DataTestFiles and DatabaseScripts folders**.
 
-> 2. **Message Assembly Model SampleModel was not found**. This message indicates that you must specify the assembly containing the POCO classes. If loading data format is not used, disable the flag loadJsonData.
+> 2. **Message Assembly Model SampleModel was not found**. This message indicates that you must specify the assembly containing the POCO classes. If you don't need the loading of data, please disable the loadJsonData argument.
 
+> 3. **Type 'xxx' or assembly 'yyy' or namespace 'www' not found on ....**
+The specified type cannot be found into assembly specified, or that assemby was not found into bin directory, or related namespace was not correctly specified into .config file.
+You can automatically regenerated the model using Right-Click -> Run Custom Tool on SampleModel.tt. 
+
+###Release Note
+
+- 12/8/2015 Refactoring creation schema of database. Now we use the *--section=pre-data* and *--section=post-data* arguments.
+- 11/8/2015 Refactoring CheckValidSettings. Now the keys of config file are required only when used, based on arguments of DataTestLoader.
 
 ------
 In case of translation or coding errors, please feel free to contact me.
@@ -147,4 +178,4 @@ In case of translation or coding errors, please feel free to contact me.
 Claudio Barca 
 c.barca at gmail dot com
 
-Last revision document : 7/26/2015 10:56:35 AM 
+Last revision document : 8/12/2015 2:45:15 PM 

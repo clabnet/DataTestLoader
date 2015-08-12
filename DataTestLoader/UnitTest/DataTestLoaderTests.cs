@@ -39,7 +39,7 @@ namespace DataTestLoader
             var dtm = new DataTestLoader(initDatabase: true);
 
             // this name must be equal to class name found on model assembly
-            string tableName = "dv_device";
+            string tableName = "product";
 
             int recordsAdded = dtm.AddRows(tableName);
             recordsAdded.Should().BeGreaterThan(0, "at least one record must be inserted on the table");
@@ -48,8 +48,8 @@ namespace DataTestLoader
         [Test]
         public void When_I_need_a_new_database_test_it_should_be_good()
         {
-            var dtm = new DataTestLoader(initDatabase: true);
-            dtm.TotalRecordsAdded.Should().BeGreaterThan(0, "at least one record must be inserted");
+            var dtm = new DataTestLoader(initDatabase: true, loadJsonData: true);
+            dtm.TotalRecordsAdded.Should().Be(176, "all records must be inserted");
         }
 
     }

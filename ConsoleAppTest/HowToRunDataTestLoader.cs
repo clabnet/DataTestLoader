@@ -12,13 +12,15 @@ namespace DataTestLoader
     /// </summary>
     class HowToRunDataTestLoader
     {
-        // Press F5 to RUN; the output log will be named DTL-DataTestLoader.log into C:\Temp\log\SchemaDB folder.
+        // Press F5 to RUN; the output log will be named DTL-DataTestLoader.log into C:\Temp\DataTestLoader\log folder.
         static void Main(string[] args)
         {
-            // refreshSchema = when True will export the schema from remote database; false = will be reuse the file schema located into FolderSchema path 
-            // initDatabase = when True will drop, create, apply schema
-            // loadJsonData = when True will be added the tables with data located on DataTestFiles folder.
-            // Please remember: all files into DataTestFiles and DatabaseScripts folder MUST be set with attribute "CopyToOutput = true"
+            // refreshSchema = true will export the shema from remote database; false = will be reuse the schema files located into FolderSchema path 
+            // initDatabase = true will drop, create, apply schema
+            // loadJsonData = true will add the tables with data present in DataTestFiles folder. 
+            // Please note: 
+            // 1. all files into DataTestFiles and DatabaseScripts folder MUST be set with attribute "CopyToOutput = true"
+            // 2. if data already found on database, and specified true only loadJsonData, will be occurs duplicate key errors.
             new DataTestLoader(refreshSchema : true, initDatabase: true, loadJsonData: true);
         }
     }

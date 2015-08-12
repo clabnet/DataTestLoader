@@ -2,39 +2,44 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using Newtonsoft.Json;
-
-using Dapper;
-
-using ServiceStack.Text;
-
+using System.Linq;
 using System.Collections;
 using System.Diagnostics;
 using System.Configuration;
 using System.ServiceProcess;
 using System.Management;
 using System.Data;
+using System.Transactions;
+
+using Newtonsoft.Json;
+
+using Dapper;
+
+using ServiceStack.Text;
+
 
 namespace DataTestLoader
 {
     public class DataTestLoader : BaseClass
     {
 
-        public DataTestLoader(bool refreshSchema = false, bool initDatabase = false, bool loadJsonData = true)
+        public DataTestLoader(bool refreshSchema = false, bool initDatabase = false, bool loadJsonData = false)
         {
+            bool weCanProceed = true;
+
             DatabaseScriptManager dMan = new DatabaseScriptManager(refreshSchema, initDatabase, loadJsonData);
 
-            if (initDatabase)
-            {
-                bool weCanProceed = dMan.RefreshDatabaseSchema();
-                if (weCanProceed)
-                    dMan.InitDatabase();
-            }
+            if (refreshSchema)
+                weCanProceed = dMan.RefreshDatabaseSchema();
+
+            if (initDatabase && weCanProceed)
+                dMan.InitDatabase();
 
             if (loadJsonData)
                 this.RunDataTestLoader();
 
-            dMan.RunScriptsPostData();
+            if (initDatabase)
+                dMan.RunScriptsPostData();
 
             Debug.WriteLine(string.Format("\r\nINFO: DataTestLoader execution finished.", this.TotalRecordsAdded));
         }
@@ -82,7 +87,8 @@ namespace DataTestLoader
             try
             {
 
-                int addedRecords = 0;
+                int cntRead = 0;
+                int cntInsert = 0;
 
                 string fileName = @"DataTestFiles\" + tableName + ".json";
                 string json = ReadFileContent(fileName);
@@ -92,36 +98,61 @@ namespace DataTestLoader
 
                 Type myType = Type.GetType(fullQualifiedClassName);
                 if (myType == null)
-                    throw new ApplicationException(string.Format("Type {0} or assembly {1} or namespace '{2}' not found on {3}", tableName, AssemblyModel, AssemblyModelNamespace, AssemblyDirectory));
+                    throw new ApplicationException(string.Format("The type '{0}' or assembly '{1}' or namespace '{2}' was not found on {3}", tableName, AssemblyModel, AssemblyModelNamespace, AssemblyDirectory));
 
                 var recs = DeserializeList(json, myType);
 
                 using (var cnn = ConnectionFactory.GetOpenConnection())
                 {
-                    foreach (var rec in recs)
+
+                    IDbTransaction transaction = cnn.BeginTransaction();
+
+                    try
                     {
-                        this.currentRecord = rec;
+                        foreach (var rec in recs)
+                        {
+                            this.currentRecord = rec;
 
-                        // Debug.WriteLine(rec.Dump());
+                            // Debug.WriteLine(rec.Dump());
 
-                        // using patches of YogirajA and Clabnet
-                        // https://github.com/YogirajA/Dapper.SimpleCRUD/blob/feature/AssociativeInsert/Dapper.SimpleCRUD/SimpleCRUD.cs
-                        cnn.InsertNoPkConstraint(rec);
+                            // using patches of YogirajA and Clabnet
+                            // https://github.com/YogirajA/Dapper.SimpleCRUD/blob/feature/AssociativeInsert/Dapper.SimpleCRUD/SimpleCRUD.cs
+                            cnn.InsertNoPkConstraint(rec);
 
-                        addedRecords++;
+                            // using the last version of Eric's code modified int as long
+                            // cnn.InsertAsync(rec, transaction);
+
+                            cntRead++;
+                        }
+
+                        transaction.Commit();
                     }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        Debug.WriteLine(string.Format("\r\nERROR: Rollback insert on table {0} !", tableName));
+                        Debug.WriteLine(ex.Message);
+                        throw;
+                    }
+
+                    string sqlCount = string.Format("SELECT COUNT(*) AS count FROM {0}", tableName);
+
+                    var recCounter = cnn.ExecuteScalar(sqlCount);
+                    cntInsert = Convert.ToInt32(recCounter);
+
+                    if (cntRead != cntInsert)
+                        throw new ApplicationException(string.Format("\r\nERROR : Error adding data on {0} table. Read {1}, added {2} records.", tableName, cntRead, cntInsert));
+
                 }
 
-                Debug.WriteLine(string.Format("\r\nINFO: Added {0} records on table {1}.   OK!", addedRecords, tableName));
+                Debug.WriteLine(string.Format("\r\nINFO: Added {0} records on table {1}.   OK!", cntInsert, tableName));
 
-                return addedRecords;
+                return cntRead;
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("\r\n" + string.Format("Table {0}", tableName));
-
+                Debug.WriteLine(string.Format("\r\nERROR : This is the current record when occurred error on {0} table :", tableName));
                 Debug.WriteLine(this.currentRecord.Dump());
-
                 Debug.WriteLine(ex.Message);
                 throw;
             }

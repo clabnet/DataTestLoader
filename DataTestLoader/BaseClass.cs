@@ -14,9 +14,9 @@ namespace DataTestLoader
         protected internal bool initDatabase;
         protected internal bool loadJsonData;
 
-        private string _baseDirectory;
+        public string FileSchemaPreData { get; set; }
 
-        public string FileSchemaName { get; set; }
+        public string FileSchemaPostData { get; set; }
 
         public string FileSchemaFullName { get; set; }
 
@@ -38,55 +38,21 @@ namespace DataTestLoader
 
         public BaseClass()
         {
-            _baseDirectory = AssemblyDirectory;
-
             TextWriterTraceListener[] listeners = new TextWriterTraceListener[] 
             {
                 new TextWriterTraceListener(Console.Out) 
             };
-
-            string name = "DBSource";
-            if (!ConnectionExist(name))
-                throw new ApplicationException("Missing connection string " + name + " in configuration file");
-
-            name = "DBTest";
-            if (!ConnectionExist(name))
-                throw new ApplicationException("Missing connection string " + name + " in configuration file");
-
-            name = "DBPostgres";
-            if (!ConnectionExist(name))
-                throw new ApplicationException("Missing connection string " + name + " in configuration file");
-
-            name = "FileSchema";
-            if (!ConfigKeyExist(name))
-                throw new ApplicationException("Missing key " + name + " in configuration file");
-
-            name = "FolderSchema";
-            if (!ConfigKeyExist(name))
-                throw new ApplicationException("Missing key " + name + " in configuration file");
-
-            name = "AssemblyModel";
-            if (!ConfigKeyExist(name))
-                throw new ApplicationException("Missing key " + name + " in configuration file");
-
-            name = "AssemblyModelNamespace";
-            if (!ConfigKeyExist(name))
-                throw new ApplicationException("Missing key " + name + " in configuration file");
-
-            this.FileSchemaName = ConfigurationManager.AppSettings["FileSchema"].ToString();
-
-
         }
 
         #region Private methods
 
-        private static bool ConfigKeyExist(string name)
+        protected static bool ConfigKeyExist(string name)
         {
             // Return false if it doesn't exist, true if it does
             return ConfigurationManager.AppSettings[name] != null;
         }
 
-        private static bool ConnectionExist(string name)
+        protected static bool ConnectionExist(string name)
         {
             // Return false if it doesn't exist, true if it does
             return ConfigurationManager.ConnectionStrings[name] != null;
@@ -130,10 +96,15 @@ namespace DataTestLoader
         {
             get
             {
-                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-                UriBuilder uri = new UriBuilder(codeBase);
-                string path = Uri.UnescapeDataString(uri.Path);
-                return Path.GetDirectoryName(path);
+                return AppDomain.CurrentDomain.BaseDirectory;
+            }
+        }
+
+        protected static string CurrentProjectFolder
+        {
+            get
+            {
+                return AppDomain.CurrentDomain.BaseDirectory.CurrentProjectFolder();
             }
         }
 
@@ -142,7 +113,7 @@ namespace DataTestLoader
             if (fileName == string.Empty)
                 throw new ArgumentException("Missing fileName.");
 
-            string fullFileName = Path.Combine(_baseDirectory, fileName);
+            string fullFileName = Path.Combine(AssemblyDirectory, fileName);
 
             try
             {

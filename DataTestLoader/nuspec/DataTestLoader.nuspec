@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>DataTestLoader</id>
-        <version>0.1.13</version>
+        <version>0.1.14</version>
         <title>DataTestLoader</title>
         <authors>Claudio Barca</authors>
         <owners>clabnet</owners>
@@ -13,9 +13,9 @@
         <summary>Automatically creation and loading Postgresql database test data for integration tests</summary>
         <releaseNotes>To obtain Integration Test effective and consistent, they must always be performed in isolated environments, in order to ensure the existence of the expected data and to grant the possibility to modify them if necessary.
 
-Unfortunately, the creation of databases for tests is a time-consuming and repetitive activity. This project was created to facilitate the creation of database test.
+      Unfortunately, the creation of databases for tests is a time-consuming and repetitive activity. This project was created to facilitate the creation of database test.
 
-The idea is simple: the data are exported from the development database based on .json format and then recreated in another database created ad-hoc. The new database will have an identical structure to the source database and will contain only the data you need to test. This can be reproduced several times, since the test database is deleted, created and reloaded with all data provided by the developer.</releaseNotes>
+      The idea is simple: the data are exported from the development database based on .json format and then recreated in another database created ad-hoc. The new database will have an identical structure to the source database and will contain only the data you need to test. This can be reproduced several times, since the test database is deleted, created and reloaded with all data provided by the developer.</releaseNotes>
         <copyright>©2015 Claudio Barca</copyright>
         <language>it-IT</language>
         <tags>Dapper Dapper.SimpleCRUD postgresql test data Npgsql</tags>

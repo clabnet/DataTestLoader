@@ -1,17 +1,19 @@
 <#@ include file="OrmLite.Core.ttinclude" #>
 <#
 
-// Modified by C. Barca - Create POCO Class from PostgreSql database
-// 1/5/2015
+// Last Modify
+// 1/5/2015 C. Barca - Create POCO Class from PostgreSql database
+// 3/8/2015 C. Barca - Add ForceRequiredAttribute parameter to add Required attribute Primary Key autoincrement (for DataTestLoader usage)
 
 	// Settings
 	ConnectionStringName = "DBSource";			// Uses last connection string in config if not specified
-	Namespace = "SampleModel";
+	Namespace = "NorthwindMini.Model";
 	ClassPrefix = "";
 	ClassSuffix = "";
-	bool SplitIntoMultipleFiles = false;		// if true: Generates one file for every class
-	bool MakeSingular = false;			// if true: Changes the classname to singular if tablename is not singular
-	bool UseIdAsPK = false;				// if true: Changes the primary key property name to Id
+	bool SplitIntoMultipleFiles = false;	// if true: Generates one file for every class
+	bool MakeSingular = false;				// if true: Changes the classname to singular if tablename is not singular
+	bool UseIdAsPK = false;					// if true: Changes the primary key property name to Id
+	bool ForceRequiredAttribute = true;		// if true: Force Required attribute on Primary Key autoincrement
 	bool GenerateConstructor = false;		// if true: Generates the default empty constructor
 	bool UseSchemaAttribute = false;		// if true: Adds explicit '[Schema]' attribute
 
@@ -75,11 +77,11 @@ manager.StartNewFile(tbl.Name + ".cs");
 foreach(Column col in from c in tbl.Columns where !c.Ignore select c)
 {
  if ((col.Name!=col.PropertyName) || (col.IsPK && UseIdAsPK)) { #>
-        
+        // [Alias("<#=col.Name#>")]
 <# }  if (col.PropertyType == "string" && col.Size > 0) { #>
         [StringLength(<#=col.Size#>)]
-<# }  if (col.IsAutoIncrement) { #>
-        
+<# }  if (col.IsAutoIncrement && ForceRequiredAttribute) { #>
+		[Required]
 <# }  if (col.IsComputed) { #>
         [Compute]        
 <# }  if (col.IsNullable != true && col.IsAutoIncrement != true) { #>

@@ -24,7 +24,6 @@
  
  Last change : c.barca 12/6/2015 removed first upper char on table name 
 			   c.barca 17/6/2015 removed space mistake error to bytea stmt 1564 e 1574 money
-			   c.barca 13/7/2015 add lower fields to respect naming syntax postgres
  
  This is code is based on the T4 template from the PetaPoco project which in turn is based on the subsonic project.
 
@@ -273,8 +272,7 @@ static Func<string, string> CleanUp = (str) =>
 	if (char.IsDigit(str[0]) || cs_keywords.Contains(str))
 		str = "@" + str;
 
-	return str.ToLower(); 
-	
+    return str;
 };
 
 static string CheckNullable(Column col)

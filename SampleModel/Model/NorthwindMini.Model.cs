@@ -26,7 +26,7 @@ using System.Web;
 
 using System.ComponentModel.DataAnnotations;
 
-namespace SampleModel
+namespace NorthwindMini.Model
 {
     public partial class category 
     {

@@ -1,9 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTestLoader", "DataTestLoader\DataTestLoader.csproj", "{33B37D29-CB5B-4BB7-9202-186030FB42DB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5FB2A1E2-F93C-4832-B26E-DFC7EFC567DC} = {5FB2A1E2-F93C-4832-B26E-DFC7EFC567DC}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4B0B3D0C-239B-44BC-AA4F-71EA10CA91EA}"
 	ProjectSection(SolutionItems) = preProject

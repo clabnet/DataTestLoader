@@ -317,8 +317,9 @@ The new database will have an identical structure to the source database and wil
 <p><strong>The test database will be deleted and recreated</strong> during the initialization phase of DataTestLoader. By convention, the name of the test database must end with &quot;_test&quot; word.</p>
 </blockquote>
 <ol>
+<li><strong>DBSource</strong> - Database source from which to infer the </li>
 <li>
-<p><strong>DBSource</strong> - Database source from which to infer the schema that will be used in the creation of the test database.</p>
+<p>schema that will be used in the creation of the test database.</p>
 </li>
 <li>
 <p><strong>DbTest</strong> - Connection string of test database.</p>
@@ -327,16 +328,19 @@ The new database will have an identical structure to the source database and wil
 <p><strong>DBPostgres</strong> - Connection string to Postgres database. It is required to drop the test database.</p>
 </li>
 <li>
-<p><strong>FileSchema</strong> - Name of the file required for definition of test db (valid only in case of re-use of an existing schema, for performance reasons.)</p>
+<p><strong>FileSchemaPreData</strong> - Name of the file required for initial definition of test db (used only in case of re-use of an existing schema, for performance reasons. This is the file returned by <em>pg_dump</em> command with <em>section=pre-data</em> arguments.)</p>
 </li>
 <li>
-<p><strong>FolderSchema</strong> - The file with source database schema will be saved on this folder, using name such as {server}-{dbname}-{YYYYMMDD-HHMMSS}.sql. </p>
+<p><strong>FileSchemaPostData</strong> - Name of the file required for post definition of test db (used only in case of re-use of an existing schema, for performance reasons. file returned by <em>pg_dump</em> command with <em>section=post-data</em> arguments.)</p>
+</li>
+<li>
+<p><strong>FolderSchema</strong> - The file with source database schema will be saved on this folder, using name such as <em>SERVERDBNAME-PRE-DATA|POSTDATA-YYYYMMDD-HHMMSS.sql</em>. </p>
 </li>
 <li>
 <p><strong>AssemblyModel</strong> - Name of the library that contains the external .dll <a href="https://en.wikipedia.org/wiki/Plain_Old_CLR_Object">POCO classes</a> corresponding to the entities to be created in the database.</p>
 </li>
 <li>
-<p><strong>AssemblyModelNamespace</strong> - Namespace of POCO classes.</p>
+<p><strong>AssemblyModelNamespace</strong> - Namespace of POCO classes contained into AssemblyModel.</p>
 </li>
 </ol>
 <blockquote>
@@ -358,7 +362,7 @@ The new database will have an identical structure to the source database and wil
 
 <blockquote>
 <p>To define automagically a POCO class in C# language you can use also the online tool <a href="http://json2csharp.com/">json2csharp</a></p>
-<p><strong>To massive generation of POCO class</strong> corresponding to database entities, it is useful to use MS technology <a href="https://en.wikipedia.org/wiki/Text_Template_Transformation_Toolkit"><strong>Text Template Transformation Toolkit</strong></a> also known as <strong>T4</strong>.</p>
+<p><strong>To massive generation of POCO class</strong> corresponding to database entities, it is useful to use MS technology <a href="https://en.wikipedia.org/wiki/Text_Template_Transformation_Toolkit"><strong>Text Translate Transformation Toolkit</strong></a> also known as <strong>T4</strong>.</p>
 </blockquote>
 <h5>Automatic regeneration of POCO class</h5>
 <p>To manually define the POCO classes corresponding to database entities is a long and time-consuming activity.</p>
@@ -387,17 +391,19 @@ The example database is a Northwind mini version, you can find the creation scri
 <blockquote>
 <p>In order to extract data from the database and export .json format easily, you can also use <a href="http://fishcodelib.com/database.htm">Database.NET</a>. Any other way to create these files .json, manual or automatic mode is admitted.</p>
 <p>In order to generate automatically data files .json you can also use the online tool <a href="http://www.json-generator.com/">JSON generator</a>.</p>
-<p>Entity with &quot;Identity&quot; key value in the .json file is not required; if this key is present, the value will be discarded.</p>
 <p>To load data in ByteArray type format in entities that require it, you can use the online tool <a href="http://tools.thebuzzmedia.com/bytechar">AJAX ByteChar Converter</a></p>
 </blockquote>
 <h3>How to use DataTestLoader</h3>
 <p>Here are described a few ways to use the project:</p>
 <p><strong>1. Using ConsoleAppTest project</strong></p>
-<p>Open project. Set properly the connections strings and set it as the Default Startup Project. Press F5. On the console you will see the messages Log. 
-(see also log files on C:\Temp\SchemaDB folder).</p>
+<ul>
+<li>Open project. </li>
+<li>Set properly the connections strings and set it as the Default Startup Project. </li>
+<li>Press F5. On the console you will see the messages Log. (see also log files on <em>C:\Temp\DataTestLoader</em> folder).</li>
+</ul>
 <p><strong>2. Run Unit Test</strong></p>
 <p>The source project is provided with a set of unit tests NUnit 2.6. Set the connection strings properly. Run Test. See the log on Debug Window.
-(see also log files on C:\Temp\SchemaDB folder)</p>
+(see also log files on <em>C:\Temp\DataTestLoader</em> folder)</p>
 <p><strong>3. Using NuGet packages</strong></p>
 <p>Main prerequisites : PostgreSql v9.4+ database instance.</p>
 <ul>
@@ -405,31 +411,49 @@ The example database is a Northwind mini version, you can find the creation scri
 <li>Run Enable NuGet Package Restore.</li>
 <li>Launch Manage NuGet packages for solution. </li>
 <li>Find and install DataTestLoader project on NuGet.org repository. </li>
-<li>Build current project. </li>
 <li>Copy SampleModel.dll assembly from packages\lib\net45\ to bin\Debug folder.</li>
 <li>Copy AppConfigSample\app.config.txt\app.config file to replace app.config file; update the configuration values.</li>
-<li>Add this command to Main method of Program.cs: - new DataTestLoader(refreshSchema : true, initDatabase: true, loadJsonData: true);</li>
+<li>Add this command to Main method of Program.cs:</li>
+<li><strong>new DataTestLoader(refreshSchema : true, initDatabase: true, loadJsonData: true);</strong></li>
 <li>Set CopyToOutputDirectoy = CopyAlways on all files contained on DatabaseScripts and DataTestFiles folder. </li>
-<li>Run F5.  </li>
-<li>See DTL-DataTestLoader.log on C:\temp\SchemaDB\log folder. </li>
-<li>That's all.</li>
+<li>Build current project and execute it. </li>
+<li>See DTL-DataTestLoader.log on C:\temp\DataTestLoader\log folder.</li>
+<li>Finished, that's all.</li>
 </ul>
+<blockquote>
+<p><strong>DataTestLoader method arguments</strong></p>
+<ul>
+<li><strong>refreshSchema</strong> = If true will export the shema from remote database; false = will be reuse the file schema located into FolderSchema path </li>
+<li><strong>initDatabase</strong> = If true will drop, create and apply the schema.</li>
+<li><strong>loadJsonData</strong> = If true will add data present in DataTestFiles folder to tables specified into TablesToLoad.json file. If data are already found on database, and loadJsonData is the unique value setting as true, will be occurs a duplicate key errors.</li>
+</ul>
+</blockquote>
 <h3>Tips - Quick fix</h3>
 <blockquote>
 <ol>
 <li>
-<p>The most common mistake that happens is to forget to put in CopyToOutput all files contained into DataTestFiles and DatabaseScripts folders.</p>
+<p>The most common mistake that happens is to forget to put in <strong>CopyToOutput all files into DataTestFiles and DatabaseScripts folders</strong>.</p>
 </li>
 <li>
-<p><strong>Message Assembly Model SampleModel was not found</strong>. This message indicates that you must specify the assembly containing the POCO classes. If loading data format is not used, disable the flag loadJsonData.</p>
+<p><strong>Message Assembly Model SampleModel was not found</strong>. This message indicates that you must specify the assembly containing the POCO classes. If you don't need the loading of data, please disable the loadJsonData argument.</p>
+</li>
+<li>
+<p><strong>Type 'xxx' or assembly 'yyy' or namespace 'www' not found on ....</strong>
+The specified type cannot be found into assembly specified, or that assemby was not found into bin directory, or related namespace was not correctly specified into .config file.
+You can automatically regenerated the model using Right-Click -&gt; Run Custom Tool on SampleModel.tt. </p>
 </li>
 </ol>
 </blockquote>
+<h3>Release Note</h3>
+<ul>
+<li>12/8/2015 Refactoring creation schema of database. Now we use the <em>--section=pre-data</em> and <em>--section=post-data</em> arguments.</li>
+<li>11/8/2015 Refactoring CheckValidSettings. Now the keys of config file are required only when used, based on arguments of DataTestLoader.</li>
+</ul>
 <hr />
 <p>In case of translation or coding errors, please feel free to contact me.</p>
 <p>Claudio Barca 
 c.barca at gmail dot com</p>
-<p>Last revision document : 7/26/2015 6:02:07 PM   </p>
+<p>Last revision document : 8/12/2015 2:45:15 PM </p>
 
 </body>
 </html>

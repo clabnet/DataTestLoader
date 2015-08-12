@@ -56,6 +56,10 @@
       <Project>{33b37d29-cb5b-4bb7-9202-186030fb42db}</Project>
       <Name>DataTestLoader</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SampleModel\SampleModel.csproj">
+      <Project>{5fb2a1e2-f93c-4832-b26e-dfc7efc567dc}</Project>
+      <Name>SampleModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

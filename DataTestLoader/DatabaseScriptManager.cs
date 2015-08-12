@@ -15,17 +15,46 @@ namespace DataTestLoader
 {
     public class DatabaseScriptManager : BaseClass
     {
-
         private string servicePath;
         private string hostName;
         private string psqlExe;
         private string createdbExe;
         private string pgdumpExe;
+        private string timestamp;
 
         private ConnectionParser dbSource;
+
         private ConnectionParser dbTest;
 
         public const string SQL_CreateExtensionPostgis = @"CREATE EXTENSION postgis;";
+
+        public string SQL_AddConstraints
+        {
+            get
+            {
+                return @"Copy (
+                    SELECT 'ALTER TABLE '||nspname||'.'||relname||' ADD CONSTRAINT '||conname||' '|| pg_get_constraintdef(pg_constraint.oid)||';' as ColumnName
+                    FROM pg_constraint
+                    INNER JOIN pg_class ON conrelid=pg_class.oid
+                    INNER JOIN pg_namespace ON pg_namespace.oid=pg_class.relnamespace
+                    ORDER BY CASE WHEN contype='f' THEN 0 ELSE 1 END DESC,contype DESC,nspname DESC,relname DESC,conname DESC
+                    ) To '" + FolderSchema + @"\log\DTL-AddConstraints.inp'; ";
+            }
+        }
+        
+        public string SQL_RemoveConstraints
+        {
+            get
+            {
+                return @"Copy (
+                    SELECT 'ALTER TABLE '||nspname||'.'||relname||' DROP CONSTRAINT '||conname||';' as ColumnName
+                    FROM pg_constraint 
+                    INNER JOIN pg_class ON conrelid=pg_class.oid 
+                    INNER JOIN pg_namespace ON pg_namespace.oid=pg_class.relnamespace 
+                    ORDER BY CASE WHEN contype='f' THEN 0 ELSE 1 END,contype,nspname,relname,conname
+                    ) To '" + FolderSchema + @"\log\DTL-RemoveConstraints.inp'; ";
+            }
+        }
 
         public DatabaseScriptManager(bool refreshSchema, bool initDatabase, bool loadJsonData)
         {
@@ -38,17 +67,11 @@ namespace DataTestLoader
 
         public void InitDatabase()
         {
-
             DropAllConnections();
             DropDatabase();
             CreateDatabase();
-            CreateExtensionPostgis();
-            ApplySchemaDatabase();
-            RunScriptsPreData();
+            ApplySchemaDatabase(this.FileSchemaPreData);
             RunScriptsFillData();
-
-            Debug.WriteLine(string.Format("\r\nINFO: Init database {0} successfull.  OK!", dbTest.Database));
-
         }
 
         public bool RefreshDatabaseSchema()
@@ -60,7 +83,7 @@ namespace DataTestLoader
             else
             {
                 // reuse existing schema
-                weCanProceed = CheckExistSchemaFile();
+                weCanProceed = CheckExistSchemaFile(this.FileSchemaPreData);
                 Debug.WriteLine(string.Format("\r\nINFO: Reusing database schema {0}", FileSchemaFullName));
             }
 
@@ -71,6 +94,28 @@ namespace DataTestLoader
         {
             try
             {
+
+                string keyName;
+
+                // These keys are always required
+                keyName = "DBTest";
+                if (!ConnectionExist(keyName))
+                    throw new ApplicationException("Missing connection string " + keyName + " in configuration file");
+
+                dbTest = new ConnectionParser(ConnectionStringDBTest);
+                if (dbTest == null)
+                    throw new ApplicationException("Database test is invalid. ");
+                if (!dbTest.Database.EndsWith("_test"))
+                    throw new ApplicationException("The name of database test must be contain the word '_test' at end of name.");
+
+                keyName = "DBPostgres";
+                if (!ConnectionExist(keyName))
+                    throw new ApplicationException("Missing connection string " + keyName + " in configuration file");
+
+                keyName = "FolderSchema";
+                if (!ConfigKeyExist(keyName))
+                    throw new ApplicationException("Missing key " + keyName + " in configuration file");
+
                 if (!Directory.Exists(FolderSchema))
                     Directory.CreateDirectory(FolderSchema);
 
@@ -80,20 +125,6 @@ namespace DataTestLoader
                     Directory.Delete(logPath, true); // clear log smart mode
 
                 Directory.CreateDirectory(logPath);
-
-                dbSource = new ConnectionParser(ConnectionStringDBSource);
-                if (dbSource == null)
-                    throw new ApplicationException("Database source is invalid. ");
-
-                dbTest = new ConnectionParser(ConnectionStringDBTest);
-                if (dbTest == null)
-                    throw new ApplicationException("Database test is invalid. ");
-                if (!dbTest.Database.EndsWith("_test"))
-                    throw new ApplicationException("The name of database test must be contain the word '_test' at end of name.");
-
-                hostName = GetMachineNameFromIPAddress(dbSource.Server);
-                if (string.IsNullOrEmpty(hostName))
-                    throw new ApplicationException(string.Format("Host {0} is not reachable. ", dbSource.Server));
 
                 servicePath = GetServicePath("postgresql");
                 if (string.IsNullOrEmpty(servicePath))
@@ -110,10 +141,52 @@ namespace DataTestLoader
                 pgdumpExe = Path.Combine(this.servicePath, "pg_dump.exe");
                 if (!File.Exists(pgdumpExe))
                     throw new FileNotFoundException(string.Format("Not found {0}", pgdumpExe));
+                
+                // the DBSource key is required only when it is required to refresh database schema
+                if (this.refreshSchema == true)
+                {
+                    keyName = "DBSource";
+                    if (!ConnectionExist(keyName))
+                        throw new ApplicationException("Missing connection string " + keyName + " in configuration file");
+
+                    dbSource = new ConnectionParser(ConnectionStringDBSource);
+                    if (dbSource == null)
+                        throw new ApplicationException("Database source is invalid. ");
+
+                    hostName = GetMachineNameFromIPAddress(dbSource.Server);
+                    if (string.IsNullOrEmpty(hostName))
+                        throw new ApplicationException(string.Format("Host {0} is not reachable. ", dbSource.Server));
+
+                    System.Environment.SetEnvironmentVariable("PGPASSWORD", dbSource.Password);
+                }
+
+                // These keys are required only if is required the initDatabase functionality
+                if (this.initDatabase == true)
+                {
+                    keyName = "FileSchemaPreData";
+                    if (!ConfigKeyExist(keyName))
+                        throw new ApplicationException("Missing key " + keyName + " in configuration file");
+
+                    this.FileSchemaPreData = ConfigurationManager.AppSettings[keyName].ToString();
+
+                    keyName = "FileSchemaPostData";
+                    if (!ConfigKeyExist(keyName))
+                        throw new ApplicationException("Missing key " + keyName + " in configuration file");
+
+                    this.FileSchemaPostData = ConfigurationManager.AppSettings[keyName].ToString();
+                }
 
                 // the assembly model is required only when it is required to load data from json
-                if (this.loadJsonData)
+                if (this.loadJsonData == true)
                 {
+                    keyName = "AssemblyModel";
+                    if (!ConfigKeyExist(keyName))
+                        throw new ApplicationException("Missing key " + keyName + " in configuration file");
+
+                    keyName = "AssemblyModelNamespace";
+                    if (!ConfigKeyExist(keyName))
+                        throw new ApplicationException("Missing key " + keyName + " in configuration file");
+
                     if (!File.Exists(Path.Combine(AssemblyDirectory, AssemblyModel + ".dll")))
                         throw new FileNotFoundException(string.Format("Assembly Model {0} was not found on {1}", AssemblyModel, AssemblyDirectory));
                 }
@@ -131,43 +204,22 @@ namespace DataTestLoader
         public bool ExportSchemaFromSourceDatabase()
         {
 
+            // http://www.postgresonline.com/special_feature.php?sf_name=postgresql90_pg_dumprestore_cheatsheet&outputformat=html
+            // http://www.commandprompt.com/ppbook/x17860
+            // http://www.postgresql.org/docs/9.4/static/app-pgdump.html
+
             try
             {
-                // use pg_dump command
 
-                this.FileSchemaName = string.Empty;
-                string timestamp = DateTime.Now.ToString("yyyyMMdd-HHmmss");
-                string file = String.Format("{0}-{1}-{2}.sql", hostName, dbSource.Database, timestamp);
+                this.timestamp = DateTime.Now.ToString("yyyyMMdd-HHmmss");
 
-                string fullPath = Path.Combine(FolderSchema, file);
+                CreateSchema_PREDATA();
 
-                // http://www.postgresonline.com/special_feature.php?sf_name=postgresql90_pg_dumprestore_cheatsheet&outputformat=html
-                // http://www.commandprompt.com/ppbook/x17860
-                string arguments = String.Format(@" --host {0} --port {1} --username {2} --schema-only --verbose --no-owner --role {2} --encoding UTF8 --inserts --column-inserts --no-privileges --no-tablespaces  --file {3} --dbname {4}", dbSource.Server, dbSource.Port, dbSource.Username, fullPath, dbSource.Database);
+                CheckExistSchemaFile(this.FileSchemaPreData);
 
-                Debug.WriteLine(pgdumpExe + arguments);
+                CreateSchema_POSTDATA();
 
-                System.Environment.SetEnvironmentVariable("PGPASSWORD", dbSource.Password);
-
-                ProcessStartInfo processInfo = CreateProcessInfo(pgdumpExe, arguments);
-
-                string errorFile = Path.Combine(FolderSchema, @"log\DTL-CreateSchema.log");
-
-                Debug.WriteLine(string.Format("INFO: Waiting please, retrieving DB schema from {0} may take up two minutes ", dbSource.Server));
-
-                RunProcess(processInfo, errorFile);
-
-                this.FileSchemaName = fullPath;
-
-                if (this.FileSchemaName.Length > 0)
-                    Debug.WriteLine(string.Format("INFO: Created schema {0}   OK!", this.FileSchemaName));
-                else
-                {
-                    Debug.WriteLine(string.Format("\r\nErrors on creation schema. Aborted"));
-                    throw new ApplicationException(string.Format("Errors on creation schema {0}. ", this.FileSchemaName));
-                }
-
-                CheckExistSchemaFile();
+                CheckExistSchemaFile(this.FileSchemaPostData);
 
                 return true;
             }
@@ -178,9 +230,69 @@ namespace DataTestLoader
             }
         }
 
-        private bool CheckExistSchemaFile()
+        private void CreateSchema_PREDATA()
         {
-            this.FileSchemaFullName = Path.Combine(FolderSchema, this.FileSchemaName);
+
+            this.FileSchemaPreData = string.Empty;
+      
+            string file = String.Format("{0}-{1}-PRE-DATA-{2}.sql", hostName, dbSource.Database, this.timestamp);
+            string fullPath = Path.Combine(FolderSchema, file);
+
+            // STEP 1 - use pg_dump command with PRE-DATA argument
+            string arguments = String.Format(@" --host {0} --port {1} --username {2} --schema-only --section=pre-data --no-owner --no-privileges --encoding UTF8 --file {3} --dbname {4}", dbSource.Server, dbSource.Port, dbSource.Username, fullPath, dbSource.Database);
+            Debug.WriteLine(pgdumpExe + arguments);
+
+            ProcessStartInfo processInfo = CreateProcessInfo(pgdumpExe, arguments);
+            string errorFile = Path.Combine(FolderSchema, @"log\DTL-CreateSchema-PREDATA.log");
+
+            Debug.WriteLine(string.Format("INFO: Waiting please, retrieving DB schema PRE-DATA from {0} may take up two minutes ", dbSource.Server));
+
+            RunProcess(processInfo, errorFile);
+
+            this.FileSchemaPreData = fullPath;
+
+            if (this.FileSchemaPreData.Length > 0)
+                Debug.WriteLine(string.Format("INFO: Created schema {0}   OK!\r\n", this.FileSchemaPreData));
+            else
+            {
+                Debug.WriteLine(string.Format("\r\nERROR : Errors on creation schema. Execution stopped."));
+                throw new ApplicationException(string.Format("Errors on creation schema {0}. ", this.FileSchemaPreData));
+            }
+        }
+
+        private void CreateSchema_POSTDATA()
+        {
+
+            this.FileSchemaPostData = string.Empty;
+
+            string file = String.Format("{0}-{1}-POSTDATA-{2}.sql", hostName, dbSource.Database, this.timestamp);
+            string fullPath = Path.Combine(FolderSchema, file);
+
+            // STEP 2 - use pg_dump command with POST-DATA argument
+            string arguments = String.Format(@" --host {0} --port {1} --username {2} --schema-only --section=post-data --no-owner --no-privileges --encoding UTF8 --file {3} --dbname {4}", dbSource.Server, dbSource.Port, dbSource.Username, fullPath, dbSource.Database);
+            Debug.WriteLine(pgdumpExe + arguments);
+
+            ProcessStartInfo processInfo = CreateProcessInfo(pgdumpExe, arguments);
+            string errorFile = Path.Combine(FolderSchema, @"log\DTL-CreateSchema-POSTDATA.log");
+
+            Debug.WriteLine(string.Format("INFO: Waiting please, retrieving DB schema POSTDATA from {0} may take up two minutes ", dbSource.Server));
+
+            RunProcess(processInfo, errorFile);
+
+            this.FileSchemaPostData = fullPath;
+
+            if (this.FileSchemaPostData.Length > 0)
+                Debug.WriteLine(string.Format("INFO: Created schema {0}   OK!\r\n", this.FileSchemaPostData));
+            else
+            {
+                Debug.WriteLine(string.Format("\r\nERROR : Errors on creation schema. Execution stopped."));
+                throw new ApplicationException(string.Format("Errors on creation schema {0}. ", this.FileSchemaPostData));
+            }
+        }
+        
+        private bool CheckExistSchemaFile(string fileName)
+        {
+            this.FileSchemaFullName = Path.Combine(FolderSchema, fileName);
 
             if (!File.Exists(this.FileSchemaFullName))
                 throw new FileNotFoundException(string.Format("File schema {0} not found.", this.FileSchemaFullName));
@@ -331,12 +443,14 @@ namespace DataTestLoader
             }
         }
 
-        private void ApplySchemaDatabase()
+        private void ApplySchemaDatabase(string fileName)
         {
             try
             {
-                // use psql command
 
+                this.FileSchemaFullName = Path.Combine(FolderSchema, fileName);
+
+                // use psql command
                 string arguments = String.Format(@" --host {0} --port {1} --username {2} --dbname {4} --file ""{3}"" ", dbTest.Server, dbTest.Port, dbTest.Username, FileSchemaFullName, dbTest.Database);
 
                 ProcessStartInfo processInfo = CreateProcessInfo(psqlExe, arguments);
@@ -345,7 +459,7 @@ namespace DataTestLoader
 
                 Debug.WriteLine("\r\n" + psqlExe + arguments);
 
-                Debug.Write("INFO: Applying database schema ...");
+                Debug.Write(string.Format("INFO: Applying database schema {0} ...", fileName));
 
                 RunProcess(processInfo, errorFile);
 
@@ -373,63 +487,16 @@ namespace DataTestLoader
             return processInfo;
         }
 
-        private void RunScriptsPreData()
-        {
-            // ------------------------
-            // 1. PRE-DATA section (result redirect to output file)
-            // ------------------------
-            string scriptName, arguments, outFile;
-            bool result;
-
-            // Step 1.1 - Create script for ADD database constraints - 
-            scriptName = Path.Combine(AssemblyDirectory, @"DatabaseScripts\99. DB List constraints add.sql");
-            if (!File.Exists(scriptName))
-                throw new FileNotFoundException(string.Format("Not found {0}", scriptName));
-
-
-            outFile = Path.Combine(FolderSchema, @"log\DTL-ListConstraintsAdd.log");
-            arguments = String.Format(@" --host {0} --port {1} --username {2} --dbname {4} --file ""{3}"" --output {5}",
-                dbTest.Server, dbTest.Port, dbTest.Username, scriptName, dbTest.Database, outFile);
-            // The result of this run is the file DTL-AddConstraints.inp
-            result = ExecPsqlCommand(arguments);
-
-
-            // Step 1.2 - Create script for drop database constraints - 
-            scriptName = Path.Combine(AssemblyDirectory, @"DatabaseScripts\01. DB List constraints drop.sql");
-            if (!File.Exists(scriptName))
-                throw new FileNotFoundException(string.Format("Not found {0}", scriptName));
-
-
-            outFile = Path.Combine(FolderSchema, @"log\DTL-ListConstraintsDrop.log");
-            arguments = String.Format(@" --host {0} --port {1} --username {2} --dbname {4} --file ""{3}"" --output {5}",
-                dbTest.Server, dbTest.Port, dbTest.Username, scriptName, dbTest.Database, outFile);
-            // The result of this run is the file DTL-RemoveConstraints.inp
-            result = ExecPsqlCommand(arguments);
-
-
-
-            // Step 1.3 - Remove database constraints
-            scriptName = Path.Combine(FolderSchema, @"log\DTL-RemoveConstraints.inp");
-            if (!File.Exists(scriptName))
-                throw new FileNotFoundException(string.Format("Not found {0}", scriptName));
-
-            arguments = String.Format(@" --host {0} --port {1} --username {2} --dbname {4} --file ""{3}""",
-                dbTest.Server, dbTest.Port, dbTest.Username, scriptName, dbTest.Database);
-            result = ExecPsqlCommand(arguments);
-
-        }
-
         private void RunScriptsFillData()
         {
-
-            // insert here your initial data
-
+            // insert here your scripts to add initial data to database
+            
             //string scriptName, arguments;
             //bool result;
 
-            //------------------------
-            //2. FILL-DATA section
-            //------------------------
+            ////------------------------
+            ////2. FILL-DATA section
+            ////------------------------
 
             //// Step 2.1
             //scriptName = Path.Combine(AssemblyDirectory, @"DatabaseScripts\02. DB Fill data except geometries.sql");
@@ -448,28 +515,24 @@ namespace DataTestLoader
             //arguments = String.Format(@" --host {0} --port {1} --username {2} --dbname {4} --file ""{3}"" ",
             //    dbTest.Server, dbTest.Port, dbTest.Username, scriptName, dbTest.Database);
             //result = ExecPsqlCommand(arguments);
-
-
         }
 
         public void RunScriptsPostData()
         {
 
-            // ------------------------
-            // 3. POST-DATA section (result redirect to output file)
-            // ------------------------
             string scriptName, arguments;
             bool result;
 
-            // Step 3.1 - Add database constraints
-            scriptName = Path.Combine(FolderSchema, @"log\DTL-AddConstraints.inp");
+            scriptName = Path.Combine(FolderSchema, this.FileSchemaPostData);
             if (!File.Exists(scriptName))
                 throw new FileNotFoundException(string.Format("Not found {0}", scriptName));
 
-            arguments = String.Format(@" --host {0} --port {1} --username {2} --dbname {4} --file ""{3}""",
-                dbTest.Server, dbTest.Port, dbTest.Username, scriptName, dbTest.Database);
+            arguments = String.Format(@" --host {0} --port {1} --username {2} --dbname {3} --file ""{4}""",
+                dbTest.Server, dbTest.Port, dbTest.Username, dbTest.Database, scriptName);
             result = ExecPsqlCommand(arguments);
 
+            Debug.WriteLine(string.Format("\r\nINFO: Init database {0} successfull.  OK!", dbTest.Database));
+            
         }
 
         private bool ExecPsqlCommand(string psqlArguments)
