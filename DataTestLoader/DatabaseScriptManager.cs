@@ -126,7 +126,7 @@ namespace DataTestLoader
 
                 Directory.CreateDirectory(logPath);
 
-                servicePath = GetServicePath("postgresql");
+                servicePath = GetServicePath("postgresql-x64-9.4");
                 if (string.IsNullOrEmpty(servicePath))
                     throw new ApplicationException(string.Format("Postgres DB service is not installed on server {0}. ", dbSource.Server));
 
@@ -143,8 +143,6 @@ namespace DataTestLoader
                     throw new FileNotFoundException(string.Format("Not found {0}", pgdumpExe));
                 
                 // the DBSource key is required only when it is required to refresh database schema
-                if (this.refreshSchema == true)
-                {
                     keyName = "DBSource";
                     if (!ConnectionExist(keyName))
                         throw new ApplicationException("Missing connection string " + keyName + " in configuration file");
@@ -158,7 +156,6 @@ namespace DataTestLoader
                         throw new ApplicationException(string.Format("Host {0} is not reachable. ", dbSource.Server));
 
                     System.Environment.SetEnvironmentVariable("PGPASSWORD", dbSource.Password);
-                }
 
                 // These keys are required only if is required the initDatabase functionality
                 if (this.initDatabase == true)
