@@ -14,17 +14,16 @@ The new database will have an identical structure to the source database and wil
 
 ###Prerequisites###
 1. .NET Framework 4.5
-2. NpgSql
-3. Postgresql DB server 9.4+
+2. Postgresql DB server 9.4+ x64
 
 ###Third parts libraries###
 
-The code is based mainly on two libraries:
+The code is based mainly up two libraries:
 
 1. [Dapper.net](https://github.com/StackExchange/dapper-dot-net) 
 2. Dapper.SimpleCRUD **[clabnet edition](https://github.com/clabnet/Dapper.SimpleCRUD)**
  
-Other references are **Nunit e FluentAssertions** for Unit Test and driver .NET **Npgsql** for access to Postgresql database.  
+Other references are **Nunit e FluentAssertions** for Unit Test and .NET driver **Npgsql** for access to Postgresql database.  
 
 
 ###Configuration###
@@ -167,10 +166,18 @@ Main prerequisites : PostgreSql v9.4+ database instance.
 The specified type cannot be found into assembly specified, or that assemby was not found into bin directory, or related namespace was not correctly specified into .config file.
 You can automatically regenerated the model using Right-Click -> Run Custom Tool on SampleModel.tt. 
 
-###Release Note
+###Change Log
 
-- 12/8/2015 Refactoring creation schema of database. Now we use the *--section=pre-data* and *--section=post-data* arguments.
-- 11/8/2015 Refactoring CheckValidSettings. Now the keys of config file are required only when used, based on arguments of DataTestLoader.
+- 18/8/2015 Fixed : "Failed to find or load the registered .Net Framework Data Provider" on ConsoleAppTest execution. On a machine where Npgsql was not yet installed on GAC, the Npgsql driver *must be present on bin folder*.
+
+- 17/8/2015 The service name needed to finding native PG commands it is changed to select exactly the instance of server required: now it is 'postgresql-x64-9.4' *(because my colleague have two DB server instances different on her PC)*
+
+- 12/8/2015 Refactoring creation schema of database. Now we use the *--section=pre-data* and *--section=post-data* arguments. [See Postgresql documentation for details](http://www.postgresql.org/docs/9.4/static/app-pgdump.html)
+
+- 11/8/2015 Refactoring CheckValidSettings. Now the keys of config file are required only when are used, based on arguments of DataTestLoader.
+
+- 15/7/2015 First release on public repositories **[NuGet](http://www.nuget.org/packages/DataTestLoader/)** and **[GitHub.](https://github.com/clabnet/DataTestLoader)**
+
 
 ------
 In case of translation or coding errors, please feel free to contact me.

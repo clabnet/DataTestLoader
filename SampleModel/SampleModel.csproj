@@ -67,9 +67,7 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DatabaseScript\northwind-mini.sql" />
-    <Content Include="DatabaseScript\PC-LENOVO-northwind-POSTDATA-20150812-164744.sql" />
-    <Content Include="DatabaseScript\PC-LENOVO-northwind-PRE-DATA-20150812-164744.sql" />
+    <Content Include="DatabaseScripts\northwind-mini.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
