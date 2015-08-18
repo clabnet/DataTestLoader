@@ -41,7 +41,7 @@ namespace DataTestLoader
                     ) To '" + FolderSchema + @"\log\DTL-AddConstraints.inp'; ";
             }
         }
-        
+
         public string SQL_RemoveConstraints
         {
             get
@@ -92,110 +92,103 @@ namespace DataTestLoader
 
         private bool CheckValidSettings()
         {
-            try
+
+            string keyName;
+
+            // These keys are always required
+            keyName = "DBTest";
+            if (!ConnectionExist(keyName))
+                throw new ApplicationException("Missing connection string " + keyName + " in configuration file");
+
+            dbTest = new ConnectionParser(ConnectionStringDBTest);
+            if (dbTest == null)
+                throw new ApplicationException("Database test is invalid. ");
+            if (!dbTest.Database.EndsWith("_test"))
+                throw new ApplicationException("The name of database test must be contain the word '_test' at end of name.");
+
+            keyName = "DBPostgres";
+            if (!ConnectionExist(keyName))
+                throw new ApplicationException("Missing connection string " + keyName + " in configuration file");
+
+            keyName = "FolderSchema";
+            if (!ConfigKeyExist(keyName))
+                throw new ApplicationException("Missing key " + keyName + " in configuration file");
+
+            if (!Directory.Exists(FolderSchema))
+                Directory.CreateDirectory(FolderSchema);
+
+            string logPath = Path.Combine(FolderSchema, "log");
+
+            if (Directory.Exists(logPath))
+                Directory.Delete(logPath, true); // clear log smart mode
+
+            Directory.CreateDirectory(logPath);
+
+            servicePath = GetServicePath("postgresql-x64-9.4");
+            if (string.IsNullOrEmpty(servicePath))
+                throw new ApplicationException(string.Format("Postgres DB service is not installed on server {0}. ", dbSource.Server));
+
+            psqlExe = Path.Combine(this.servicePath, "psql.exe");
+            if (!File.Exists(psqlExe))
+                throw new FileNotFoundException(string.Format("Not found {0}", psqlExe));
+
+            createdbExe = Path.Combine(this.servicePath, "createdb.exe");
+            if (!File.Exists(createdbExe))
+                throw new FileNotFoundException(string.Format("Not found {0}", createdbExe));
+
+            pgdumpExe = Path.Combine(this.servicePath, "pg_dump.exe");
+            if (!File.Exists(pgdumpExe))
+                throw new FileNotFoundException(string.Format("Not found {0}", pgdumpExe));
+
+            // the DBSource key is required only when it is required to refresh database schema
+            keyName = "DBSource";
+            if (!ConnectionExist(keyName))
+                throw new ApplicationException("Missing connection string " + keyName + " in configuration file");
+
+            dbSource = new ConnectionParser(ConnectionStringDBSource);
+            if (dbSource == null)
+                throw new ApplicationException("Database source is invalid. ");
+
+            hostName = GetMachineNameFromIPAddress(dbSource.Server);
+            if (string.IsNullOrEmpty(hostName))
+                throw new ApplicationException(string.Format("Host {0} is not reachable. ", dbSource.Server));
+
+            System.Environment.SetEnvironmentVariable("PGPASSWORD", dbSource.Password);
+
+            // These keys are required only if is required the initDatabase functionality
+            if (this.initDatabase == true)
             {
-
-                string keyName;
-
-                // These keys are always required
-                keyName = "DBTest";
-                if (!ConnectionExist(keyName))
-                    throw new ApplicationException("Missing connection string " + keyName + " in configuration file");
-
-                dbTest = new ConnectionParser(ConnectionStringDBTest);
-                if (dbTest == null)
-                    throw new ApplicationException("Database test is invalid. ");
-                if (!dbTest.Database.EndsWith("_test"))
-                    throw new ApplicationException("The name of database test must be contain the word '_test' at end of name.");
-
-                keyName = "DBPostgres";
-                if (!ConnectionExist(keyName))
-                    throw new ApplicationException("Missing connection string " + keyName + " in configuration file");
-
-                keyName = "FolderSchema";
+                keyName = "FileSchemaPreData";
                 if (!ConfigKeyExist(keyName))
                     throw new ApplicationException("Missing key " + keyName + " in configuration file");
 
-                if (!Directory.Exists(FolderSchema))
-                    Directory.CreateDirectory(FolderSchema);
+                this.FileSchemaPreData = ConfigurationManager.AppSettings[keyName].ToString();
 
-                string logPath = Path.Combine(FolderSchema, "log");
+                keyName = "FileSchemaPostData";
+                if (!ConfigKeyExist(keyName))
+                    throw new ApplicationException("Missing key " + keyName + " in configuration file");
 
-                if (Directory.Exists(logPath))
-                    Directory.Delete(logPath, true); // clear log smart mode
-
-                Directory.CreateDirectory(logPath);
-
-                servicePath = GetServicePath("postgresql-x64-9.4");
-                if (string.IsNullOrEmpty(servicePath))
-                    throw new ApplicationException(string.Format("Postgres DB service is not installed on server {0}. ", dbSource.Server));
-
-                psqlExe = Path.Combine(this.servicePath, "psql.exe");
-                if (!File.Exists(psqlExe))
-                    throw new FileNotFoundException(string.Format("Not found {0}", psqlExe));
-
-                createdbExe = Path.Combine(this.servicePath, "createdb.exe");
-                if (!File.Exists(createdbExe))
-                    throw new FileNotFoundException(string.Format("Not found {0}", createdbExe));
-
-                pgdumpExe = Path.Combine(this.servicePath, "pg_dump.exe");
-                if (!File.Exists(pgdumpExe))
-                    throw new FileNotFoundException(string.Format("Not found {0}", pgdumpExe));
-                
-                // the DBSource key is required only when it is required to refresh database schema
-                    keyName = "DBSource";
-                    if (!ConnectionExist(keyName))
-                        throw new ApplicationException("Missing connection string " + keyName + " in configuration file");
-
-                    dbSource = new ConnectionParser(ConnectionStringDBSource);
-                    if (dbSource == null)
-                        throw new ApplicationException("Database source is invalid. ");
-
-                    hostName = GetMachineNameFromIPAddress(dbSource.Server);
-                    if (string.IsNullOrEmpty(hostName))
-                        throw new ApplicationException(string.Format("Host {0} is not reachable. ", dbSource.Server));
-
-                    System.Environment.SetEnvironmentVariable("PGPASSWORD", dbSource.Password);
-
-                // These keys are required only if is required the initDatabase functionality
-                if (this.initDatabase == true)
-                {
-                    keyName = "FileSchemaPreData";
-                    if (!ConfigKeyExist(keyName))
-                        throw new ApplicationException("Missing key " + keyName + " in configuration file");
-
-                    this.FileSchemaPreData = ConfigurationManager.AppSettings[keyName].ToString();
-
-                    keyName = "FileSchemaPostData";
-                    if (!ConfigKeyExist(keyName))
-                        throw new ApplicationException("Missing key " + keyName + " in configuration file");
-
-                    this.FileSchemaPostData = ConfigurationManager.AppSettings[keyName].ToString();
-                }
-
-                // the assembly model is required only when it is required to load data from json
-                if (this.loadJsonData == true)
-                {
-                    keyName = "AssemblyModel";
-                    if (!ConfigKeyExist(keyName))
-                        throw new ApplicationException("Missing key " + keyName + " in configuration file");
-
-                    keyName = "AssemblyModelNamespace";
-                    if (!ConfigKeyExist(keyName))
-                        throw new ApplicationException("Missing key " + keyName + " in configuration file");
-
-                    if (!File.Exists(Path.Combine(AssemblyDirectory, AssemblyModel + ".dll")))
-                        throw new FileNotFoundException(string.Format("Assembly Model {0} was not found on {1}", AssemblyModel, AssemblyDirectory));
-                }
-
-                Debug.WriteLine("\r\nINFO: All settings are valid. DataTestLoader will be run.\r\n");
-
-                return true;
+                this.FileSchemaPostData = ConfigurationManager.AppSettings[keyName].ToString();
             }
-            catch (Exception)
+
+            // the assembly model is required only when it is required to load data from json
+            if (this.loadJsonData == true)
             {
-                throw;
+                keyName = "AssemblyModel";
+                if (!ConfigKeyExist(keyName))
+                    throw new ApplicationException("Missing key " + keyName + " in configuration file");
+
+                keyName = "AssemblyModelNamespace";
+                if (!ConfigKeyExist(keyName))
+                    throw new ApplicationException("Missing key " + keyName + " in configuration file");
+
+                if (!File.Exists(Path.Combine(AssemblyDirectory, AssemblyModel + ".dll")))
+                    throw new FileNotFoundException(string.Format("Assembly Model {0} was not found on {1}", AssemblyModel, AssemblyDirectory));
             }
+
+            Debug.WriteLine("\r\nINFO: All settings are valid. DataTestLoader will be run.\r\n");
+
+            return true;
         }
 
         public bool ExportSchemaFromSourceDatabase()
@@ -231,7 +224,7 @@ namespace DataTestLoader
         {
 
             this.FileSchemaPreData = string.Empty;
-      
+
             string file = String.Format("{0}-{1}-PRE-DATA-{2}.sql", hostName, dbSource.Database, this.timestamp);
             string fullPath = Path.Combine(FolderSchema, file);
 
@@ -286,7 +279,7 @@ namespace DataTestLoader
                 throw new ApplicationException(string.Format("Errors on creation schema {0}. ", this.FileSchemaPostData));
             }
         }
-        
+
         private bool CheckExistSchemaFile(string fileName)
         {
             this.FileSchemaFullName = Path.Combine(FolderSchema, fileName);
@@ -427,6 +420,21 @@ namespace DataTestLoader
 
         }
 
+        // PRIMA 
+        //private static void RunProcess(ProcessStartInfo processInfo, string errorFile)
+        //{
+        //    using (Process process = Process.Start(processInfo))
+        //    {
+        //        using (StreamReader reader = process.StandardError)
+        //        {
+        //            StreamWriter sw = new StreamWriter(errorFile);
+        //            sw.WriteLine(reader.ReadToEnd());
+        //            sw.Close();
+        //        }
+        //    }
+        //}
+
+
         private static void RunProcess(ProcessStartInfo processInfo, string errorFile)
         {
             using (Process process = Process.Start(processInfo))
@@ -439,7 +447,6 @@ namespace DataTestLoader
                 }
             }
         }
-
         private void ApplySchemaDatabase(string fileName)
         {
             try
@@ -487,7 +494,7 @@ namespace DataTestLoader
         private void RunScriptsFillData()
         {
             // insert here your scripts to add initial data to database
-            
+
             //string scriptName, arguments;
             //bool result;
 
@@ -529,7 +536,7 @@ namespace DataTestLoader
             result = ExecPsqlCommand(arguments);
 
             Debug.WriteLine(string.Format("\r\nINFO: Init database {0} successfull.  OK!", dbTest.Database));
-            
+
         }
 
         private bool ExecPsqlCommand(string psqlArguments)
