@@ -32,8 +32,7 @@ Other references are **Nunit e FluentAssertions** for Unit Test and .NET driver 
 > 
 **The test database will be deleted and recreated** during the initialization phase of DataTestLoader. By convention, the name of the test database must end with "_test" word.
 
-1.  **DBSource** - Database source from which to infer the 
-2.  schema that will be used in the creation of the test database.
+1.  **DBSource** - Database source from which to infer the schema that will be used in the creation of the test database.
 
 2.  **DbTest** - Connection string of test database.
 
