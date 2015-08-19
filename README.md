@@ -14,17 +14,16 @@ The new database will have an identical structure to the source database and wil
 
 ###Prerequisites###
 1. .NET Framework 4.5
-2. NpgSql
-3. Postgresql DB server 9.4+
+2. Postgresql DB server 9.4+ x64
 
 ###Third parts libraries###
 
-The code is based mainly on two libraries:
+The code is based mainly up two libraries:
 
 1. [Dapper.net](https://github.com/StackExchange/dapper-dot-net) 
 2. Dapper.SimpleCRUD **[clabnet edition](https://github.com/clabnet/Dapper.SimpleCRUD)**
  
-Other references are **Nunit e FluentAssertions** for Unit Test and driver .NET **Npgsql** for access to Postgresql database.  
+Other references are **Nunit e FluentAssertions** for Unit Test and .NET driver **Npgsql** for access to Postgresql database.  
 
 
 ###Configuration###
@@ -44,11 +43,9 @@ Other references are **Nunit e FluentAssertions** for Unit Test and driver .NET 
 
 5.  **FileSchemaPostData** - Name of the file required for post definition of test db (used only in case of re-use of an existing schema, for performance reasons. file returned by *pg_dump* command with *section=post-data* arguments.)
 
-6.  **FolderSchema** - The file with source database schema will be saved on this folder, using name such as *SERVERDBNAME-PRE-DATA|POSTDATA-YYYYMMDD-HHMMSS.sql*. 
-
-7.  **AssemblyModel** - Name of the library that contains the external .dll [POCO classes](https://en.wikipedia.org/wiki/Plain_Old_CLR_Object) corresponding to the entities to be created in the database.
+6.  **AssemblyModel** - Name of the library that contains the external .dll [POCO classes](https://en.wikipedia.org/wiki/Plain_Old_CLR_Object) corresponding to the entities to be created in the database.
  
-8. **AssemblyModelNamespace** - Namespace of POCO classes contained into AssemblyModel.
+7. **AssemblyModelNamespace** - Namespace of POCO classes contained into AssemblyModel.
 
 > The AssemblyModel assembly contains the POCO classes for tables to be loaded. *The name of these classes must be equal to the table name to be loaded, with Public Properties corresponding to the table structure*.
 
@@ -167,10 +164,23 @@ Main prerequisites : PostgreSql v9.4+ database instance.
 The specified type cannot be found into assembly specified, or that assemby was not found into bin directory, or related namespace was not correctly specified into .config file.
 You can automatically regenerated the model using Right-Click -> Run Custom Tool on SampleModel.tt. 
 
-###Release Note
+Change log
+=========
 
-- 12/8/2015 Refactoring creation schema of database. Now we use the *--section=pre-data* and *--section=post-data* arguments.
-- 11/8/2015 Refactoring CheckValidSettings. Now the keys of config file are required only when used, based on arguments of DataTestLoader.
+##Version 1.1.0 - 19/8/2015
+ 
+- New. All errors returned by Process.Start are now redirect into main log file. 
+- New. Removed timestamp on database schema filename. Also the config key FolderSchema was removed.
+- New. Added [NLog](http://nlog-project.org/) logging system. See NLog.config file for logging configuration options.
+- Fix. *"Failed to find or load the registered .Net Framework Data Provider"* error message on ConsoleAppTest execution. On a machine where Npgsql was not yet installed on GAC, the Npgsql driver *must be present on bin folder*.
+- Fix. The service name used for finding the native PG commands was changed to select the instance of server required: now it is **postgresql-x64-9.4**. 
+- New. Refactoring creation schema of database. Now we use the *--section=pre-data* and *--section=post-data* arguments. [See Postgresql documentation for details](http://www.postgresql.org/docs/9.4/static/app-pgdump.html)
+- New. Refactoring CheckValidSettings. The keys of config file are now required only when are used, based on command line arguments of DataTestLoader.
+
+##Version 1.0.0 - 15/7/2015
+
+- First release on public repositories **[NuGet](http://www.nuget.org/packages/DataTestLoader/)** and **[GitHub.](https://github.com/clabnet/DataTestLoader)**
+
 
 ------
 In case of translation or coding errors, please feel free to contact me.
@@ -178,4 +188,4 @@ In case of translation or coding errors, please feel free to contact me.
 Claudio Barca 
 c.barca at gmail dot com
 
-Last revision document : 8/12/2015 2:45:15 PM 
+Last revision document : 8/19/2015 9:48:27 PM 
