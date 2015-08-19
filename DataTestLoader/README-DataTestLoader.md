@@ -168,6 +168,8 @@ You can automatically regenerated the model using Right-Click -> Run Custom Tool
 
 ###Change Log
 
+- 19/8/2015 Added Nlog logging system.
+
 - 18/8/2015 Fixed : "Failed to find or load the registered .Net Framework Data Provider" on ConsoleAppTest execution. On a machine where Npgsql was not yet installed on GAC, the Npgsql driver *must be present on bin folder*.
 
 - 17/8/2015 The service name needed to finding native PG commands it is changed to select exactly the instance of server required: now it is 'postgresql-x64-9.4' *(because my colleague have two DB server instances different on her PC)*

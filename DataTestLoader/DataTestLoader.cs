@@ -12,6 +12,7 @@ using System.Data;
 using System.Transactions;
 
 using Newtonsoft.Json;
+using NLog;
 
 using Dapper;
 
@@ -22,6 +23,16 @@ namespace DataTestLoader
 {
     public class DataTestLoader : BaseClass
     {
+
+        #region NLog Logger class definition
+
+        /// <summary>
+        /// Log class definition
+        /// </summary>
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
+        #endregion
+
 
         public DataTestLoader(bool refreshSchema = false, bool initDatabase = false, bool loadJsonData = false)
         {
@@ -41,7 +52,7 @@ namespace DataTestLoader
             if (initDatabase)
                 dMan.RunScriptsPostData();
 
-            Debug.WriteLine(string.Format("\r\nINFO: DataTestLoader execution finished.", this.TotalRecordsAdded));
+            logger.Info(string.Format("DataTestLoader execution finished.", this.TotalRecordsAdded));
         }
 
         private void RunDataTestLoader()
@@ -55,7 +66,7 @@ namespace DataTestLoader
             foreach (string tableName in tablesList)
                 this.TotalRecordsAdded += AddRows(tableName);
 
-            Debug.WriteLine(string.Format("\r\nINFO: Total records added : {0}", this.TotalRecordsAdded));
+            logger.Info(string.Format("Total records added : {0}", this.TotalRecordsAdded));
         }
 
         protected internal object currentRecord;
@@ -113,7 +124,7 @@ namespace DataTestLoader
                         {
                             this.currentRecord = rec;
 
-                            // Debug.WriteLine(rec.Dump());
+                            // logger.Info(rec.Dump());
 
                             // using patches of YogirajA and Clabnet
                             // https://github.com/YogirajA/Dapper.SimpleCRUD/blob/feature/AssociativeInsert/Dapper.SimpleCRUD/SimpleCRUD.cs
@@ -130,8 +141,8 @@ namespace DataTestLoader
                     catch (Exception ex)
                     {
                         transaction.Rollback();
-                        Debug.WriteLine(string.Format("\r\nERROR: Rollback insert on table {0} !", tableName));
-                        Debug.WriteLine(ex.Message);
+                        logger.Warn(string.Format("Rollback insert on table {0} !", tableName));
+                        logger.Warn(ex.Message);
                         throw;
                     }
 
@@ -141,19 +152,19 @@ namespace DataTestLoader
                     cntInsert = Convert.ToInt32(recCounter);
 
                     if (cntRead != cntInsert)
-                        throw new ApplicationException(string.Format("\r\nERROR : Error adding data on {0} table. Read {1}, added {2} records.", tableName, cntRead, cntInsert));
+                        throw new ApplicationException(string.Format("Error adding data on {0} table. Read {1}, added {2} records.", tableName, cntRead, cntInsert));
 
                 }
 
-                Debug.WriteLine(string.Format("\r\nINFO: Added {0} records on table {1}.   OK!", cntInsert, tableName));
+                logger.Info(string.Format("Added {0} records on table '{1}'.", cntInsert, tableName));
 
                 return cntRead;
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(string.Format("\r\nERROR : This is the current record when occurred error on {0} table :", tableName));
-                Debug.WriteLine(this.currentRecord.Dump());
-                Debug.WriteLine(ex.Message);
+                logger.Warn(string.Format("This is the current record when occurred error on {0} table :", tableName));
+                logger.Warn(this.currentRecord.Dump());
+                logger.Error(ex);
                 throw;
             }
 

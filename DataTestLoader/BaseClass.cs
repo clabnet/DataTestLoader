@@ -18,7 +18,7 @@ namespace DataTestLoader
 
         public string FileSchemaPostData { get; set; }
 
-        public string FileSchemaFullName { get; set; }
+        protected internal string FileSchemaFullName { get; set; }
 
         public static string ConnectionStringDBSource
         {

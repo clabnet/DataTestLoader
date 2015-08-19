@@ -117,6 +117,12 @@
     <None Include="DataTestFiles\TablesToLoad.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="nuspec\DataTestLoader.nuspec">
       <SubType>Designer</SubType>
     </None>
