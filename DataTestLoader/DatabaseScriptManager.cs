@@ -205,7 +205,6 @@ namespace DataTestLoader
 
             // STEP 1 - use pg_dump command with PRE-DATA argument
             string arguments = String.Format(@" --host {0} --port {1} --username {2} --schema-only --section=pre-data --no-owner --no-privileges --encoding UTF8 --file {3} --dbname {4}", dbSource.Server, dbSource.Port, dbSource.Username, fullPath, dbSource.Database);
-            logger.Debug(pgdumpExe + arguments);
 
             ProcessStartInfo processInfo = CreateProcessInfo(pgdumpExe, arguments);
             string errorFile = Path.Combine(this.FolderSchema, @"log\DTL-CreateSchema-PREDATA.log");
@@ -232,7 +231,6 @@ namespace DataTestLoader
 
             // STEP 2 - use pg_dump command with POST-DATA argument
             string arguments = String.Format(@" --host {0} --port {1} --username {2} --schema-only --section=post-data --no-owner --no-privileges --encoding UTF8 --file {3} --dbname {4}", dbSource.Server, dbSource.Port, dbSource.Username, fullPath, dbSource.Database);
-            logger.Debug(pgdumpExe + arguments);
 
             ProcessStartInfo processInfo = CreateProcessInfo(pgdumpExe, arguments);
             string errorFile = Path.Combine(this.FolderSchema, @"log\DTL-CreateSchema-POSTDATA.log");
@@ -273,8 +271,6 @@ namespace DataTestLoader
 
                 string errorFile = Path.Combine(this.FolderSchema, @"log\DTL-DropAllConnections.log");
 
-                logger.Debug(psqlExe + arguments);
-
                 RunProcess(processInfo, errorFile);
 
                 logger.Info(string.Format("Dropped all connections to database {0}", dbTest.Database));
@@ -300,8 +296,6 @@ namespace DataTestLoader
                 ProcessStartInfo processInfo = CreateProcessInfo(psqlExe, arguments);
 
                 string errorFile = Path.Combine(this.FolderSchema, @"log\DTL-CreateExtensionPostgis.log");
-
-                logger.Debug(psqlExe + arguments);
 
                 RunProcess(processInfo, errorFile);
 
@@ -332,8 +326,6 @@ namespace DataTestLoader
 
                 string errorFile = Path.Combine(this.FolderSchema, @"log\DTL-DropDatabase.log");
 
-                logger.Debug(dropdbExe + arguments);
-
                 RunProcess(processInfo, errorFile);
 
                 logger.Info(string.Format("Dropped database {0}", dbTest.Database));
@@ -355,18 +347,9 @@ namespace DataTestLoader
 
                 string arguments = String.Format(@" --host {0} --port {1} --username {2} {3}", dbTest.Server, dbTest.Port, dbTest.Username, dbTest.Database);
 
-                ProcessStartInfo processInfo = new ProcessStartInfo
-                {
-                    FileName = createdbExe,
-                    Arguments = arguments,
-                    UseShellExecute = false,
-                    RedirectStandardError = true,
-                    CreateNoWindow = true
-                };
+                ProcessStartInfo processInfo = CreateProcessInfo(createdbExe, arguments);
 
                 string errorFile = Path.Combine(this.FolderSchema, @"log\DTL-CreateDatabase.log");
-
-                logger.Debug(createdbExe + arguments);
 
                 RunProcess(processInfo, errorFile);
 
@@ -412,6 +395,8 @@ namespace DataTestLoader
 
         private ProcessStartInfo CreateProcessInfo(string exeName, string arguments)
         {
+            logger.Debug(exeName + arguments);
+
             ProcessStartInfo processInfo = new ProcessStartInfo
             {
                 FileName = exeName,
@@ -420,6 +405,7 @@ namespace DataTestLoader
                 RedirectStandardError = true,
                 CreateNoWindow = true
             };
+
             return processInfo;
         }
 
@@ -494,8 +480,6 @@ namespace DataTestLoader
                 ProcessStartInfo processInfo = CreateProcessInfo(psqlExe, psqlArguments);
 
                 string errorFile = Path.Combine(this.FolderSchema, @"log\DTL-ExecScripts.log");
-
-                logger.Debug(psqlExe + psqlArguments);
 
                 RunProcess(processInfo, errorFile);
 
