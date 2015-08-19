@@ -32,8 +32,7 @@ Other references are **Nunit e FluentAssertions** for Unit Test and .NET driver 
 > 
 **The test database will be deleted and recreated** during the initialization phase of DataTestLoader. By convention, the name of the test database must end with "_test" word.
 
-1.  **DBSource** - Database source from which to infer the 
-2.  schema that will be used in the creation of the test database.
+1.  **DBSource** - Database source from which to infer the schema that will be used in the creation of the test database.
 
 2.  **DbTest** - Connection string of test database.
 
@@ -145,7 +144,7 @@ Main prerequisites : PostgreSql v9.4+ database instance.
 - **new DataTestLoader(refreshSchema : true, initDatabase: true, loadJsonData: true);**
 - Set CopyToOutputDirectoy = CopyAlways on all files contained on DatabaseScripts and DataTestFiles folder. 
 - Build current project and execute it. 
-- See DTL-DataTestLoader.log on C:\temp\DataTestLoader\log folder.
+- Watch the DataTestLoader.log on C:\Logs\ folder.
 - Finished, that's all.
 
 > **DataTestLoader method arguments**

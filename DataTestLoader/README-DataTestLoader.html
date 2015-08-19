@@ -301,25 +301,23 @@ The new database will have an identical structure to the source database and wil
 <h3>Prerequisites</h3>
 <ol>
 <li>.NET Framework 4.5</li>
-<li>NpgSql</li>
-<li>Postgresql DB server 9.4+</li>
+<li>Postgresql DB server 9.4+ x64</li>
 </ol>
 <h3>Third parts libraries</h3>
-<p>The code is based mainly on two libraries:</p>
+<p>The code is based mainly up two libraries:</p>
 <ol>
 <li><a href="https://github.com/StackExchange/dapper-dot-net">Dapper.net</a> </li>
 <li>Dapper.SimpleCRUD <strong><a href="https://github.com/clabnet/Dapper.SimpleCRUD">clabnet edition</a></strong></li>
 </ol>
-<p>Other references are <strong>Nunit e FluentAssertions</strong> for Unit Test and driver .NET <strong>Npgsql</strong> for access to Postgresql database.  </p>
+<p>Other references are <strong>Nunit e FluentAssertions</strong> for Unit Test and .NET driver <strong>Npgsql</strong> for access to Postgresql database.  </p>
 <h3>Configuration</h3>
 <blockquote>
 <p><strong>Important</strong> Please pay attention to the settings of connection strings, in particular to that related to the Test database. </p>
 <p><strong>The test database will be deleted and recreated</strong> during the initialization phase of DataTestLoader. By convention, the name of the test database must end with &quot;_test&quot; word.</p>
 </blockquote>
 <ol>
-<li><strong>DBSource</strong> - Database source from which to infer the </li>
 <li>
-<p>schema that will be used in the creation of the test database.</p>
+<p><strong>DBSource</strong> - Database source from which to infer the schema that will be used in the creation of the test database.</p>
 </li>
 <li>
 <p><strong>DbTest</strong> - Connection string of test database.</p>
@@ -332,9 +330,6 @@ The new database will have an identical structure to the source database and wil
 </li>
 <li>
 <p><strong>FileSchemaPostData</strong> - Name of the file required for post definition of test db (used only in case of re-use of an existing schema, for performance reasons. file returned by <em>pg_dump</em> command with <em>section=post-data</em> arguments.)</p>
-</li>
-<li>
-<p><strong>FolderSchema</strong> - The file with source database schema will be saved on this folder, using name such as <em>SERVERDBNAME-PRE-DATA|POSTDATA-YYYYMMDD-HHMMSS.sql</em>. </p>
 </li>
 <li>
 <p><strong>AssemblyModel</strong> - Name of the library that contains the external .dll <a href="https://en.wikipedia.org/wiki/Plain_Old_CLR_Object">POCO classes</a> corresponding to the entities to be created in the database.</p>
@@ -417,7 +412,7 @@ The example database is a Northwind mini version, you can find the creation scri
 <li><strong>new DataTestLoader(refreshSchema : true, initDatabase: true, loadJsonData: true);</strong></li>
 <li>Set CopyToOutputDirectoy = CopyAlways on all files contained on DatabaseScripts and DataTestFiles folder. </li>
 <li>Build current project and execute it. </li>
-<li>See DTL-DataTestLoader.log on C:\temp\DataTestLoader\log folder.</li>
+<li>Watch the DataTestLoader.log on C:\Logs\ folder.</li>
 <li>Finished, that's all.</li>
 </ul>
 <blockquote>
@@ -444,16 +439,26 @@ You can automatically regenerated the model using Right-Click -&gt; Run Custom T
 </li>
 </ol>
 </blockquote>
-<h3>Release Note</h3>
+<h1>Change log</h1>
+<h2>Version 1.1.0 - 19/8/2015</h2>
 <ul>
-<li>12/8/2015 Refactoring creation schema of database. Now we use the <em>--section=pre-data</em> and <em>--section=post-data</em> arguments.</li>
-<li>11/8/2015 Refactoring CheckValidSettings. Now the keys of config file are required only when used, based on arguments of DataTestLoader.</li>
+<li>New. All errors returned by Process.Start are now redirect into main log file. </li>
+<li>New. Removed timestamp on database schema filename. Also the config key FolderSchema was removed.</li>
+<li>New. Added <a href="http://nlog-project.org/">NLog</a> logging system. See NLog.config file for logging configuration options.</li>
+<li>Fix. <em>&quot;Failed to find or load the registered .Net Framework Data Provider&quot;</em> error message on ConsoleAppTest execution. On a machine where Npgsql was not yet installed on GAC, the Npgsql driver <em>must be present on bin folder</em>.</li>
+<li>Fix. The service name used for finding the native PG commands was changed to select the instance of server required: now it is <strong>postgresql-x64-9.4</strong>. </li>
+<li>New. Refactoring creation schema of database. Now we use the <em>--section=pre-data</em> and <em>--section=post-data</em> arguments. <a href="http://www.postgresql.org/docs/9.4/static/app-pgdump.html">See Postgresql documentation for details</a></li>
+<li>New. Refactoring CheckValidSettings. The keys of config file are now required only when are used, based on command line arguments of DataTestLoader.</li>
+</ul>
+<h2>Version 1.0.0 - 15/7/2015</h2>
+<ul>
+<li>First release on public repositories <strong><a href="http://www.nuget.org/packages/DataTestLoader/">NuGet</a></strong> and <strong><a href="https://github.com/clabnet/DataTestLoader">GitHub.</a></strong></li>
 </ul>
 <hr />
 <p>In case of translation or coding errors, please feel free to contact me.</p>
 <p>Claudio Barca 
 c.barca at gmail dot com</p>
-<p>Last revision document : 8/12/2015 2:45:15 PM </p>
+<p>Last revision document : 8/19/2015 9:48:27 PM </p>
 
 </body>
 </html>
