@@ -1,20 +1,16 @@
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Management;
 using System.Net;
-using System.Reflection;
 using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
+
 using NLog;
 
 namespace DataTestLoader
 {
-    public class DatabaseScriptManager : BaseClass
+    public class PostgresqlScriptManager : BaseClass
     {
         #region NLog Logger class definition
 
@@ -30,7 +26,6 @@ namespace DataTestLoader
         private string psqlExe;
         private string createdbExe;
         private string pgdumpExe;
-        private string timestamp;
 
         private ConnectionParser dbSource;
 
@@ -38,7 +33,7 @@ namespace DataTestLoader
 
         public const string SQL_CreateExtensionPostgis = @"CREATE EXTENSION postgis;";
 
-        public DatabaseScriptManager(bool refreshSchema, bool initDatabase, bool loadJsonData)
+        public PostgresqlScriptManager(bool refreshSchema, bool initDatabase, bool loadJsonData)
         {
             this.refreshSchema = refreshSchema;
             this.initDatabase = initDatabase;
@@ -61,12 +56,12 @@ namespace DataTestLoader
             bool weCanProceed;
 
             if (this.refreshSchema)
-                weCanProceed = ExportSchemaFromSourceDatabase();
+                weCanProceed = ExportSchemasFromSourceDatabase();
             else
             {
-                // reuse existing schema
-                weCanProceed = CheckExistSchemaFile(this.FileSchemaPreData);
-                logger.Info(string.Format("Reusing database schema {0}", FileSchemaFullName));
+                // reuse existing schemas
+                weCanProceed = CheckExistSchemaFile(this.FileSchemaPreData) && CheckExistSchemaFile(this.FileSchemaPostData);
+                logger.Info("Reusing schema {0} and {1} on {2} folder.", this.FileSchemaPreData, this.FileSchemaPostData, this.FolderSchema);
             }
 
             return weCanProceed;
@@ -76,6 +71,8 @@ namespace DataTestLoader
         {
 
             string keyName;
+            
+            string serviceName = "postgresql-x64-9.4";
 
             // These keys are always required
             keyName = "DBTest";
@@ -92,23 +89,23 @@ namespace DataTestLoader
             if (!ConnectionExist(keyName))
                 throw new ApplicationException("Missing connection string " + keyName + " in configuration file");
 
-            keyName = "FolderSchema";
-            if (!ConfigKeyExist(keyName))
-                throw new ApplicationException("Missing key " + keyName + " in configuration file");
+            //keyName = "FolderSchema";
+            //if (!ConfigKeyExist(keyName))
+            //    throw new ApplicationException("Missing key " + keyName + " in configuration file");
 
-            if (!Directory.Exists(FolderSchema))
-                Directory.CreateDirectory(FolderSchema);
+            //if (!Directory.Exists(FolderSchema))
+            //    Directory.CreateDirectory(FolderSchema);
 
-            string logPath = Path.Combine(FolderSchema, "log");
+            //string logPath = Path.Combine(FolderSchema, "log");
 
-            if (Directory.Exists(logPath))
-                Directory.Delete(logPath, true); // clear log smart mode
+            //if (Directory.Exists(logPath))
+            //    Directory.Delete(logPath, true); // clear log smart mode
 
-            Directory.CreateDirectory(logPath);
+            //Directory.CreateDirectory(logPath);
 
-            servicePath = GetServicePath("postgresql-x64-9.4");
+            servicePath = GetServicePath(serviceName);
             if (string.IsNullOrEmpty(servicePath))
-                throw new ApplicationException(string.Format("Postgres DB service is not installed on server {0}. ", dbSource.Server));
+                throw new ApplicationException(string.Format("Postgres DB service {0} is not installed on server {1}. ", serviceName, dbSource.Server));
 
             psqlExe = Path.Combine(this.servicePath, "psql.exe");
             if (!File.Exists(psqlExe))
@@ -172,7 +169,7 @@ namespace DataTestLoader
             return true;
         }
 
-        public bool ExportSchemaFromSourceDatabase()
+        private bool ExportSchemasFromSourceDatabase()
         {
 
             // http://www.postgresonline.com/special_feature.php?sf_name=postgresql90_pg_dumprestore_cheatsheet&outputformat=html
@@ -181,9 +178,6 @@ namespace DataTestLoader
 
             try
             {
-
-                this.timestamp = DateTime.Now.ToString("yyyyMMdd-HHmmss");
-
                 CreateSchema_PREDATA();
 
                 CheckExistSchemaFile(this.FileSchemaPreData);
@@ -206,15 +200,15 @@ namespace DataTestLoader
 
             this.FileSchemaPreData = string.Empty;
 
-            string file = String.Format("{0}-{1}-PRE-DATA-{2}.sql", hostName, dbSource.Database, this.timestamp);
-            string fullPath = Path.Combine(FolderSchema, file);
+            string file = String.Format("{0}-{1}-PRE-DATA.sql", hostName, dbSource.Database);
+            string fullPath = Path.Combine(this.FolderSchema, file);
 
             // STEP 1 - use pg_dump command with PRE-DATA argument
             string arguments = String.Format(@" --host {0} --port {1} --username {2} --schema-only --section=pre-data --no-owner --no-privileges --encoding UTF8 --file {3} --dbname {4}", dbSource.Server, dbSource.Port, dbSource.Username, fullPath, dbSource.Database);
             logger.Debug(pgdumpExe + arguments);
 
             ProcessStartInfo processInfo = CreateProcessInfo(pgdumpExe, arguments);
-            string errorFile = Path.Combine(FolderSchema, @"log\DTL-CreateSchema-PREDATA.log");
+            string errorFile = Path.Combine(this.FolderSchema, @"log\DTL-CreateSchema-PREDATA.log");
 
             logger.Info(string.Format("Waiting please, retrieving DB schema PRE-DATA from {0} may take up two minutes ", dbSource.Server));
 
@@ -225,10 +219,7 @@ namespace DataTestLoader
             if (this.FileSchemaPreData.Length > 0)
                 logger.Info(string.Format("Created schema {0}", this.FileSchemaPreData));
             else
-            {
-                logger.Info(string.Format("Errors on creation schema. Execution stopped."));
                 throw new ApplicationException(string.Format("Errors on creation schema {0}. ", this.FileSchemaPreData));
-            }
         }
 
         private void CreateSchema_POSTDATA()
@@ -236,15 +227,15 @@ namespace DataTestLoader
 
             this.FileSchemaPostData = string.Empty;
 
-            string file = String.Format("{0}-{1}-POSTDATA-{2}.sql", hostName, dbSource.Database, this.timestamp);
-            string fullPath = Path.Combine(FolderSchema, file);
+            string file = String.Format("{0}-{1}-POSTDATA.sql", hostName, dbSource.Database);
+            string fullPath = Path.Combine(this.FolderSchema, file);
 
             // STEP 2 - use pg_dump command with POST-DATA argument
             string arguments = String.Format(@" --host {0} --port {1} --username {2} --schema-only --section=post-data --no-owner --no-privileges --encoding UTF8 --file {3} --dbname {4}", dbSource.Server, dbSource.Port, dbSource.Username, fullPath, dbSource.Database);
             logger.Debug(pgdumpExe + arguments);
 
             ProcessStartInfo processInfo = CreateProcessInfo(pgdumpExe, arguments);
-            string errorFile = Path.Combine(FolderSchema, @"log\DTL-CreateSchema-POSTDATA.log");
+            string errorFile = Path.Combine(this.FolderSchema, @"log\DTL-CreateSchema-POSTDATA.log");
 
             logger.Info(string.Format("Waiting please, retrieving DB schema POSTDATA from {0} may take up two minutes ", dbSource.Server));
 
@@ -255,15 +246,12 @@ namespace DataTestLoader
             if (this.FileSchemaPostData.Length > 0)
                 logger.Info(string.Format("Created schema {0}", this.FileSchemaPostData));
             else
-            {
-                logger.Warn(string.Format("Errors on creation schema. Execution stopped."));
                 throw new ApplicationException(string.Format("Errors on creation schema {0}. ", this.FileSchemaPostData));
-            }
         }
 
         private bool CheckExistSchemaFile(string fileName)
         {
-            this.FileSchemaFullName = Path.Combine(FolderSchema, fileName);
+            this.FileSchemaFullName = Path.Combine(this.FolderSchema, fileName);
 
             if (!File.Exists(this.FileSchemaFullName))
                 throw new FileNotFoundException(string.Format("File schema {0} not found.", this.FileSchemaFullName));
@@ -283,7 +271,7 @@ namespace DataTestLoader
 
                 ProcessStartInfo processInfo = CreateProcessInfo(psqlExe, arguments);
 
-                string errorFile = Path.Combine(FolderSchema, @"log\DTL-DropAllConnections.log");
+                string errorFile = Path.Combine(this.FolderSchema, @"log\DTL-DropAllConnections.log");
 
                 logger.Debug(psqlExe + arguments);
 
@@ -311,7 +299,7 @@ namespace DataTestLoader
 
                 ProcessStartInfo processInfo = CreateProcessInfo(psqlExe, arguments);
 
-                string errorFile = Path.Combine(FolderSchema, @"log\DTL-CreateExtensionPostgis.log");
+                string errorFile = Path.Combine(this.FolderSchema, @"log\DTL-CreateExtensionPostgis.log");
 
                 logger.Debug(psqlExe + arguments);
 
@@ -342,7 +330,7 @@ namespace DataTestLoader
 
                 ProcessStartInfo processInfo = CreateProcessInfo(dropdbExe, arguments);
 
-                string errorFile = Path.Combine(FolderSchema, @"log\DTL-DropDatabase.log");
+                string errorFile = Path.Combine(this.FolderSchema, @"log\DTL-DropDatabase.log");
 
                 logger.Debug(dropdbExe + arguments);
 
@@ -376,7 +364,7 @@ namespace DataTestLoader
                     CreateNoWindow = true
                 };
 
-                string errorFile = Path.Combine(FolderSchema, @"log\DTL-CreateDatabase.log");
+                string errorFile = Path.Combine(this.FolderSchema, @"log\DTL-CreateDatabase.log");
 
                 logger.Debug(createdbExe + arguments);
 
@@ -407,7 +395,7 @@ namespace DataTestLoader
         //    }
         //}
 
-
+        //TODO : restituire log su Nlog
         private static void RunProcess(ProcessStartInfo processInfo, string errorFile)
         {
             using (Process process = Process.Start(processInfo))
@@ -486,7 +474,7 @@ namespace DataTestLoader
             string fileName, arguments;
             bool result;
 
-            fileName = Path.Combine(FolderSchema, scriptName);
+            fileName = Path.Combine(this.FolderSchema, scriptName);
             if (!File.Exists(fileName))
                 throw new FileNotFoundException(string.Format("Not found {0}", fileName));
 
@@ -505,7 +493,7 @@ namespace DataTestLoader
 
                 ProcessStartInfo processInfo = CreateProcessInfo(psqlExe, psqlArguments);
 
-                string errorFile = Path.Combine(FolderSchema, @"log\DTL-ExecScripts.log");
+                string errorFile = Path.Combine(this.FolderSchema, @"log\DTL-ExecScripts.log");
 
                 logger.Debug(psqlExe + psqlArguments);
 

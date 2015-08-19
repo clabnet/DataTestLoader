@@ -18,7 +18,6 @@ using Dapper;
 
 using ServiceStack.Text;
 
-
 namespace DataTestLoader
 {
     public class DataTestLoader : BaseClass
@@ -33,15 +32,11 @@ namespace DataTestLoader
 
         #endregion
 
-
         public DataTestLoader(bool refreshSchema = false, bool initDatabase = false, bool loadJsonData = false)
         {
-            bool weCanProceed = true;
+            PostgresqlScriptManager dMan = new PostgresqlScriptManager(refreshSchema, initDatabase, loadJsonData);
 
-            DatabaseScriptManager dMan = new DatabaseScriptManager(refreshSchema, initDatabase, loadJsonData);
-
-            if (refreshSchema)
-                weCanProceed = dMan.RefreshDatabaseSchema();
+            bool weCanProceed = dMan.RefreshDatabaseSchema();
 
             if (initDatabase && weCanProceed)
                 dMan.InitDatabase();
@@ -52,10 +47,10 @@ namespace DataTestLoader
             if (initDatabase)
                 dMan.RunScriptsPostData();
 
-            logger.Info(string.Format("DataTestLoader execution finished.", this.TotalRecordsAdded));
+            logger.Info("DataTestLoader execution completed.");
         }
 
-        private void RunDataTestLoader()
+        protected internal void RunDataTestLoader()
         {
             this.TotalRecordsAdded = 0;
 
@@ -152,7 +147,7 @@ namespace DataTestLoader
                     cntInsert = Convert.ToInt32(recCounter);
 
                     if (cntRead != cntInsert)
-                        throw new ApplicationException(string.Format("Error adding data on {0} table. Read {1}, added {2} records.", tableName, cntRead, cntInsert));
+                        throw new ApplicationException(string.Format("Error adding data on '{0}' table. Read {1}, added {2} records.", tableName, cntRead, cntInsert));
 
                 }
 

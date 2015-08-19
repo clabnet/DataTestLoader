@@ -43,7 +43,7 @@ Other references are **Nunit e FluentAssertions** for Unit Test and .NET driver 
 
 5.  **FileSchemaPostData** - Name of the file required for post definition of test db (used only in case of re-use of an existing schema, for performance reasons. file returned by *pg_dump* command with *section=post-data* arguments.)
 
-6.  **FolderSchema** - The file with source database schema will be saved on this folder, using name such as *SERVERDBNAME-PRE-DATA|POSTDATA-YYYYMMDD-HHMMSS.sql*. 
+6.  **REMOVED** **FolderSchema** - **REMOVED** The file with source database schema will be saved on this folder, using name such as *SERVERDBNAME-PRE-DATA|POSTDATA.sql*. 
 
 7.  **AssemblyModel** - Name of the library that contains the external .dll [POCO classes](https://en.wikipedia.org/wiki/Plain_Old_CLR_Object) corresponding to the entities to be created in the database.
  
@@ -168,17 +168,18 @@ You can automatically regenerated the model using Right-Click -> Run Custom Tool
 
 ###Change Log
 
-- 19/8/2015 Added Nlog logging system.
+####Version 1.1.0
 
-- 18/8/2015 Fixed : "Failed to find or load the registered .Net Framework Data Provider" on ConsoleAppTest execution. On a machine where Npgsql was not yet installed on GAC, the Npgsql driver *must be present on bin folder*.
+- New. 
+- Fix. Removed timestamp on database schema filename. Also the config key FolderSchema was removed.
+- New. Added [NLog](http://nlog-project.org/) logging system.
+- Fix. *"Failed to find or load the registered .Net Framework Data Provider"* error message on ConsoleAppTest execution. On a machine where Npgsql was not yet installed on GAC, the Npgsql driver *must be present on bin folder*.
+- Fix. The service name used for finding the native PG commands was changed to select the instance of server required: now it is **postgresql-x64-9.4**. 
+- New. Refactoring creation schema of database. Now we use the *--section=pre-data* and *--section=post-data* arguments. [See Postgresql documentation for details](http://www.postgresql.org/docs/9.4/static/app-pgdump.html)
+- New. Refactoring CheckValidSettings. The keys of config file are now required only when are used, based on command line arguments of DataTestLoader.
 
-- 17/8/2015 The service name needed to finding native PG commands it is changed to select exactly the instance of server required: now it is 'postgresql-x64-9.4' *(because my colleague have two DB server instances different on her PC)*
-
-- 12/8/2015 Refactoring creation schema of database. Now we use the *--section=pre-data* and *--section=post-data* arguments. [See Postgresql documentation for details](http://www.postgresql.org/docs/9.4/static/app-pgdump.html)
-
-- 11/8/2015 Refactoring CheckValidSettings. Now the keys of config file are required only when are used, based on arguments of DataTestLoader.
-
-- 15/7/2015 First release on public repositories **[NuGet](http://www.nuget.org/packages/DataTestLoader/)** and **[GitHub.](https://github.com/clabnet/DataTestLoader)**
+####Version 1.0.0 15/7/2015
+- First release on public repositories **[NuGet](http://www.nuget.org/packages/DataTestLoader/)** and **[GitHub.](https://github.com/clabnet/DataTestLoader)**
 
 
 ------

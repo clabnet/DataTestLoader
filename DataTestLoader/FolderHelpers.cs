@@ -14,9 +14,6 @@ public static class Extensions
     /// <param name="FolderName">Sub-folder name</param>
     /// <param name="level">Level to move up the folder chain</param>
     /// <returns>A physical folder path</returns>
-    /// <example>
-    /// <code source="CodeExamples\FolderDemos.vb" language="vbnet" title="VB.NET Examples"/>
-    /// </example>
     public static string UpperFolder(this string FolderName, decimal level)
     {
         return UpperFolder(FolderName, Convert.ToInt32(level));
@@ -28,9 +25,6 @@ public static class Extensions
     /// <param name="FolderName">Sub-folder name</param>
     /// <param name="level">Level to move up the folder chain</param>
     /// <returns>List of folders dependent on level parameter</returns>
-    /// <example>
-    /// <code source="CodeExamples\FolderDemos.vb" language="vbnet" title="VB.NET Examples"/>
-    /// </example>
     public static string UpperFolder(this string FolderName, Int32 level)
     {
         List<string> TheList = new List<string>();
@@ -72,9 +66,6 @@ public static class Extensions
     /// Returns the project folder name
     /// </summary>
     /// <returns>Current project folder path</returns>
-    /// <example>
-    /// <code source="CodeExamples\FolderDemos.vb" language="vbnet" title="VB.NET Examples"/>
-    /// </example>
     public static string GetProjectBaseFolder(this string sender)
     {
         List<string> Folders = UpperFolderList(AppDomain.CurrentDomain.BaseDirectory, true);
@@ -91,9 +82,6 @@ public static class Extensions
     /// <param name="FolderName">Folder to start at</param>
     /// <param name="Sort">True/False</param>
     /// <returns>List of folder names</returns>
-    /// <example>
-    /// <code source="CodeExamples\FolderDemos.vb" language="vbnet" title="VB.NET Examples"/>
-    /// </example>
     public static List<string> UpperFolderList(this string FolderName, bool Sort)
     {
         List<string> TheList = new List<string>();

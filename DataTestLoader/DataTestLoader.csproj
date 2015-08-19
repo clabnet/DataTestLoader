@@ -137,12 +137,6 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DatabaseScripts\MYSERVER-northwind-POSTDATA-20150812-164744.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DatabaseScripts\MYSERVER-northwind-PRE-DATA-20150812-164744.sql">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="DataTestLoader.ico" />
     <Content Include="DataTestLoader.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
