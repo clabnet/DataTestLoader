@@ -144,7 +144,7 @@ Main prerequisites : PostgreSql v9.4+ database instance.
 - **new DataTestLoader(refreshSchema : true, initDatabase: true, loadJsonData: true);**
 - Set CopyToOutputDirectoy = CopyAlways on all files contained on DatabaseScripts and DataTestFiles folder. 
 - Build current project and execute it. 
-- See DTL-DataTestLoader.log on C:\temp\DataTestLoader\log folder.
+- Watch the DataTestLoader.log on C:\Logs\ folder.
 - Finished, that's all.
 
 > **DataTestLoader method arguments**
