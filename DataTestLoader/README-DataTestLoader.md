@@ -169,13 +169,13 @@ You can automatically regenerated the model using Right-Click -> Run Custom Tool
 Change log
 =========
 
-##Version 1.1.0 - 19/8/2015
+##Version 1.1.1 - 20/8/2015
 
  
 - New. All errors returned by Process.Start are now redirect into main log file. 
 - New. Removed timestamp on database schema filename. Also the config key FolderSchema was removed.
 - New. Added [NLog](http://nlog-project.org/) logging system. See NLog.config file for logging configuration options.
-- Fix. Managed errors when missing database. 
+- Fix. Managed errors during scripts execution. 
 - Fix. *"Failed to find or load the registered .Net Framework Data Provider"* error message on ConsoleAppTest execution. On a machine where Npgsql was not yet installed on GAC, the Npgsql driver *must be present on bin folder*.
 - Fix. The service name used for finding the native PG commands was changed to select the instance of server required: now it is **postgresql-x64-9.4**. 
 - New. Refactoring creation schema of database. Now we use the *--section=pre-data* and *--section=post-data* arguments. [See Postgresql documentation for details](http://www.postgresql.org/docs/9.4/static/app-pgdump.html)
@@ -192,4 +192,4 @@ In case of translation or coding errors, please feel free to contact me.
 Claudio Barca 
 c.barca at gmail dot com
 
-Last revision document : 8/20/2015 8:58:52 AM 
+Last revision document : 8/20/2015 11:15:12 AM 
