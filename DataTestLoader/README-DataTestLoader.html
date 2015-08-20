@@ -294,6 +294,7 @@ img {
 <p><img src="http://icons.iconarchive.com/icons/gakuseisean/ivista-2/64/Misc-New-Database-icon.png" /></p>
 <h1>DataTestLoader</h1>
 <hr />
+<p>Drop, create and populate Postgresql database for unit and integration tests.</p>
 <p>To obtain <strong>Integration Test</strong> effective and consistent, they must always be performed in isolated environments, in order to ensure the existence of the expected data and to grant the possibility to modify them if necessary.</p>
 <p>Unfortunately, the creation of databases for tests is a time-consuming and repetitive activity. This project was created <strong>to facilitate the creation of database test</strong>.</p>
 <p>The idea is simple: the data are exported from the development database based on .json format and then recreated in another database created ad-hoc.
@@ -301,16 +302,15 @@ The new database will have an identical structure to the source database and wil
 <h3>Prerequisites</h3>
 <ol>
 <li>.NET Framework 4.5</li>
-<li>NpgSql</li>
-<li>Postgresql DB server 9.4+</li>
+<li>Postgresql DB server 9.4+ x64</li>
 </ol>
 <h3>Third parts libraries</h3>
-<p>The code is based mainly on two libraries:</p>
+<p>The code is based mainly up two libraries:</p>
 <ol>
 <li><a href="https://github.com/StackExchange/dapper-dot-net">Dapper.net</a> </li>
 <li>Dapper.SimpleCRUD <strong><a href="https://github.com/clabnet/Dapper.SimpleCRUD">clabnet edition</a></strong></li>
 </ol>
-<p>Other references are <strong>Nunit e FluentAssertions</strong> for Unit Test and driver .NET <strong>Npgsql</strong> for access to Postgresql database.  </p>
+<p>Other references are <strong>Nunit e FluentAssertions</strong> for Unit Test and .NET driver <strong>Npgsql</strong> for access to Postgresql database.  </p>
 <h3>Configuration</h3>
 <blockquote>
 <p><strong>Important</strong> Please pay attention to the settings of connection strings, in particular to that related to the Test database. </p>
@@ -332,9 +332,6 @@ The new database will have an identical structure to the source database and wil
 </li>
 <li>
 <p><strong>FileSchemaPostData</strong> - Name of the file required for post definition of test db (used only in case of re-use of an existing schema, for performance reasons. file returned by <em>pg_dump</em> command with <em>section=post-data</em> arguments.)</p>
-</li>
-<li>
-<p><strong>FolderSchema</strong> - The file with source database schema will be saved on this folder, using name such as <em>SERVERDBNAME-PRE-DATA|POSTDATA-YYYYMMDD-HHMMSS.sql</em>. </p>
 </li>
 <li>
 <p><strong>AssemblyModel</strong> - Name of the library that contains the external .dll <a href="https://en.wikipedia.org/wiki/Plain_Old_CLR_Object">POCO classes</a> corresponding to the entities to be created in the database.</p>
@@ -370,9 +367,9 @@ The new database will have an identical structure to the source database and wil
 <p>You can auto-generate POCO classes directly from the database by executing a T4 Template. The operation to generate (or regenerate) the POCO classes of an entire database is extremely simple and easy: right-click the template T4 (.tt extension) and run Run Custom Tool.</p>
 <h3>SampleModel project</h3>
 <p>The sample project contains a T4 OrmLite based template and its EntityModel generated from the database specified in the configuration file. It can be used to automatically create a model from the database on the <em>ConnectionStringDBSource</em>.
-The example database is a Northwind mini version, you can find the creation script on \SampleModel\DatabaseScript folder.</p>
+The example database is a Northwind lite version, you can find the creation script on <em>\SampleModel\DatabaseScripts</em> folder.</p>
 <h3>ConsoleApptest project</h3>
-<p>This project contains an example to instantiate correctly DataTestLoader.</p>
+<p>This project contains an example to correctly instantiate DataTestLoader.</p>
 <h3>DataTestFiles folder</h3>
 <p>This folder contains all .JSON files with the data to be inserted on test database.</p>
 <blockquote>
@@ -399,11 +396,12 @@ The example database is a Northwind mini version, you can find the creation scri
 <ul>
 <li>Open project. </li>
 <li>Set properly the connections strings and set it as the Default Startup Project. </li>
-<li>Press F5. On the console you will see the messages Log. (see also log files on <em>C:\Temp\DataTestLoader</em> folder).</li>
+<li>Press F5. On the console you will see the messages Log. (see also log files on *</li>
+<li>C:\Logs\DataTestLoader* folder).</li>
 </ul>
 <p><strong>2. Run Unit Test</strong></p>
 <p>The source project is provided with a set of unit tests NUnit 2.6. Set the connection strings properly. Run Test. See the log on Debug Window.
-(see also log files on <em>C:\Temp\DataTestLoader</em> folder)</p>
+(see also log files on <em>C:\Logs\DataTestLoader</em> folder)</p>
 <p><strong>3. Using NuGet packages</strong></p>
 <p>Main prerequisites : PostgreSql v9.4+ database instance.</p>
 <ul>
@@ -417,7 +415,7 @@ The example database is a Northwind mini version, you can find the creation scri
 <li><strong>new DataTestLoader(refreshSchema : true, initDatabase: true, loadJsonData: true);</strong></li>
 <li>Set CopyToOutputDirectoy = CopyAlways on all files contained on DatabaseScripts and DataTestFiles folder. </li>
 <li>Build current project and execute it. </li>
-<li>See DTL-DataTestLoader.log on C:\temp\DataTestLoader\log folder.</li>
+<li>See also log files on <em>C:\Logs\DataTestLoader</em> folder</li>
 <li>Finished, that's all.</li>
 </ul>
 <blockquote>
@@ -444,16 +442,27 @@ You can automatically regenerated the model using Right-Click -&gt; Run Custom T
 </li>
 </ol>
 </blockquote>
-<h3>Release Note</h3>
+<h1>Change log</h1>
+<h2>Version 1.1.0 - 19/8/2015</h2>
 <ul>
-<li>12/8/2015 Refactoring creation schema of database. Now we use the <em>--section=pre-data</em> and <em>--section=post-data</em> arguments.</li>
-<li>11/8/2015 Refactoring CheckValidSettings. Now the keys of config file are required only when used, based on arguments of DataTestLoader.</li>
+<li>New. All errors returned by Process.Start are now redirect into main log file. </li>
+<li>New. Removed timestamp on database schema filename. Also the config key FolderSchema was removed.</li>
+<li>New. Added <a href="http://nlog-project.org/">NLog</a> logging system. See NLog.config file for logging configuration options.</li>
+<li>Fix. Managed errors when missing database. </li>
+<li>Fix. <em>&quot;Failed to find or load the registered .Net Framework Data Provider&quot;</em> error message on ConsoleAppTest execution. On a machine where Npgsql was not yet installed on GAC, the Npgsql driver <em>must be present on bin folder</em>.</li>
+<li>Fix. The service name used for finding the native PG commands was changed to select the instance of server required: now it is <strong>postgresql-x64-9.4</strong>. </li>
+<li>New. Refactoring creation schema of database. Now we use the <em>--section=pre-data</em> and <em>--section=post-data</em> arguments. <a href="http://www.postgresql.org/docs/9.4/static/app-pgdump.html">See Postgresql documentation for details</a></li>
+<li>New. Refactoring CheckValidSettings. The keys of config file are now required only when are used, based on command line arguments of DataTestLoader.</li>
+</ul>
+<h2>Version 1.0.0 - 15/7/2015</h2>
+<ul>
+<li>First release on public repositories <strong><a href="http://www.nuget.org/packages/DataTestLoader/">NuGet</a></strong> and <strong><a href="https://github.com/clabnet/DataTestLoader">GitHub.</a></strong></li>
 </ul>
 <hr />
 <p>In case of translation or coding errors, please feel free to contact me.</p>
 <p>Claudio Barca 
 c.barca at gmail dot com</p>
-<p>Last revision document : 8/12/2015 2:45:15 PM </p>
+<p>Last revision document : 8/20/2015 8:58:52 AM </p>
 
 </body>
 </html>

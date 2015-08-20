@@ -4,6 +4,7 @@
 
 ----------
 
+Drop, create and populate Postgresql database for unit and integration tests.
 
 To obtain **Integration Test** effective and consistent, they must always be performed in isolated environments, in order to ensure the existence of the expected data and to grant the possibility to modify them if necessary.
 
@@ -85,11 +86,11 @@ You can auto-generate POCO classes directly from the database by executing a T4 
 ###SampleModel project
  
 The sample project contains a T4 OrmLite based template and its EntityModel generated from the database specified in the configuration file. It can be used to automatically create a model from the database on the *ConnectionStringDBSource*.
-The example database is a Northwind mini version, you can find the creation script on \SampleModel\DatabaseScript folder.
+The example database is a Northwind lite version, you can find the creation script on *\SampleModel\DatabaseScripts* folder.
 
 ###ConsoleApptest project
  
-This project contains an example to instantiate correctly DataTestLoader.
+This project contains an example to correctly instantiate DataTestLoader.
 
 ###DataTestFiles folder ###
 
@@ -124,12 +125,13 @@ Here are described a few ways to use the project:
 
 - Open project. 
 - Set properly the connections strings and set it as the Default Startup Project. 
-- Press F5. On the console you will see the messages Log. (see also log files on *C:\Temp\DataTestLoader* folder).
+- Press F5. On the console you will see the messages Log. (see also log files on *
+- C:\Logs\DataTestLoader* folder).
 
 **2. Run Unit Test**
 
 The source project is provided with a set of unit tests NUnit 2.6. Set the connection strings properly. Run Test. See the log on Debug Window.
-(see also log files on *C:\Temp\DataTestLoader* folder)
+(see also log files on *C:\Logs\DataTestLoader* folder)
 
 **3. Using NuGet packages**
 
@@ -145,7 +147,7 @@ Main prerequisites : PostgreSql v9.4+ database instance.
 - **new DataTestLoader(refreshSchema : true, initDatabase: true, loadJsonData: true);**
 - Set CopyToOutputDirectoy = CopyAlways on all files contained on DatabaseScripts and DataTestFiles folder. 
 - Build current project and execute it. 
-- See DTL-DataTestLoader.log on C:\temp\DataTestLoader\log folder.
+- See also log files on *C:\Logs\DataTestLoader* folder
 - Finished, that's all.
 
 > **DataTestLoader method arguments**
@@ -168,10 +170,12 @@ Change log
 =========
 
 ##Version 1.1.0 - 19/8/2015
+
  
 - New. All errors returned by Process.Start are now redirect into main log file. 
 - New. Removed timestamp on database schema filename. Also the config key FolderSchema was removed.
 - New. Added [NLog](http://nlog-project.org/) logging system. See NLog.config file for logging configuration options.
+- Fix. Managed errors when missing database. 
 - Fix. *"Failed to find or load the registered .Net Framework Data Provider"* error message on ConsoleAppTest execution. On a machine where Npgsql was not yet installed on GAC, the Npgsql driver *must be present on bin folder*.
 - Fix. The service name used for finding the native PG commands was changed to select the instance of server required: now it is **postgresql-x64-9.4**. 
 - New. Refactoring creation schema of database. Now we use the *--section=pre-data* and *--section=post-data* arguments. [See Postgresql documentation for details](http://www.postgresql.org/docs/9.4/static/app-pgdump.html)
@@ -188,4 +192,4 @@ In case of translation or coding errors, please feel free to contact me.
 Claudio Barca 
 c.barca at gmail dot com
 
-Last revision document : 8/19/2015 9:48:27 PM 
+Last revision document : 8/20/2015 8:58:52 AM 
