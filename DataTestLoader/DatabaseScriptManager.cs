@@ -240,7 +240,7 @@ namespace DataTestLoader
 
             ProcessStartInfo processInfo = CreateProcessInfo(psqlExe, arguments);
 
-            RunProcess(processInfo);
+            RunProcess(processInfo, false);
 
             logger.Info(string.Format("Dropped all connections to database {0}", dbTest.Database));
         }
@@ -266,7 +266,7 @@ namespace DataTestLoader
 
             ProcessStartInfo processInfo = CreateProcessInfo(dropdbExe, arguments);
 
-            RunProcess(processInfo);
+            RunProcess(processInfo, false);
 
             logger.Info(string.Format("Dropped database {0}", dbTest.Database));
         }
@@ -287,11 +287,16 @@ namespace DataTestLoader
 
         private static void RunProcess(ProcessStartInfo processInfo)
         {
+            RunProcess(processInfo, true);
+        }
+
+        private static void RunProcess(ProcessStartInfo processInfo, bool emitErrors = true)
+        {
             using (Process process = Process.Start(processInfo))
             {
                 StreamReader err = process.StandardError;
                 string errorMessage = err.ReadToEnd();
-                if (errorMessage != string.Empty)
+                if (errorMessage != string.Empty && emitErrors == true)
                 {
                     logger.Fatal(errorMessage);
                     throw new ApplicationException(errorMessage);
