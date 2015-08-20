@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>DataTestLoader</id>
-        <version>1.1.1</version>
+        <version>1.1.1.2</version>
         <title>DataTestLoader</title>
         <authors>Claudio Barca</authors>
         <owners>clabnet</owners>
@@ -29,14 +29,15 @@
         </dependencies>
     </metadata>
     <files>
-    	  <file src="..\app.config" target="content\AppConfigSample\app.config.txt" />
+        <file src="..\app.config" target="content\AppConfigSample\app.config.txt\app.config" />
         <file src="..\..\SampleModel\DatabaseScripts\northwind-mini.sql" target="content\DatabaseScripts\northwind-mini.sql" />
         <file src="..\DataTestFiles\category.json" target="content\DataTestFiles\category.json" />
         <file src="..\DataTestFiles\customer.json" target="content\DataTestFiles\customer.json" />
         <file src="..\DataTestFiles\product.json" target="content\DataTestFiles\product.json" />
         <file src="..\DataTestFiles\TablesToLoad.json" target="content\DataTestFiles\TablesToLoad.json" />
-        <file src="..\README-DataTestLoader.html" target="content\README-DataTestLoader.html" />
+        <file src="..\NLog.config" target="content\NLog.config" />
         <file src="..\README-DataTestLoader-it.html" target="content\README-DataTestLoader-it.html" />
+        <file src="..\README-DataTestLoader.html" target="content\README-DataTestLoader.html" />
         <file src="..\bin\Release\DataTestLoader.dll" target="lib\net45\DataTestLoader.dll" />
         <file src="..\bin\Release\DataTestLoader.pdb" target="lib\net45\DataTestLoader.pdb" />
         <file src="..\bin\Release\SampleModel.dll" target="lib\net45\SampleModel.dll" />
