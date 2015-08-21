@@ -26,6 +26,7 @@ namespace DataTestLoader
         private string psqlExe;
         private string pgdumpExe;
 
+        private static int cntErrors;
         private ConnectionParser dbSource;
         private ConnectionParser dbTest;
 
@@ -240,7 +241,7 @@ namespace DataTestLoader
 
             ProcessStartInfo processInfo = CreateProcessInfo(psqlExe, arguments);
 
-            RunProcess(processInfo);
+            RunProcess(processInfo, false);
 
             logger.Info(string.Format("Dropped all connections to database {0}", dbTest.Database));
         }
@@ -266,7 +267,7 @@ namespace DataTestLoader
 
             ProcessStartInfo processInfo = CreateProcessInfo(dropdbExe, arguments);
 
-            RunProcess(processInfo);
+            RunProcess(processInfo, false);
 
             logger.Info(string.Format("Dropped database {0}", dbTest.Database));
         }
@@ -287,14 +288,18 @@ namespace DataTestLoader
 
         private static void RunProcess(ProcessStartInfo processInfo)
         {
+            RunProcess(processInfo, true);
+        }
+        private static void RunProcess(ProcessStartInfo processInfo, bool emitErrors = true)
+        {
             using (Process process = Process.Start(processInfo))
             {
                 StreamReader err = process.StandardError;
                 string errorMessage = err.ReadToEnd();
-                if (errorMessage != string.Empty)
+                if (errorMessage != string.Empty && emitErrors == true)
                 {
                     logger.Fatal(errorMessage);
-                    throw new ApplicationException(errorMessage);
+                    cntErrors++;
                 }
             }
         }
@@ -320,32 +325,30 @@ namespace DataTestLoader
 
         private void RunScriptsFillData()
         {
-            // insert here your scripts to add initial data to database
+            // insert here your scripts to add initial data to database as is
 
             //string scriptName, arguments;
-            //bool result;
 
-            ////------------------------
-            ////2. FILL-DATA section
-            ////------------------------
-
-            //// Step 2.1
             //scriptName = Path.Combine(AssemblyDirectory, @"DatabaseScripts\02. DB Fill data except geometries.sql");
             //if (!File.Exists(scriptName))
             //    throw new FileNotFoundException(string.Format("Not found {0}", scriptName));
 
             //arguments = String.Format(@" --host {0} --port {1} --username {2} --dbname {4} --file ""{3}"" ",
             //    dbTest.Server, dbTest.Port, dbTest.Username, scriptName, dbTest.Database);
-            //result = ExecPsqlCommand(arguments);
 
-            //// Step 2.2
+            //ProcessStartInfo processInfo = CreateProcessInfo(psqlExe, arguments);
+
+            //RunProcess(processInfo);
+			// -----------------
             //scriptName = Path.Combine(AssemblyDirectory, @"DatabaseScripts\03. DB Insert initial data.sql");
             //if (!File.Exists(scriptName))
             //    throw new FileNotFoundException(string.Format("Not found {0}", scriptName));
 
             //arguments = String.Format(@" --host {0} --port {1} --username {2} --dbname {4} --file ""{3}"" ",
             //    dbTest.Server, dbTest.Port, dbTest.Username, scriptName, dbTest.Database);
-            //result = ExecPsqlCommand(arguments);
+
+            //processInfo = CreateProcessInfo(psqlExe, arguments);
+            //RunProcess(processInfo);
         }
 
         public void RunScriptsPreData()
@@ -361,7 +364,10 @@ namespace DataTestLoader
 
             logger.Info("Apply schema {0} to database {1}", this.FileSchemaPostData, dbTest.Database);
 
-            logger.Info(string.Format("Init database {0} successfull.", dbTest.Database));
+            if (cntErrors > 0)
+                logger.Warn(string.Format("Init database {0} completed with errors.", dbTest.Database));
+            else
+                logger.Info(string.Format("Init database {0} completed successfully.", dbTest.Database));
         }
 
         private void RunPsqlScript(string scriptName)
