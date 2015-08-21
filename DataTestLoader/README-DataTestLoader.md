@@ -134,15 +134,16 @@ The source project is provided with a set of unit tests NUnit 2.6. Set the conne
 
 Main prerequisites : PostgreSql v9.4+ database instance.
 
-- Open a new console application project C# on Visual Studio 2013. 
+- Open a new console application project C# on Visual Studio 2013. Please don't use blank chars on Folder name.
 - Run Enable NuGet Package Restore.
 - Launch Manage NuGet packages for solution. 
 - Find and install DataTestLoader project on NuGet.org repository. 
 - Copy SampleModel.dll assembly from packages\lib\net45\ to bin\Debug folder.
 - Copy AppConfigSample\app.config.txt\app.config file to replace app.config file; update the configuration values.
+- Open Program.cs and change its namespace as DataTestLoader.
 - Add this command to Main method of Program.cs:
 - **new DataTestLoader(refreshSchema : true, initDatabase: true, loadJsonData: true);**
-- Set CopyToOutputDirectoy = CopyAlways on all files contained on DatabaseScripts and DataTestFiles folder. 
+- Set CopyToOutputDirectoy = CopyAlways on all files contained on DatabaseScripts and DataTestFiles folder and Nlog.config. 
 - Build current project and execute it. 
 - Watch the DataTestLoader.log on C:\Logs\ folder.
 - Finished, that's all.
@@ -157,9 +158,11 @@ Main prerequisites : PostgreSql v9.4+ database instance.
 
 > 1. The most common mistake that happens is to forget to put in **CopyToOutput all files into DataTestFiles and DatabaseScripts folders**.
 
-> 2. **Message Assembly Model SampleModel was not found**. This message indicates that you must specify the assembly containing the POCO classes. If you don't need the loading of data, please disable the loadJsonData argument.
+> 2. If you cannot see any log, please **CopyToOutput** the **Nlog.config** file.
+ 
+> 3. **Message Assembly Model SampleModel was not found**. This message indicates that you must specify the assembly containing the POCO classes. If you don't need the loading of data, please disable the loadJsonData argument.
 
-> 3. **Type 'xxx' or assembly 'yyy' or namespace 'www' not found on ....**
+> 4. **Type 'xxx' or assembly 'yyy' or namespace 'www' not found on ....**
 The specified type cannot be found into assembly specified, or that assemby was not found into bin directory, or related namespace was not correctly specified into .config file.
 You can automatically regenerated the model using Right-Click -> Run Custom Tool on SampleModel.tt. 
 
