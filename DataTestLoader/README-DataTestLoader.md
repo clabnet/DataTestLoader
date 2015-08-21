@@ -2,6 +2,7 @@
 
 # DataTestLoader #
 
+####Drop, create and populate Postgresql database for unit and integration tests
 ----------
 
 
@@ -121,14 +122,14 @@ Here are described a few ways to use the project:
 
 **1. Using ConsoleAppTest project**
 
-- Open project. 
+- Open project. (please don't use path with blank character for this project.)  
 - Set properly the connections strings and set it as the Default Startup Project. 
-- Press F5. On the console you will see the messages Log. (see also log files on *C:\Temp\DataTestLoader* folder).
+- Press F5. On the console you will see the messages Log. (see also log files on *C:\Logs\DataTestLoader* folder).
 
 **2. Run Unit Test**
 
 The source project is provided with a set of unit tests NUnit 2.6. Set the connection strings properly. Run Test. See the log on Debug Window.
-(see also log files on *C:\Temp\DataTestLoader* folder)
+(see also log files on *C:\Logs\DataTestLoader* folder)
 
 **3. Using NuGet packages**
 
@@ -145,7 +146,7 @@ Main prerequisites : PostgreSql v9.4+ database instance.
 - **new DataTestLoader(refreshSchema : true, initDatabase: true, loadJsonData: true);**
 - Set CopyToOutputDirectoy = CopyAlways on all files contained on DatabaseScripts and DataTestFiles folder and Nlog.config. 
 - Build current project and execute it. 
-- Watch the DataTestLoader.log on C:\Logs\ folder.
+- Watch log files on *C:\Logs\DataTestLoader* folder.
 - Finished, that's all.
 
 > **DataTestLoader method arguments**
@@ -158,13 +159,14 @@ Main prerequisites : PostgreSql v9.4+ database instance.
 
 > 1. The most common mistake that happens is to forget to put in **CopyToOutput all files into DataTestFiles and DatabaseScripts folders**.
 
-> 2. If you cannot see any log, please **CopyToOutput** the **Nlog.config** file.
+> 2. If you don't see any log, set **CopyToOutput** property to **Nlog.config** file.
  
 > 3. **Message Assembly Model SampleModel was not found**. This message indicates that you must specify the assembly containing the POCO classes. If you don't need the loading of data, please disable the loadJsonData argument.
 
 > 4. **Type 'xxx' or assembly 'yyy' or namespace 'www' not found on ....**
 The specified type cannot be found into assembly specified, or that assemby was not found into bin directory, or related namespace was not correctly specified into .config file.
 You can automatically regenerated the model using Right-Click -> Run Custom Tool on SampleModel.tt. 
+
 
 Change log
 =========

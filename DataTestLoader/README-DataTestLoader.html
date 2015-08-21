@@ -293,6 +293,7 @@ img {
 <body>
 <p><img src="http://icons.iconarchive.com/icons/gakuseisean/ivista-2/64/Misc-New-Database-icon.png" /></p>
 <h1>DataTestLoader</h1>
+<h4>Drop, create and populate Postgresql database for unit and integration tests</h4>
 <hr />
 <p>To obtain <strong>Integration Test</strong> effective and consistent, they must always be performed in isolated environments, in order to ensure the existence of the expected data and to grant the possibility to modify them if necessary.</p>
 <p>Unfortunately, the creation of databases for tests is a time-consuming and repetitive activity. This project was created <strong>to facilitate the creation of database test</strong>.</p>
@@ -392,27 +393,28 @@ The example database is a Northwind mini version, you can find the creation scri
 <p>Here are described a few ways to use the project:</p>
 <p><strong>1. Using ConsoleAppTest project</strong></p>
 <ul>
-<li>Open project. </li>
+<li>Open project. (please don't use path with blank character for this project.)  </li>
 <li>Set properly the connections strings and set it as the Default Startup Project. </li>
-<li>Press F5. On the console you will see the messages Log. (see also log files on <em>C:\Temp\DataTestLoader</em> folder).</li>
+<li>Press F5. On the console you will see the messages Log. (see also log files on <em>C:\Logs\DataTestLoader</em> folder).</li>
 </ul>
 <p><strong>2. Run Unit Test</strong></p>
 <p>The source project is provided with a set of unit tests NUnit 2.6. Set the connection strings properly. Run Test. See the log on Debug Window.
-(see also log files on <em>C:\Temp\DataTestLoader</em> folder)</p>
+(see also log files on <em>C:\Logs\DataTestLoader</em> folder)</p>
 <p><strong>3. Using NuGet packages</strong></p>
 <p>Main prerequisites : PostgreSql v9.4+ database instance.</p>
 <ul>
-<li>Open a new console application project C# on Visual Studio 2013. </li>
+<li>Open a new console application project C# on Visual Studio 2013. Please don't use blank chars on Folder name.</li>
 <li>Run Enable NuGet Package Restore.</li>
 <li>Launch Manage NuGet packages for solution. </li>
 <li>Find and install DataTestLoader project on NuGet.org repository. </li>
 <li>Copy SampleModel.dll assembly from packages\lib\net45\ to bin\Debug folder.</li>
 <li>Copy AppConfigSample\app.config.txt\app.config file to replace app.config file; update the configuration values.</li>
+<li>Open Program.cs and change its namespace as DataTestLoader.</li>
 <li>Add this command to Main method of Program.cs:</li>
 <li><strong>new DataTestLoader(refreshSchema : true, initDatabase: true, loadJsonData: true);</strong></li>
-<li>Set CopyToOutputDirectoy = CopyAlways on all files contained on DatabaseScripts and DataTestFiles folder. </li>
+<li>Set CopyToOutputDirectoy = CopyAlways on all files contained on DatabaseScripts and DataTestFiles folder and Nlog.config. </li>
 <li>Build current project and execute it. </li>
-<li>Watch the DataTestLoader.log on C:\Logs\ folder.</li>
+<li>Watch log files on <em>C:\Logs\DataTestLoader</em> folder.</li>
 <li>Finished, that's all.</li>
 </ul>
 <blockquote>
@@ -428,6 +430,9 @@ The example database is a Northwind mini version, you can find the creation scri
 <ol>
 <li>
 <p>The most common mistake that happens is to forget to put in <strong>CopyToOutput all files into DataTestFiles and DatabaseScripts folders</strong>.</p>
+</li>
+<li>
+<p>If you don't see any log, set <strong>CopyToOutput</strong> property to <strong>Nlog.config</strong> file.</p>
 </li>
 <li>
 <p><strong>Message Assembly Model SampleModel was not found</strong>. This message indicates that you must specify the assembly containing the POCO classes. If you don't need the loading of data, please disable the loadJsonData argument.</p>
