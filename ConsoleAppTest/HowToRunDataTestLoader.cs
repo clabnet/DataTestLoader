@@ -21,7 +21,7 @@ namespace DataTestLoader
             // Please note: 
             // 1. all files into DataTestFiles and DatabaseScripts folder MUST be set with attribute "CopyToOutput = true"
             // 2. if data already found on database, and specified true only loadJsonData, will be occurs duplicate key errors.
-            new DataTestLoader(refreshSchema : false, initDatabase: true, loadJsonData: false);
+            new DataTestLoader(refreshSchema : true, initDatabase: true, loadJsonData: true);
 
             Console.WriteLine("Press any key to exit ...");
 
