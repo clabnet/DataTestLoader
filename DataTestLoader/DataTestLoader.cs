@@ -56,7 +56,11 @@ namespace DataTestLoader
 
             List<string> tablesList = RetrieveTablesList();
             if (tablesList.Count == 0)
-                throw new ApplicationException("Please add at least one table name into TablesToLoad.json.");
+            {
+                string err = "Please add at least one table name into TablesToLoad.json.";
+                logger.Error(err);
+                throw new ApplicationException(err);
+            }
 
             foreach (string tableName in tablesList)
                 this.TotalRecordsAdded += AddRows(tableName);
@@ -82,7 +86,11 @@ namespace DataTestLoader
                 string fullFileName = Path.Combine(AssemblyDirectory, "DataTestFiles", tableName + ".json");
 
                 if (!File.Exists(fullFileName))
-                    throw new ApplicationException(string.Format("File {0} was not found. Load the file on disk or remove it from list of tables to load.", fullFileName));
+                {
+                    string err = string.Format("File {0} was not found. Load the file on disk or remove it from list of tables to load.", fullFileName);
+                    logger.Error(err);
+                    throw new ApplicationException(err);
+                }
             }
 
             return true;
@@ -104,7 +112,11 @@ namespace DataTestLoader
 
                 Type myType = Type.GetType(fullQualifiedClassName);
                 if (myType == null)
-                    throw new ApplicationException(string.Format("The type '{0}' or assembly '{1}' or namespace '{2}' was not found on {3}", tableName, AssemblyModel, AssemblyModelNamespace, AssemblyDirectory));
+                {
+                    string err = string.Format("The type '{0}' or assembly '{1}' or namespace '{2}' was not found on {3}", tableName, AssemblyModel, AssemblyModelNamespace, AssemblyDirectory);
+                    logger.Error(err);
+                    throw new ApplicationException(err);
+                }
 
                 var recs = DeserializeList(json, myType);
 
@@ -147,8 +159,11 @@ namespace DataTestLoader
                     cntInsert = Convert.ToInt32(recCounter);
 
                     if (cntRead != cntInsert)
-                        throw new ApplicationException(string.Format("Error adding data on '{0}' table. Read {1}, added {2} records.", tableName, cntRead, cntInsert));
-
+                    {
+                        string err = string.Format("Error adding data on '{0}' table. Read {1}, added {2} records.", tableName, cntRead, cntInsert);
+                        logger.Error(err);
+                        throw new ApplicationException(err);
+                    }
                 }
 
                 logger.Info(string.Format("Added {0} records on table '{1}'.", cntInsert, tableName));

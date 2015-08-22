@@ -25,6 +25,7 @@ namespace DataTestLoader
         private string hostName;
         private string psqlExe;
         private string pgdumpExe;
+        private bool fReuseSchema = false;
 
         private static int cntErrors;
         private ConnectionParser dbSource;
@@ -60,7 +61,7 @@ namespace DataTestLoader
             {
                 // reuse existing schemas
                 weCanProceed = CheckExistSchemaFile(this.FileSchemaPreData) && CheckExistSchemaFile(this.FileSchemaPostData);
-                logger.Info("Reusing schema {0} and {1} on {2} folder.", this.FileSchemaPreData, this.FileSchemaPostData, this.FolderSchema);
+                fReuseSchema = true;
             }
 
             return weCanProceed;
@@ -70,27 +71,48 @@ namespace DataTestLoader
         {
 
             string keyName;
+            string err;
 
             string serviceName = "postgresql-x64-9.4";
 
             // These keys are always required
             keyName = "DBTest";
             if (!ConnectionExist(keyName))
-                throw new ApplicationException("Missing connection string " + keyName + " in configuration file");
+            {
+                err = "Missing connection string " + keyName + " in configuration file";
+                logger.Error(err);
+                throw new ApplicationException(err);
+            }
 
             dbTest = new ConnectionParser(ConnectionStringDBTest);
             if (dbTest == null)
-                throw new ApplicationException("Database test is invalid. ");
+            {
+                err = "Database test is invalid. ";
+                logger.Error(err);
+                throw new ApplicationException(err);
+            }
             if (!dbTest.Database.EndsWith("_test"))
-                throw new ApplicationException("The name of database test must be contain the word '_test' at end of name.");
+            {
+                err = "The name of database test must be contain the word '_test' at end of name.";
+                logger.Error(err);
+                throw new ApplicationException(err);
+            }
 
             keyName = "DBPostgres";
             if (!ConnectionExist(keyName))
-                throw new ApplicationException("Missing connection string " + keyName + " in configuration file");
+            {
+                err = "Missing connection string " + keyName + " in configuration file.";
+                logger.Error(err);
+                throw new ApplicationException(err);
+            }
 
             servicePath = GetServicePath(serviceName);
             if (string.IsNullOrEmpty(servicePath))
-                throw new ApplicationException(string.Format("Postgres DB service {0} is not installed on server {1}. ", serviceName, dbSource.Server));
+            {
+                err = string.Format("Postgres DB service {0} is not installed on server {1}. ", serviceName, dbSource.Server);
+                logger.Error(err);
+                throw new ApplicationException(err);
+            }
 
             psqlExe = Path.Combine(this.servicePath, "psql.exe");
 
@@ -98,47 +120,75 @@ namespace DataTestLoader
 
             keyName = "DBSource";
             if (!ConnectionExist(keyName))
-                throw new ApplicationException("Missing connection string " + keyName + " in configuration file");
+            {
+                err = "Missing connection string " + keyName + " in configuration file";
+                logger.Error(err);
+                throw new ApplicationException(err);
+            }
 
             dbSource = new ConnectionParser(ConnectionStringDBSource);
             if (dbSource == null)
-                throw new ApplicationException("Database source is invalid. ");
+            {
+                err = "Database source is invalid.";
+                logger.Error(err);
+                throw new ApplicationException(err);
+            }
 
             hostName = GetMachineNameFromIPAddress(dbSource.Server);
             if (string.IsNullOrEmpty(hostName))
-                throw new ApplicationException(string.Format("Host {0} is not reachable. ", dbSource.Server));
+            {
+                err = string.Format("Host {0} is not reachable. ", dbSource.Server);
+                logger.Error(err);
+                throw new ApplicationException(err);
+            }
 
             System.Environment.SetEnvironmentVariable("PGPASSWORD", dbSource.Password);
 
             // These keys are required only if is required the initDatabase functionality
-            if (this.initDatabase == true)
-            {
                 keyName = "FileSchemaPreData";
                 if (!ConfigKeyExist(keyName))
-                    throw new ApplicationException("Missing key " + keyName + " in configuration file");
+            {
+                err = string.Format("Missing key " + keyName + " in configuration file");
+                logger.Error(err);
+                throw new ApplicationException(err);
+            }
 
                 this.FileSchemaPreData = ConfigurationManager.AppSettings[keyName].ToString();
 
                 keyName = "FileSchemaPostData";
                 if (!ConfigKeyExist(keyName))
-                    throw new ApplicationException("Missing key " + keyName + " in configuration file");
-
-                this.FileSchemaPostData = ConfigurationManager.AppSettings[keyName].ToString();
+            {
+                err = string.Format("Missing key " + keyName + " in configuration file");
+                logger.Error(err);
+                throw new ApplicationException(err);
             }
 
+            this.FileSchemaPostData = ConfigurationManager.AppSettings[keyName].ToString();
             // the assembly model is required only when it is required to load data from json
             if (this.loadJsonData == true)
             {
                 keyName = "AssemblyModel";
                 if (!ConfigKeyExist(keyName))
-                    throw new ApplicationException("Missing key " + keyName + " in configuration file");
+                {
+                    err = string.Format("Missing key " + keyName + " in configuration file");
+                    logger.Error(err);
+                    throw new ApplicationException(err);
+                }
 
                 keyName = "AssemblyModelNamespace";
                 if (!ConfigKeyExist(keyName))
-                    throw new ApplicationException("Missing key " + keyName + " in configuration file");
+                {
+                    err = string.Format("Missing key " + keyName + " in configuration file");
+                    logger.Error(err);
+                    throw new ApplicationException(err);
+                }
 
                 if (!File.Exists(Path.Combine(AssemblyDirectory, AssemblyModel + ".dll")))
-                    throw new FileNotFoundException(string.Format("Assembly Model {0} was not found on {1}", AssemblyModel, AssemblyDirectory));
+                {
+                    err = string.Format("Assembly Model {0} was not found on {1}", AssemblyModel, AssemblyDirectory);
+                    logger.Error(err);
+                    throw new FileNotFoundException();
+                }
             }
 
             logger.Info("All settings are valid. DataTestLoader will run.");
@@ -194,7 +244,11 @@ namespace DataTestLoader
             if (this.FileSchemaPreData.Length > 0)
                 logger.Info(string.Format("Created schema {0}", this.FileSchemaPreData));
             else
-                throw new ApplicationException(string.Format("Errors on creation schema {0}. ", this.FileSchemaPreData));
+            {
+                string err = string.Format("Errors on creation schema {0}. ", this.FileSchemaPreData);
+                logger.Error(err);
+                throw new ApplicationException(err);
+            }
         }
 
         private void CreateSchema_POSTDATA()
@@ -219,7 +273,11 @@ namespace DataTestLoader
             if (this.FileSchemaPostData.Length > 0)
                 logger.Info(string.Format("Created schema {0}", this.FileSchemaPostData));
             else
-                throw new ApplicationException(string.Format("Errors on creation schema {0}. ", this.FileSchemaPostData));
+            {
+                string err = string.Format("Errors on creation schema {0}. ", this.FileSchemaPostData);
+                logger.Error(err);
+                throw new ApplicationException(err);
+            }
         }
 
         private bool CheckExistSchemaFile(string fileName)
@@ -227,7 +285,10 @@ namespace DataTestLoader
             this.FileSchemaFullName = Path.Combine(this.FolderSchema, fileName);
 
             if (!File.Exists(this.FileSchemaFullName))
+            {
+                logger.Error("File schema {0} not found.", this.FileSchemaFullName);
                 throw new FileNotFoundException(string.Format("File schema {0} not found.", this.FileSchemaFullName));
+            }
 
             return true;
         }
@@ -292,6 +353,7 @@ namespace DataTestLoader
         }
         private static void RunProcess(ProcessStartInfo processInfo, bool emitErrors = true)
         {
+            logger.Debug(processInfo.FileName + processInfo.Arguments);
             using (Process process = Process.Start(processInfo))
             {
                 StreamReader err = process.StandardError;
@@ -307,9 +369,11 @@ namespace DataTestLoader
         private ProcessStartInfo CreateProcessInfo(string exeName, string arguments)
         {
             if (!File.Exists(exeName))
-                throw new FileNotFoundException(string.Format("Not found {0}", exeName));
-
-            logger.Debug(exeName + arguments);
+            {
+                string err = string.Format("File not found {0}", exeName);
+                logger.Error(err);
+                throw new FileNotFoundException(err);
+            }
 
             ProcessStartInfo processInfo = new ProcessStartInfo
             {
@@ -331,7 +395,11 @@ namespace DataTestLoader
 
             //scriptName = Path.Combine(AssemblyDirectory, @"DatabaseScripts\02. DB Fill data except geometries.sql");
             //if (!File.Exists(scriptName))
-            //    throw new FileNotFoundException(string.Format("Not found {0}", scriptName));
+            //{
+            //    string err = string.Format("File not found {0}", scriptName);
+            //    logger.Error(err);
+            //    throw new FileNotFoundException(err);
+            //}
 
             //arguments = String.Format(@" --host {0} --port {1} --username {2} --dbname {4} --file ""{3}"" ",
             //    dbTest.Server, dbTest.Port, dbTest.Username, scriptName, dbTest.Database);
@@ -339,20 +407,28 @@ namespace DataTestLoader
             //ProcessStartInfo processInfo = CreateProcessInfo(psqlExe, arguments);
 
             //RunProcess(processInfo);
+            //logger.Info("Run script {0}", scriptName);
 			// -----------------
             //scriptName = Path.Combine(AssemblyDirectory, @"DatabaseScripts\03. DB Insert initial data.sql");
             //if (!File.Exists(scriptName))
-            //    throw new FileNotFoundException(string.Format("Not found {0}", scriptName));
+            //{
+            //    string err = string.Format("File not found {0}", scriptName);
+            //    logger.Error(err);
+            //    throw new FileNotFoundException(err);
+            //}
 
             //arguments = String.Format(@" --host {0} --port {1} --username {2} --dbname {4} --file ""{3}"" ",
             //    dbTest.Server, dbTest.Port, dbTest.Username, scriptName, dbTest.Database);
 
             //processInfo = CreateProcessInfo(psqlExe, arguments);
             //RunProcess(processInfo);
+            //logger.Info("Run script {0}", scriptName);
         }
 
         public void RunScriptsPreData()
         {
+            if (fReuseSchema)
+                logger.Info("Reusing schema on {0} folder for optimize time execution.", this.FolderSchema);
             RunPsqlScript(this.FileSchemaPreData);
 
             logger.Info("Apply schema {0} to database {1}", this.FileSchemaPreData, dbTest.Database);
@@ -375,7 +451,11 @@ namespace DataTestLoader
             string fileName = Path.Combine(this.FolderSchema, scriptName);
 
             if (!File.Exists(fileName))
-                throw new FileNotFoundException(string.Format("Not found {0}", fileName));
+            {
+                string err = string.Format("File not found {0}", fileName);
+                logger.Error(err);
+                throw new FileNotFoundException(err);
+            }
 
             string arguments = String.Format(@" --host {0} --port {1} --username {2} --dbname {3} --file ""{4}""",
                 dbTest.Server, dbTest.Port, dbTest.Username, dbTest.Database, fileName);
