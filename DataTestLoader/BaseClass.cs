@@ -21,18 +21,18 @@ namespace DataTestLoader
         {
             get
             {
-                return Path.Combine(ProjectBaseFolder, "DatabaseScripts");
+                return Path.Combine(AssemblyDirectory, "DatabaseScripts");
             }
         }
 
-        protected internal static string ConnectionStringDBSource
+        public string ConnectionStringDBSource
         {
             get
             {
                 return ConfigurationManager.ConnectionStrings["DBSource"].ConnectionString;
             }
         }
-        protected internal static string ConnectionStringDBTest
+        public string ConnectionStringDBTest
         {
             get
             {
