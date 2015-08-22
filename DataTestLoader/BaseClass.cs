@@ -17,6 +17,7 @@ namespace DataTestLoader
         protected internal string FileSchemaPreData { get; set; }
         protected internal string FileSchemaPostData { get; set; }
         protected internal string FileSchemaFullName { get; set; }
+
         protected internal string FolderSchema
         {
             get
@@ -52,6 +53,7 @@ namespace DataTestLoader
             // Return false if it doesn't exist, true if it does
             return ConfigurationManager.AppSettings[name] != null;
         }
+
         protected internal static bool ConnectionExist(string name)
         {
             // Return false if it doesn't exist, true if it does
@@ -95,14 +97,16 @@ namespace DataTestLoader
             }
         }
 
-
-
         protected internal string ReadFileContent(string fileName)
         {
+          
             if (fileName == string.Empty)
-                throw new ArgumentException("Missing fileName.");
+                throw new DataTestLoaderException(string.Format("Missing file {0}.", fileName));
 
             string fullFileName = Path.Combine(AssemblyDirectory, fileName);
+
+            if (!File.Exists(fullFileName))
+                throw new DataTestLoaderException(string.Format("File {0} not found.", fullFileName));
 
             try
             {
@@ -111,7 +115,7 @@ namespace DataTestLoader
             }
             catch (IOException ex)
             {
-                throw new ApplicationException(String.Format("Could not open file {0}", fullFileName), ex);
+                throw new DataTestLoaderException(ex);
             }
         }
 

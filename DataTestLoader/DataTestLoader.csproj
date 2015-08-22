@@ -96,6 +96,7 @@
     <Compile Include="DatabaseScriptManager.cs" />
     <Compile Include="BaseClass.cs" />
     <Compile Include="DataTestLoader.cs" />
+    <Compile Include="DataTestLoaderException.cs" />
     <Compile Include="FolderHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTest\DataTestLoaderTests.cs" />

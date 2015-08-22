@@ -58,8 +58,7 @@ namespace DataTestLoader
             if (tablesList.Count == 0)
             {
                 string err = "Please add at least one table name into TablesToLoad.json.";
-                logger.Error(err);
-                throw new ApplicationException(err);
+                throw new DataTestLoaderException(err);
             }
 
             foreach (string tableName in tablesList)
@@ -88,8 +87,7 @@ namespace DataTestLoader
                 if (!File.Exists(fullFileName))
                 {
                     string err = string.Format("File {0} was not found. Load the file on disk or remove it from list of tables to load.", fullFileName);
-                    logger.Error(err);
-                    throw new ApplicationException(err);
+                    throw new DataTestLoaderException(err);
                 }
             }
 
@@ -114,8 +112,7 @@ namespace DataTestLoader
                 if (myType == null)
                 {
                     string err = string.Format("The type '{0}' or assembly '{1}' or namespace '{2}' was not found on {3}", tableName, AssemblyModel, AssemblyModelNamespace, AssemblyDirectory);
-                    logger.Error(err);
-                    throw new ApplicationException(err);
+                    throw new DataTestLoaderException(err);
                 }
 
                 var recs = DeserializeList(json, myType);
@@ -149,8 +146,7 @@ namespace DataTestLoader
                     {
                         transaction.Rollback();
                         logger.Warn(string.Format("Rollback insert on table {0} !", tableName));
-                        logger.Warn(ex.Message);
-                        throw;
+                        throw new DataTestLoaderException(ex);
                     }
 
                     string sqlCount = string.Format("SELECT COUNT(*) AS count FROM {0}", tableName);
@@ -161,8 +157,7 @@ namespace DataTestLoader
                     if (cntRead != cntInsert)
                     {
                         string err = string.Format("Error adding data on '{0}' table. Read {1}, added {2} records.", tableName, cntRead, cntInsert);
-                        logger.Error(err);
-                        throw new ApplicationException(err);
+                        throw new DataTestLoaderException(err);
                     }
                 }
 
@@ -174,8 +169,7 @@ namespace DataTestLoader
             {
                 logger.Warn(string.Format("This is the current record when occurred error on {0} table :", tableName));
                 logger.Warn(this.currentRecord.Dump());
-                logger.Error(ex);
-                throw;
+                throw new DataTestLoaderException(ex);
             }
 
         }

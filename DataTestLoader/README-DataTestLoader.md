@@ -171,6 +171,9 @@ You can automatically regenerated the model using Right-Click -> Run Custom Tool
 Change log
 =========
 
+##Version 1.1.2 - 
+- Fix. Refactoring exception handling with custom errors.
+
 ##Version 1.1.1 - 22/8/2015
  
 - New. All errors are now logged into main log file. 
