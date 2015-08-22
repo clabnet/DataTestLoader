@@ -5,3 +5,5 @@ bin
 obj
 packages
 *.dgml
+ConsoleAppTest/DatabaseScripts/PC-LENOVO-northwind_mini-POSTDATA.sql
+ConsoleAppTest/DatabaseScripts/PC-LENOVO-northwind_mini-PRE-DATA.sql
