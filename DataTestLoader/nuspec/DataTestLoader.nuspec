@@ -31,7 +31,7 @@
     </metadata>
     <files>
     	<file src="..\app.config" target="content\AppConfigSample\app.config.txt" />
-        <file src="..\..\SampleModel\DatabaseScript\northwind-mini.sql" target="content\DatabaseScripts\northwind-mini.sql" />
+        <file src="..\..\SampleModel\DatabaseScripts\northwind-mini.sql" target="content\DatabaseScripts\northwind-mini.sql" />
         <file src="..\DataTestFiles\category.json" target="content\DataTestFiles\category.json" />
         <file src="..\DataTestFiles\customer.json" target="content\DataTestFiles\customer.json" />
         <file src="..\DataTestFiles\product.json" target="content\DataTestFiles\product.json" />
