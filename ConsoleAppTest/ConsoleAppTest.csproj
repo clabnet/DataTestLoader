@@ -66,6 +66,8 @@
     </None>
     <None Include="..\DataTestLoader\NLog.config">
       <Link>NLog.config</Link>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
