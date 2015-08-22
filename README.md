@@ -2,6 +2,7 @@
 
 # DataTestLoader #
 
+####Drop, create and populate Postgresql database for unit and integration tests
 ----------
 
 
@@ -121,30 +122,31 @@ Here are described a few ways to use the project:
 
 **1. Using ConsoleAppTest project**
 
-- Open project. 
+- Open project. (please don't use path with blank character for this project.)  
 - Set properly the connections strings and set it as the Default Startup Project. 
-- Press F5. On the console you will see the messages Log. (see also log files on *C:\Temp\DataTestLoader* folder).
+- Press F5. On the console you will see the messages Log. (see also log files on *C:\Logs\DataTestLoader* folder).
 
 **2. Run Unit Test**
 
 The source project is provided with a set of unit tests NUnit 2.6. Set the connection strings properly. Run Test. See the log on Debug Window.
-(see also log files on *C:\Temp\DataTestLoader* folder)
+(see also log files on *C:\Logs\DataTestLoader* folder)
 
 **3. Using NuGet packages**
 
 Main prerequisites : PostgreSql v9.4+ database instance.
 
-- Open a new console application project C# on Visual Studio 2013. 
+- Open a new console application project C# on Visual Studio 2013. Please don't use blank chars on Folder name.
 - Run Enable NuGet Package Restore.
 - Launch Manage NuGet packages for solution. 
 - Find and install DataTestLoader project on NuGet.org repository. 
 - Copy SampleModel.dll assembly from packages\lib\net45\ to bin\Debug folder.
 - Copy AppConfigSample\app.config.txt\app.config file to replace app.config file; update the configuration values.
+- Open Program.cs and change its namespace as DataTestLoader.
 - Add this command to Main method of Program.cs:
 - **new DataTestLoader(refreshSchema : true, initDatabase: true, loadJsonData: true);**
-- Set CopyToOutputDirectoy = CopyAlways on all files contained on DatabaseScripts and DataTestFiles folder. 
+- Set CopyToOutputDirectoy = CopyAlways on all files contained on DatabaseScripts and DataTestFiles folder and Nlog.config. 
 - Build current project and execute it. 
-- Watch the DataTestLoader.log on C:\Logs\ folder.
+- Watch log files on *C:\Logs\DataTestLoader* folder.
 - Finished, that's all.
 
 > **DataTestLoader method arguments**
@@ -157,14 +159,23 @@ Main prerequisites : PostgreSql v9.4+ database instance.
 
 > 1. The most common mistake that happens is to forget to put in **CopyToOutput all files into DataTestFiles and DatabaseScripts folders**.
 
-> 2. **Message Assembly Model SampleModel was not found**. This message indicates that you must specify the assembly containing the POCO classes. If you don't need the loading of data, please disable the loadJsonData argument.
+> 2. If you don't see any log, set **CopyToOutput** property to **Nlog.config** file.
+ 
+> 3. **Message Assembly Model SampleModel was not found**. This message indicates that you must specify the assembly containing the POCO classes. If you don't need the loading of data, please disable the loadJsonData argument.
 
-> 3. **Type 'xxx' or assembly 'yyy' or namespace 'www' not found on ....**
+> 4. **Type 'xxx' or assembly 'yyy' or namespace 'www' not found on ....**
 The specified type cannot be found into assembly specified, or that assemby was not found into bin directory, or related namespace was not correctly specified into .config file.
 You can automatically regenerated the model using Right-Click -> Run Custom Tool on SampleModel.tt. 
 
+
 Change log
 =========
+
+##Version 1.1.1 - 22/8/2015
+ 
+- New. All errors are now logged into main log file. 
+- Fix. Missing NLog.config in NuGet package.
+- New. Make public connection strings.
 
 ##Version 1.1.0 - 19/8/2015
  
@@ -187,4 +198,4 @@ In case of translation or coding errors, please feel free to contact me.
 Claudio Barca 
 c.barca at gmail dot com
 
-Last revision document : 8/19/2015 9:48:27 PM 
+Last revision document : 8/22/2015 9:49:12 AM 

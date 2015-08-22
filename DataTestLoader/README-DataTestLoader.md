@@ -171,6 +171,12 @@ You can automatically regenerated the model using Right-Click -> Run Custom Tool
 Change log
 =========
 
+##Version 1.1.1 - 22/8/2015
+ 
+- New. All errors are now logged into main log file. 
+- Fix. Missing NLog.config in NuGet package.
+- New. Make public connection strings.
+
 ##Version 1.1.0 - 19/8/2015
  
 - New. All errors returned by Process.Start are now redirect into main log file. 
@@ -192,4 +198,4 @@ In case of translation or coding errors, please feel free to contact me.
 Claudio Barca 
 c.barca at gmail dot com
 
-Last revision document : 8/19/2015 9:48:27 PM 
+Last revision document : 8/22/2015 9:49:12 AM 
