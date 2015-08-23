@@ -31,11 +31,12 @@ namespace DataTestLoader
         private ConnectionParser dbSource;
         private ConnectionParser dbTest;
 
-        public PostgresqlScriptManager(bool refreshSchema, bool initDatabase, bool loadJsonData)
+        public PostgresqlScriptManager(bool refreshSchema, bool initDatabase, bool loadJsonData, string testSuite)
         {
             this.refreshSchema = refreshSchema;
             this.initDatabase = initDatabase;
             this.loadJsonData = loadJsonData;
+            this.testSuite = testSuite;
 
             CheckValidSettings();
         }
@@ -171,7 +172,16 @@ namespace DataTestLoader
                 if (!File.Exists(Path.Combine(AssemblyDirectory, AssemblyModel + ".dll")))
                 {
                     err = string.Format("Assembly Model {0} was not found on {1}", AssemblyModel, AssemblyDirectory);
-                    throw new FileNotFoundException();
+                    throw new DataTestLoaderException(err);
+                }
+            }
+
+            if (this.testSuite != string.Empty)
+            {
+                if (! Directory.Exists(Path.Combine(AssemblyDirectory, "DataTestFiles", testSuite)))
+                {
+                    err = string.Format("'testSuite' argument was specified, ensure that the folder {0} exist or remove this argument.", testSuite);
+                    throw new DataTestLoaderException(err);
                 }
             }
 

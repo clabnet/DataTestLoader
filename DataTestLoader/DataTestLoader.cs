@@ -32,9 +32,14 @@ namespace DataTestLoader
 
         #endregion
 
-        public DataTestLoader(bool refreshSchema = false, bool initDatabase = false, bool loadJsonData = false)
+        public DataTestLoader(bool refreshSchema = false, bool initDatabase = false, bool loadJsonData = false, string testSuite = "")
         {
-            PostgresqlScriptManager dMan = new PostgresqlScriptManager(refreshSchema, initDatabase, loadJsonData);
+            this.refreshSchema = refreshSchema;
+            this.initDatabase = initDatabase;
+            this.loadJsonData = loadJsonData;
+            this.testSuite = testSuite;
+
+            PostgresqlScriptManager dMan = new PostgresqlScriptManager(refreshSchema, initDatabase, loadJsonData, testSuite);
 
             bool weCanProceed = dMan.RefreshDatabaseSchema();
 
@@ -50,7 +55,7 @@ namespace DataTestLoader
             logger.Info("DataTestLoader execution completed.");
         }
 
-        protected internal void RunDataTestLoader()
+        private void RunDataTestLoader()
         {
             this.TotalRecordsAdded = 0;
 
@@ -60,6 +65,8 @@ namespace DataTestLoader
                 string err = "Please add at least one table name into TablesToLoad.json.";
                 throw new DataTestLoaderException(err);
             }
+
+            logger.Info(string.Format("Will be add data from {0} folder", (testSuite != null) ? @"DataTestFiles\" + testSuite : "DataTestFiles"));
 
             foreach (string tableName in tablesList)
                 this.TotalRecordsAdded += AddRows(tableName);
@@ -71,7 +78,7 @@ namespace DataTestLoader
 
         protected internal List<string> RetrieveTablesList()
         {
-            string fileName = @"DataTestFiles\TablesToLoad.json";
+            string fileName = string.Format(@"DataTestFiles\{0}\TablesToLoad.json", this.testSuite);
             string textFile = ReadFileContent(fileName);
             return JsonConvert.DeserializeObject<List<string>>(textFile);
         }
@@ -82,11 +89,11 @@ namespace DataTestLoader
 
             foreach (var tableName in tablesToLoad)
             {
-                string fullFileName = Path.Combine(AssemblyDirectory, "DataTestFiles", tableName + ".json");
+                string fullFileName = Path.Combine(AssemblyDirectory, string.Format(@"DataTestFiles\{0}\{1}.json", this.testSuite, tableName));
 
                 if (!File.Exists(fullFileName))
                 {
-                    string err = string.Format("File {0} was not found. Load the file on disk or remove it from list of tables to load.", fullFileName);
+                    string err = string.Format("File {0} was not found. Add file on disk or remove it from TablesToLoad.json file.", fullFileName);
                     throw new DataTestLoaderException(err);
                 }
             }
@@ -102,7 +109,7 @@ namespace DataTestLoader
                 int cntRead = 0;
                 int cntInsert = 0;
 
-                string fileName = @"DataTestFiles\" + tableName + ".json";
+                string fileName = string.Format(@"DataTestFiles\{0}\{1}.json", this.testSuite, tableName);
                 string json = ReadFileContent(fileName);
 
                 // we use Type.GetType(string) to get the Type object associated with a type by its name

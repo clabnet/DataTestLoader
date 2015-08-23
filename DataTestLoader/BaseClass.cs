@@ -7,15 +7,33 @@ using System.Reflection;
 
 namespace DataTestLoader
 {
-
     public abstract class BaseClass
     {
         protected internal bool refreshSchema;
         protected internal bool initDatabase;
         protected internal bool loadJsonData;
+        protected internal string testSuite;
+
+        public string ConnectionStringDBSource
+        {
+            get
+            {
+                return ConfigurationManager.ConnectionStrings["DBSource"].ConnectionString;
+            }
+        }
+
+        public string ConnectionStringDBTest
+        {
+            get
+            {
+                return ConfigurationManager.ConnectionStrings["DBTest"].ConnectionString;
+            }
+        }
 
         protected internal string FileSchemaPreData { get; set; }
+        
         protected internal string FileSchemaPostData { get; set; }
+        
         protected internal string FileSchemaFullName { get; set; }
 
         protected internal string FolderSchema
@@ -25,21 +43,7 @@ namespace DataTestLoader
                 return Path.Combine(AssemblyDirectory, "DatabaseScripts");
             }
         }
-
-        public string ConnectionStringDBSource
-        {
-            get
-            {
-                return ConfigurationManager.ConnectionStrings["DBSource"].ConnectionString;
-            }
-        }
-        public string ConnectionStringDBTest
-        {
-            get
-            {
-                return ConfigurationManager.ConnectionStrings["DBTest"].ConnectionString;
-            }
-        }
+        
         protected internal static string ConnectionStringDBPostgres
         {
             get
@@ -67,6 +71,7 @@ namespace DataTestLoader
                 return ConfigurationManager.AppSettings["AssemblyModel"].ToString();
             }
         }
+        
         protected internal static string AssemblyModelNamespace
         {
             get
@@ -74,6 +79,7 @@ namespace DataTestLoader
                 return ConfigurationManager.AppSettings["AssemblyModelNamespace"].ToString();
             }
         }
+        
         protected internal static string AssemblyDirectory
         {
             get
@@ -81,6 +87,7 @@ namespace DataTestLoader
                 return AppDomain.CurrentDomain.BaseDirectory;
             }
         }
+        
         protected internal static string CurrentProjectFolder
         {
             get

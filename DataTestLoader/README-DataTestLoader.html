@@ -415,7 +415,7 @@ The example database is a Northwind mini version, you can find the creation scri
 <li>Open Program.cs and change its namespace as DataTestLoader.</li>
 <li>Add this command to Main method of Program.cs:</li>
 <li><strong>new DataTestLoader(refreshSchema : true, initDatabase: true, loadJsonData: true);</strong></li>
-<li>Set CopyToOutputDirectoy = CopyAlways on all files contained on DatabaseScripts and DataTestFiles folder and Nlog.config. </li>
+<li>Set CopyToOutputDirectoy = CopyAlways on all files contained on DatabaseScripts and DataTestFiles folder and subfolder(s) and Nlog.config. </li>
 <li>Build current project and execute it. </li>
 <li>Watch log files on <em>C:\Logs\DataTestLoader</em> folder.</li>
 <li>Finished, that's all.</li>
@@ -423,9 +423,10 @@ The example database is a Northwind mini version, you can find the creation scri
 <blockquote>
 <p><strong>DataTestLoader method arguments</strong></p>
 <ul>
-<li><strong>refreshSchema</strong> = If true will export the shema from remote database; false = will be reuse the file schema located into FolderSchema path </li>
-<li><strong>initDatabase</strong> = If true will drop, create and apply the schema.</li>
-<li><strong>loadJsonData</strong> = If true will add data present in DataTestFiles folder to tables specified into TablesToLoad.json file. If data are already found on database, and loadJsonData is the unique value setting as true, will be occurs a duplicate key errors.</li>
+<li><strong>refreshSchema</strong> = If true will export the shema from remote database; false = will be reuse the file schema located into FolderSchema path. (Default : false) </li>
+<li><strong>initDatabase</strong> = If true will drop, create and apply the schema. (Default : false)</li>
+<li><strong>loadJsonData</strong> = If true will add data present in DataTestFiles folder to tables specified into TablesToLoad.json file. If data are already found on database, and loadJsonData is the unique value setting as true, will be occurs a duplicate key errors. (Default : false)</li>
+<li><strong>testSuite</strong> == If specified, will be add .json data files from this subfolder of DataTestFiles (Default : &quot;&quot;) </li>
 </ul>
 </blockquote>
 <h3>Tips - Quick fix</h3>
@@ -450,8 +451,9 @@ You can automatically regenerated the model using Right-Click -&gt; Run Custom T
 <h1>Change log</h1>
 <h2>Version 1.1.2 -</h2>
 <ul>
+<li>New. <strong>Add TestSuite feature</strong>. Now the .json data files can be grouped and categorized into TestSuite(s) folders. Each subfolder of DataTestFiles can contain various .json data files, will be insert the testSuite(s) specified into testSuite argument calling DataTestLoader. </li>
+<li>New. <strong>Add RunCustomScripts feature</strong>. Specified the custom script(s) to execute before load json data. This value is Optional and can be empty. Multiple values are separed by &quot;;&quot; char. These files will be search into bin/DatabaseScripts folder. </li>
 <li>Fix. Refactoring exception handling with custom errors; graceful exit application when abnormally ended.</li>
-<li>New. <strong>Add RunCustomScripts</strong> functionality. Specified the custom script(s) to execute before load json data. This value is Optional. This value can be empty. Multiple values are separed by &quot;;&quot; char. These files will be search into bin/DatabaseScripts folder. </li>
 </ul>
 <h2>Version 1.1.1 - 22/8/2015</h2>
 <ul>
