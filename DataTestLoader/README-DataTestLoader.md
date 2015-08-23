@@ -174,7 +174,7 @@ You can automatically regenerated the model using Right-Click -> Run Custom Tool
 Change log
 =========
 
-##Version 1.1.2 -
+##Version 1.1.2 - 23/8/2015
 - New. **Add TestSuite feature**. Now the .json data files can be grouped and categorized into TestSuite(s) folders. Each subfolder of DataTestFiles can contain various .json data files, will be insert the testSuite(s) specified into testSuite argument calling DataTestLoader. 
 - New. **Add RunCustomScripts feature**. Specified the custom script(s) to execute before load json data. This value is Optional and can be empty. Multiple values are separed by ";" char. These files will be search into bin/DatabaseScripts folder. 
 - Fix. Refactoring exception handling with custom errors; graceful exit application when abnormally ended.
@@ -206,4 +206,4 @@ In case of translation or coding errors, please feel free to contact me.
 Claudio Barca 
 c.barca at gmail dot com
 
-Last revision document : 8/22/2015 9:49:12 AM 
+Last revision document : 8/23/2015 9:57:52 PM 
