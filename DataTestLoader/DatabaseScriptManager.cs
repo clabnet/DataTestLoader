@@ -30,7 +30,7 @@ namespace DataTestLoader
         private static int cntErrors;
         private ConnectionParser dbSource;
         private ConnectionParser dbTest;
-        
+
         public PostgresqlScriptManager(bool refreshSchema, bool initDatabase, bool loadJsonData)
         {
             this.refreshSchema = refreshSchema;
@@ -328,7 +328,7 @@ namespace DataTestLoader
         private static void RunProcess(ProcessStartInfo processInfo, bool emitErrors = true)
         {
             logger.Debug(processInfo.FileName + processInfo.Arguments);
-        
+
             using (Process process = Process.Start(processInfo))
             {
                 StreamReader err = process.StandardError;
@@ -363,29 +363,16 @@ namespace DataTestLoader
 
         private void RunCustomScripts()
         {
-            // insert here your custom scripts to add initial data to database as is
+            string[] scripts = ConfigurationManager.AppSettings["RunCustomScripts"].Split(';');
 
-            //string scriptName, arguments;
-
-            //scriptName = Path.Combine(AssemblyDirectory, @"DatabaseScripts\02. DB Fill data except geometries.sql");
-            //if (!File.Exists(scriptName))
-            //{
-            //    string err = string.Format("File not found {0}", scriptName);
-            //    throw new DataTestLoaderException(err);
-            //}
-
-            // RunPsqlScript(scriptName);
-
-            // -----------------
-
-            //scriptName = Path.Combine(AssemblyDirectory, @"DatabaseScripts\03. DB Insert initial data.sql");
-            //if (!File.Exists(scriptName))
-            //{
-            //    string err = string.Format("File not found {0}", scriptName);
-            //    throw new DataTestLoaderException(err);
-            //}
-
-            // RunPsqlScript(scriptName);
+            for (int i = 0; i < scripts.Length; i++)
+            {
+                if (scripts[i] != string.Empty)
+                {
+                    string scriptName = Path.Combine(AssemblyDirectory, @"DatabaseScripts\" + scripts[i]);
+                    RunPsqlScript(scriptName);
+                }
+            }
         }
 
         public void ApplySchemaPreData()
@@ -417,7 +404,7 @@ namespace DataTestLoader
             if (!File.Exists(fileName))
             {
                 string err = string.Format("File not found {0}", fileName);
-                throw new DataTestLoaderException(err); 
+                throw new DataTestLoaderException(err);
             }
 
             string arguments = String.Format(@" --host {0} --port {1} --username {2} --dbname {3} --file ""{4}""",
@@ -431,7 +418,7 @@ namespace DataTestLoader
         private string GetMachineNameFromIPAddress(string ipAdress)
         {
             string machineName = string.Empty;
-            
+
             try
             {
                 IPHostEntry hostEntry = Dns.GetHostEntry(ipAdress);

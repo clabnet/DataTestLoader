@@ -43,9 +43,11 @@ Other references are **Nunit e FluentAssertions** for Unit Test and .NET driver 
 
 5.  **FileSchemaPostData** - Name of the file required for post definition of test db (used only in case of re-use of an existing schema, for performance reasons. file returned by *pg_dump* command with *section=post-data* arguments.)
 
-6.  **AssemblyModel** - Name of the library that contains the external .dll [POCO classes](https://en.wikipedia.org/wiki/Plain_Old_CLR_Object) corresponding to the entities to be created in the database.
+6. **RunCustomScripts** - Specified one or multiple custom script(s) to execute before load json data. This value is Optional. This value can be empty. Multiple values must be separed by ";" char. These files will be search into bin/DatabaseScripts folder.
+
+7.  **AssemblyModel** - Name of the library that contains the external .dll [POCO classes](https://en.wikipedia.org/wiki/Plain_Old_CLR_Object) corresponding to the entities to be created in the database.
  
-7. **AssemblyModelNamespace** - Namespace of POCO classes contained into AssemblyModel.
+8. **AssemblyModelNamespace** - Namespace of POCO classes contained into AssemblyModel.
 
 > The AssemblyModel assembly contains the POCO classes for tables to be loaded. *The name of these classes must be equal to the table name to be loaded, with Public Properties corresponding to the table structure*.
 
@@ -172,7 +174,8 @@ Change log
 =========
 
 ##Version 1.1.2 - 
-- Fix. Refactoring exception handling with custom errors.
+- Fix. Refactoring exception handling with custom errors; graceful exit application when abnormally ended.
+- New. **Add RunCustomScripts** functionality. Specified the custom script(s) to execute before load json data. This value is Optional. This value can be empty. Multiple values are separed by ";" char. These files will be search into bin/DatabaseScripts folder. 
 
 ##Version 1.1.1 - 22/8/2015
  

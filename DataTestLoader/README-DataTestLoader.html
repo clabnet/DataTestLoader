@@ -333,6 +333,9 @@ The new database will have an identical structure to the source database and wil
 <p><strong>FileSchemaPostData</strong> - Name of the file required for post definition of test db (used only in case of re-use of an existing schema, for performance reasons. file returned by <em>pg_dump</em> command with <em>section=post-data</em> arguments.)</p>
 </li>
 <li>
+<p><strong>RunCustomScripts</strong> - Specified one or multiple custom script(s) to execute before load json data. This value is Optional. This value can be empty. Multiple values must be separed by &quot;;&quot; char. These files will be search into bin/DatabaseScripts folder.</p>
+</li>
+<li>
 <p><strong>AssemblyModel</strong> - Name of the library that contains the external .dll <a href="https://en.wikipedia.org/wiki/Plain_Old_CLR_Object">POCO classes</a> corresponding to the entities to be created in the database.</p>
 </li>
 <li>
@@ -447,7 +450,8 @@ You can automatically regenerated the model using Right-Click -&gt; Run Custom T
 <h1>Change log</h1>
 <h2>Version 1.1.2 -</h2>
 <ul>
-<li>New. Make exception handling custom errors.</li>
+<li>Fix. Refactoring exception handling with custom errors; graceful exit application when abnormally ended.</li>
+<li>New. <strong>Add RunCustomScripts</strong> functionality. Specified the custom script(s) to execute before load json data. This value is Optional. This value can be empty. Multiple values are separed by &quot;;&quot; char. These files will be search into bin/DatabaseScripts folder. </li>
 </ul>
 <h2>Version 1.1.1 - 22/8/2015</h2>
 <ul>
