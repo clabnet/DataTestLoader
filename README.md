@@ -43,9 +43,11 @@ Other references are **Nunit e FluentAssertions** for Unit Test and .NET driver 
 
 5.  **FileSchemaPostData** - Name of the file required for post definition of test db (used only in case of re-use of an existing schema, for performance reasons. file returned by *pg_dump* command with *section=post-data* arguments.)
 
-6.  **AssemblyModel** - Name of the library that contains the external .dll [POCO classes](https://en.wikipedia.org/wiki/Plain_Old_CLR_Object) corresponding to the entities to be created in the database.
+6. **RunCustomScripts** - Specified one or multiple custom script(s) to execute before load json data. This value is Optional. This value can be empty. Multiple values must be separed by ";" char. These files will be search into bin/DatabaseScripts folder.
+
+7.  **AssemblyModel** - Name of the library that contains the external .dll [POCO classes](https://en.wikipedia.org/wiki/Plain_Old_CLR_Object) corresponding to the entities to be created in the database.
  
-7. **AssemblyModelNamespace** - Namespace of POCO classes contained into AssemblyModel.
+8. **AssemblyModelNamespace** - Namespace of POCO classes contained into AssemblyModel.
 
 > The AssemblyModel assembly contains the POCO classes for tables to be loaded. *The name of these classes must be equal to the table name to be loaded, with Public Properties corresponding to the table structure*.
 
@@ -144,16 +146,17 @@ Main prerequisites : PostgreSql v9.4+ database instance.
 - Open Program.cs and change its namespace as DataTestLoader.
 - Add this command to Main method of Program.cs:
 - **new DataTestLoader(refreshSchema : true, initDatabase: true, loadJsonData: true);**
-- Set CopyToOutputDirectoy = CopyAlways on all files contained on DatabaseScripts and DataTestFiles folder and Nlog.config. 
+- Set CopyToOutputDirectoy = CopyAlways on all files contained on DatabaseScripts and DataTestFiles folder and subfolder(s) and Nlog.config. 
 - Build current project and execute it. 
 - Watch log files on *C:\Logs\DataTestLoader* folder.
 - Finished, that's all.
 
 > **DataTestLoader method arguments**
 > 
-> - **refreshSchema** = If true will export the shema from remote database; false = will be reuse the file schema located into FolderSchema path 
-> - **initDatabase** = If true will drop, create and apply the schema.
-> - **loadJsonData** = If true will add data present in DataTestFiles folder to tables specified into TablesToLoad.json file. If data are already found on database, and loadJsonData is the unique value setting as true, will be occurs a duplicate key errors.
+> - **refreshSchema** = If true will export the shema from remote database; false = will be reuse the file schema located into FolderSchema path. (Default : false) 
+> - **initDatabase** = If true will drop, create and apply the schema. (Default : false)
+> - **loadJsonData** = If true will add data present in DataTestFiles folder to tables specified into TablesToLoad.json file. If data are already found on database, and loadJsonData is the unique value setting as true, will be occurs a duplicate key errors. (Default : false)
+> - **testSuite** == If specified, will be add .json data files from this subfolder of DataTestFiles (Default : "") 
 
 ###Tips - Quick fix
 
@@ -170,6 +173,11 @@ You can automatically regenerated the model using Right-Click -> Run Custom Tool
 
 Change log
 =========
+
+##Version 1.1.2 -
+- New. **Add TestSuite feature**. Now the .json data files can be grouped and categorized into TestSuite(s) folders. Each subfolder of DataTestFiles can contain various .json data files, will be insert the testSuite(s) specified into testSuite argument calling DataTestLoader. 
+- New. **Add RunCustomScripts feature**. Specified the custom script(s) to execute before load json data. This value is Optional and can be empty. Multiple values are separed by ";" char. These files will be search into bin/DatabaseScripts folder. 
+- Fix. Refactoring exception handling with custom errors; graceful exit application when abnormally ended.
 
 ##Version 1.1.1 - 22/8/2015
  
