@@ -20,29 +20,34 @@ namespace DataTestLoader
 
         #endregion
 
-        public DataTestLoaderException() { }
-
         public DataTestLoaderException(string message)
             : base(message)
         {
+            
             logger.Error(message);
+            logger.Warn("DataTestLoader ended abnormally.");
+
+            System.Environment.Exit(-1);
         }
 
         public DataTestLoaderException(string message, Exception inner)
             : base(message, inner) {
-                logger.Error(inner, message);
+
+            logger.Fatal(inner, message);
+            logger.Warn("DataTestLoader ended abnormally.");
+
+            System.Environment.Exit(-1);
         }
 
         public DataTestLoaderException(Exception inner)
             : base(inner.Message)
         {
+            
             logger.Fatal(inner);
+            logger.Warn("DataTestLoader ended abnormally.");
+
+            System.Environment.Exit(-1);
         }
 
-        protected DataTestLoaderException(
-          System.Runtime.Serialization.SerializationInfo info,
-          System.Runtime.Serialization.StreamingContext context)
-            : base(info, context) {
-        }
     }
 }

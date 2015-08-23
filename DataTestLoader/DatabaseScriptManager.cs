@@ -30,9 +30,7 @@ namespace DataTestLoader
         private static int cntErrors;
         private ConnectionParser dbSource;
         private ConnectionParser dbTest;
-
-
-
+        
         public PostgresqlScriptManager(bool refreshSchema, bool initDatabase, bool loadJsonData)
         {
             this.refreshSchema = refreshSchema;
@@ -47,8 +45,8 @@ namespace DataTestLoader
             DropAllConnections();
             DropDatabase();
             CreateDatabase();
-            RunScriptsPreData();
-            RunScriptsFillData();
+            ApplySchemaPreData();
+            RunCustomScripts();
         }
 
         public bool RefreshDatabaseSchema()
@@ -189,18 +187,18 @@ namespace DataTestLoader
             // http://www.commandprompt.com/ppbook/x17860
             // http://www.postgresql.org/docs/9.4/static/app-pgdump.html
 
-            CreateSchema_PREDATA();
+            CreateSchemaPreData();
 
             CheckExistSchemaFile(this.FileSchemaPreData);
 
-            CreateSchema_POSTDATA();
+            CreateSchemaPostData();
 
             CheckExistSchemaFile(this.FileSchemaPostData);
 
             return true;
         }
 
-        private void CreateSchema_PREDATA()
+        private void CreateSchemaPreData()
         {
 
             this.FileSchemaPreData = string.Empty;
@@ -213,7 +211,7 @@ namespace DataTestLoader
 
             ProcessStartInfo processInfo = CreateProcessInfo(pgdumpExe, arguments);
 
-            logger.Info(string.Format("Waiting please, retrieving DB schema PRE-DATA from {0} may take up two minutes ", dbSource.Server));
+            logger.Info(string.Format("Waiting please, retrieving PRE-DATA schema {0} from {1} may take up two minutes ", dbSource.Database, dbSource.Server));
 
             RunProcess(processInfo);
 
@@ -228,9 +226,8 @@ namespace DataTestLoader
             }
         }
 
-        private void CreateSchema_POSTDATA()
+        private void CreateSchemaPostData()
         {
-
             this.FileSchemaPostData = string.Empty;
 
             string file = String.Format("{0}-{1}-POSTDATA.sql", hostName, dbSource.Database);
@@ -241,7 +238,7 @@ namespace DataTestLoader
 
             ProcessStartInfo processInfo = CreateProcessInfo(pgdumpExe, arguments);
 
-            logger.Info(string.Format("Waiting please, retrieving DB schema POSTDATA from {0} may take up two minutes ", dbSource.Server));
+            logger.Info(string.Format("Waiting please, retrieving POSTDATA schema {0} from {1} may take up two minutes ", dbSource.Database, dbSource.Server));
 
             RunProcess(processInfo);
 
@@ -262,8 +259,8 @@ namespace DataTestLoader
 
             if (!File.Exists(this.FileSchemaFullName))
             {
-                logger.Error("File schema {0} not found.", this.FileSchemaFullName);
-                throw new FileNotFoundException(string.Format("File schema {0} not found.", this.FileSchemaFullName));
+                string err = string.Format("File schema {0} not found.", this.FileSchemaFullName);
+                throw new DataTestLoaderException(err);
             }
 
             return true;
@@ -327,16 +324,18 @@ namespace DataTestLoader
         {
             RunProcess(processInfo, true);
         }
+
         private static void RunProcess(ProcessStartInfo processInfo, bool emitErrors = true)
         {
             logger.Debug(processInfo.FileName + processInfo.Arguments);
+        
             using (Process process = Process.Start(processInfo))
             {
                 StreamReader err = process.StandardError;
                 string errorMessage = err.ReadToEnd();
                 if (errorMessage != string.Empty && emitErrors == true)
                 {
-                    logger.Fatal(errorMessage);
+                    logger.Warn(errorMessage);
                     cntErrors++;
                 }
             }
@@ -347,8 +346,7 @@ namespace DataTestLoader
             if (!File.Exists(exeName))
             {
                 string err = string.Format("File not found {0}", exeName);
-
-                throw new FileNotFoundException(err);
+                throw new DataTestLoaderException(err);
             }
 
             ProcessStartInfo processInfo = new ProcessStartInfo
@@ -363,9 +361,9 @@ namespace DataTestLoader
             return processInfo;
         }
 
-        private void RunScriptsFillData()
+        private void RunCustomScripts()
         {
-            // insert here your scripts to add initial data to database as is
+            // insert here your custom scripts to add initial data to database as is
 
             //string scriptName, arguments;
 
@@ -373,44 +371,34 @@ namespace DataTestLoader
             //if (!File.Exists(scriptName))
             //{
             //    string err = string.Format("File not found {0}", scriptName);
-            //    
-            //    throw new FileNotFoundException(err);
+            //    throw new DataTestLoaderException(err);
             //}
 
-            //arguments = String.Format(@" --host {0} --port {1} --username {2} --dbname {4} --file ""{3}"" ",
-            //    dbTest.Server, dbTest.Port, dbTest.Username, scriptName, dbTest.Database);
+            // RunPsqlScript(scriptName);
 
-            //ProcessStartInfo processInfo = CreateProcessInfo(psqlExe, arguments);
-
-            //RunProcess(processInfo);
-            //logger.Info("Run script {0}", scriptName);
             // -----------------
+
             //scriptName = Path.Combine(AssemblyDirectory, @"DatabaseScripts\03. DB Insert initial data.sql");
             //if (!File.Exists(scriptName))
             //{
             //    string err = string.Format("File not found {0}", scriptName);
-            //    
-            //    throw new FileNotFoundException(err);
+            //    throw new DataTestLoaderException(err);
             //}
 
-            //arguments = String.Format(@" --host {0} --port {1} --username {2} --dbname {4} --file ""{3}"" ",
-            //    dbTest.Server, dbTest.Port, dbTest.Username, scriptName, dbTest.Database);
-
-            //processInfo = CreateProcessInfo(psqlExe, arguments);
-            //RunProcess(processInfo);
-            //logger.Info("Run script {0}", scriptName);
+            // RunPsqlScript(scriptName);
         }
 
-        public void RunScriptsPreData()
+        public void ApplySchemaPreData()
         {
             if (fReuseSchema)
                 logger.Info("Reusing schema on {0} folder for optimize time execution.", this.FolderSchema);
+
             RunPsqlScript(this.FileSchemaPreData);
 
             logger.Info("Apply schema {0} to database {1}", this.FileSchemaPreData, dbTest.Database);
         }
 
-        public void RunScriptsPostData()
+        public void ApplySchemaPostData()
         {
             RunPsqlScript(this.FileSchemaPostData);
 
@@ -429,8 +417,7 @@ namespace DataTestLoader
             if (!File.Exists(fileName))
             {
                 string err = string.Format("File not found {0}", fileName);
-
-                throw new FileNotFoundException(err);
+                throw new DataTestLoaderException(err); 
             }
 
             string arguments = String.Format(@" --host {0} --port {1} --username {2} --dbname {3} --file ""{4}""",
@@ -466,7 +453,7 @@ namespace DataTestLoader
             {
                 if (svc.ServiceName.Contains(serviceName))
                 {
-                    logger.Info("Found Service {0}", svc.DisplayName);
+                    logger.Debug("Found database instance {0}", svc.DisplayName);
 
                     ManagementObject wmiService = new ManagementObject("Win32_Service.Name='" + svc.ServiceName + "'");
 

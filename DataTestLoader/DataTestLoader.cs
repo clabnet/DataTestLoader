@@ -45,7 +45,7 @@ namespace DataTestLoader
                 this.RunDataTestLoader();
 
             if (initDatabase)
-                dMan.RunScriptsPostData();
+                dMan.ApplySchemaPostData();
 
             logger.Info("DataTestLoader execution completed.");
         }
@@ -145,8 +145,8 @@ namespace DataTestLoader
                     catch (Exception ex)
                     {
                         transaction.Rollback();
-                        logger.Warn(string.Format("Rollback insert on table {0} !", tableName));
-                        throw new DataTestLoaderException(ex);
+                        string err = string.Format("Rollback insert on table {0} !", tableName);
+                        throw new DataTestLoaderException(err);
                     }
 
                     string sqlCount = string.Format("SELECT COUNT(*) AS count FROM {0}", tableName);
@@ -167,9 +167,10 @@ namespace DataTestLoader
             }
             catch (Exception ex)
             {
-                logger.Warn(string.Format("This is the current record when occurred error on {0} table :", tableName));
+                string err = string.Format("This is the current record when occurred error on {0} table :", tableName);
+                logger.Warn(err);
                 logger.Warn(this.currentRecord.Dump());
-                throw new DataTestLoaderException(ex);
+                throw new DataTestLoaderException(err, ex);
             }
 
         }

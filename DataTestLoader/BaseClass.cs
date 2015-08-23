@@ -106,7 +106,7 @@ namespace DataTestLoader
             string fullFileName = Path.Combine(AssemblyDirectory, fileName);
 
             if (!File.Exists(fullFileName))
-                throw new DataTestLoaderException(string.Format("File {0} not found.", fullFileName));
+                throw new DataTestLoaderException(string.Format("File {0} or path not found.", fullFileName));
 
             try
             {
