@@ -448,28 +448,45 @@ You can automatically regenerated the model using Right-Click -&gt; Run Custom T
 </li>
 </ol>
 </blockquote>
-<h1>Change log</h1>
+<h1>Changelog</h1>
 <h2>Version 1.1.2 - 23/8/2015</h2>
+<h4>New Features</h4>
 <ul>
-<li>New. <strong>Add TestSuite feature</strong>. Now the .json data files can be grouped and categorized into TestSuite(s) folders. Each subfolder of DataTestFiles can contain various .json data files, will be insert the testSuite(s) specified into testSuite argument calling DataTestLoader. </li>
-<li>New. <strong>Add RunCustomScripts feature</strong>. Specified the custom script(s) to execute before load json data. This value is Optional and can be empty. Multiple values are separed by &quot;;&quot; char. These files will be search into bin/DatabaseScripts folder. </li>
-<li>Fix. Refactoring exception handling with custom errors; graceful exit application when abnormally ended.</li>
+<li><strong>Added TestSuite feature</strong>. Now the .json data files can be grouped and categorized into TestSuite(s) folders. </li>
+</ul>
+<p>Each subfolder of DataTestFiles can contain various .json data files; these will be insert specifying it into <strong>testSuite argument</strong> calling DataTestLoader. </p>
+<ul>
+<li><strong>Added RunCustomScripts feature</strong>. Specified the custom script(s) to execute before load json data. </li>
+</ul>
+<p>This value is Optional and can be empty. Multiple values are separed by &quot;;&quot; char. These files will be search into bin/DatabaseScripts folder.</p>
+<h4>Fixes</h4>
+<ul>
+<li>Refactoring exception handling with custom errors; </li>
+<li>Graceful exit application when abnormally ended.</li>
 </ul>
 <h2>Version 1.1.1 - 22/8/2015</h2>
+<h4>New Features</h4>
 <ul>
-<li>New. All errors are now logged into main log file. </li>
-<li>Fix. Missing NLog.config in NuGet package.</li>
-<li>New. Make public connection strings.</li>
+<li>All errors are now logged into main log file.</li>
+<li>Make public connection strings. </li>
+</ul>
+<h4>Fixes</h4>
+<ul>
+<li>Missing NLog.config in NuGet package.</li>
 </ul>
 <h2>Version 1.1.0 - 19/8/2015</h2>
+<h4>New Features</h4>
 <ul>
-<li>New. All errors returned by Process.Start are now redirect into main log file. </li>
-<li>New. Removed timestamp on database schema filename. Also the config key FolderSchema was removed.</li>
-<li>New. Added <a href="http://nlog-project.org/">NLog</a> logging system. See NLog.config file for logging configuration options.</li>
-<li>Fix. <em>&quot;Failed to find or load the registered .Net Framework Data Provider&quot;</em> error message on ConsoleAppTest execution. On a machine where Npgsql was not yet installed on GAC, the Npgsql driver <em>must be present on bin folder</em>.</li>
-<li>Fix. The service name used for finding the native PG commands was changed to select the instance of server required: now it is <strong>postgresql-x64-9.4</strong>. </li>
-<li>New. Refactoring creation schema of database. Now we use the <em>--section=pre-data</em> and <em>--section=post-data</em> arguments. <a href="http://www.postgresql.org/docs/9.4/static/app-pgdump.html">See Postgresql documentation for details</a></li>
-<li>New. Refactoring CheckValidSettings. The keys of config file are now required only when are used, based on command line arguments of DataTestLoader.</li>
+<li>All errors returned by Process.Start are now redirect into main log file. </li>
+<li>Removed timestamp on database schema filename. Also the config key FolderSchema was removed.</li>
+<li>Added <a href="http://nlog-project.org/">NLog</a> logging system. See NLog.config file for logging configuration options.</li>
+<li>Refactoring creation schema of database. Now we use the <em>--section=pre-data</em> and <em>--section=post-data</em> arguments. <a href="http://www.postgresql.org/docs/9.4/static/app-pgdump.html">See Postgresql documentation for details</a></li>
+<li>Refactoring CheckValidSettings. The keys of config file are now required only when are used, based on command line arguments of DataTestLoader.</li>
+</ul>
+<h4>Fixes</h4>
+<ul>
+<li><em>&quot;Failed to find or load the registered .Net Framework Data Provider&quot;</em> error message on ConsoleAppTest execution. On a machine where Npgsql was not yet installed on GAC, the Npgsql driver <em>must be present on bin folder</em>.</li>
+<li>The service name used for finding the native PG commands was changed to select the instance of server required: now it is <strong>postgresql-x64-9.4</strong>. </li>
 </ul>
 <h2>Version 1.0.0 - 15/7/2015</h2>
 <ul>

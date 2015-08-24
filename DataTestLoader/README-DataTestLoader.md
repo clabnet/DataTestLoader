@@ -171,29 +171,47 @@ The specified type cannot be found into assembly specified, or that assemby was 
 You can automatically regenerated the model using Right-Click -> Run Custom Tool on SampleModel.tt. 
 
 
-Change log
+Changelog
 =========
 
 ##Version 1.1.2 - 23/8/2015
-- New. **Add TestSuite feature**. Now the .json data files can be grouped and categorized into TestSuite(s) folders. Each subfolder of DataTestFiles can contain various .json data files, will be insert the testSuite(s) specified into testSuite argument calling DataTestLoader. 
-- New. **Add RunCustomScripts feature**. Specified the custom script(s) to execute before load json data. This value is Optional and can be empty. Multiple values are separed by ";" char. These files will be search into bin/DatabaseScripts folder. 
-- Fix. Refactoring exception handling with custom errors; graceful exit application when abnormally ended.
+
+#### New Features
+- **Added TestSuite feature**. Now the .json data files can be grouped and categorized into TestSuite(s) folders. 
+
+Each subfolder of DataTestFiles can contain various .json data files; these will be insert specifying it into **testSuite argument** calling DataTestLoader. 
+
+- **Added RunCustomScripts feature**. Specified the custom script(s) to execute before load json data. 
+
+This value is Optional and can be empty. Multiple values are separed by ";" char. These files will be search into bin/DatabaseScripts folder.
+
+#### Fixes  
+- Refactoring exception handling with custom errors; 
+- Graceful exit application when abnormally ended.
 
 ##Version 1.1.1 - 22/8/2015
  
-- New. All errors are now logged into main log file. 
-- Fix. Missing NLog.config in NuGet package.
-- New. Make public connection strings.
+#### New Features
+- All errors are now logged into main log file.
+- Make public connection strings. 
+
+#### Fixes 
+- Missing NLog.config in NuGet package.
+
 
 ##Version 1.1.0 - 19/8/2015
  
-- New. All errors returned by Process.Start are now redirect into main log file. 
-- New. Removed timestamp on database schema filename. Also the config key FolderSchema was removed.
-- New. Added [NLog](http://nlog-project.org/) logging system. See NLog.config file for logging configuration options.
-- Fix. *"Failed to find or load the registered .Net Framework Data Provider"* error message on ConsoleAppTest execution. On a machine where Npgsql was not yet installed on GAC, the Npgsql driver *must be present on bin folder*.
-- Fix. The service name used for finding the native PG commands was changed to select the instance of server required: now it is **postgresql-x64-9.4**. 
-- New. Refactoring creation schema of database. Now we use the *--section=pre-data* and *--section=post-data* arguments. [See Postgresql documentation for details](http://www.postgresql.org/docs/9.4/static/app-pgdump.html)
-- New. Refactoring CheckValidSettings. The keys of config file are now required only when are used, based on command line arguments of DataTestLoader.
+#### New Features
+- All errors returned by Process.Start are now redirect into main log file. 
+- Removed timestamp on database schema filename. Also the config key FolderSchema was removed.
+- Added [NLog](http://nlog-project.org/) logging system. See NLog.config file for logging configuration options.
+- Refactoring creation schema of database. Now we use the *--section=pre-data* and *--section=post-data* arguments. [See Postgresql documentation for details](http://www.postgresql.org/docs/9.4/static/app-pgdump.html)
+- Refactoring CheckValidSettings. The keys of config file are now required only when are used, based on command line arguments of DataTestLoader.
+
+#### Fixes
+- *"Failed to find or load the registered .Net Framework Data Provider"* error message on ConsoleAppTest execution. On a machine where Npgsql was not yet installed on GAC, the Npgsql driver *must be present on bin folder*.
+- The service name used for finding the native PG commands was changed to select the instance of server required: now it is **postgresql-x64-9.4**. 
+
 
 ##Version 1.0.0 - 15/7/2015
 
