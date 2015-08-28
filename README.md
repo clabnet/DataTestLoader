@@ -4,7 +4,7 @@
 
 ####Drop, create and populate Postgresql database for unit and integration tests
 ----------
-
+<script type='text/javascript' src='https://www.openhub.net/p/DataTestLoader/widgets/project_thin_badge?format=js'></script>
 
 To obtain **Integration Test** effective and consistent, they must always be performed in isolated environments, in order to ensure the existence of the expected data and to grant the possibility to modify them if necessary.
 
@@ -217,6 +217,7 @@ This value is Optional and can be empty. Multiple values are separed by ";" char
 
 - First release on public repositories **[NuGet](http://www.nuget.org/packages/DataTestLoader/)** and **[GitHub.](https://github.com/clabnet/DataTestLoader)**
 
+<script type='text/javascript' src='https://www.openhub.net/p/DataTestLoader/widgets/project_users?format=js&style=blue'></script>
 
 ------
 In case of translation or coding errors, please feel free to contact me.
