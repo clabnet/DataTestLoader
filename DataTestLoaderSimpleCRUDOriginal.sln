@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppTest", "ConsoleAp
 		{5FB2A1E2-F93C-4832-B26E-DFC7EFC567DC} = {5FB2A1E2-F93C-4832-B26E-DFC7EFC567DC}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapper.SimpleCRUD NET45", "..\..\dotnet\Dapper.SimpleCRUD\Dapper.SimpleCRUD NET45\Dapper.SimpleCRUD NET45.csproj", "{A54F7AB7-F6DE-43AA-9B31-2065CC6F16D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{01E152EE-17DC-4CBC-B864-CB9A061D14DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01E152EE-17DC-4CBC-B864-CB9A061D14DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01E152EE-17DC-4CBC-B864-CB9A061D14DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A54F7AB7-F6DE-43AA-9B31-2065CC6F16D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A54F7AB7-F6DE-43AA-9B31-2065CC6F16D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A54F7AB7-F6DE-43AA-9B31-2065CC6F16D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A54F7AB7-F6DE-43AA-9B31-2065CC6F16D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

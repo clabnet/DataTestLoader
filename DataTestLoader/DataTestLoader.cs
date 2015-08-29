@@ -139,10 +139,14 @@ namespace DataTestLoader
 
                             // using patches of YogirajA and Clabnet
                             // https://github.com/YogirajA/Dapper.SimpleCRUD/blob/feature/AssociativeInsert/Dapper.SimpleCRUD/SimpleCRUD.cs
-                            cnn.InsertNoPkConstraint(rec);
+                            // cnn.InsertNoPkConstraint(rec);
 
                             // using the last version of Eric's code modified int as long
                             // cnn.InsertAsync(rec, transaction);
+
+                            //  var id = connection.Insert<long>(new BigCar { Make = "Big", Model = "Car" });
+
+                           cnn.Insert<long>(rec);
 
                             cntRead++;
                         }
@@ -152,7 +156,7 @@ namespace DataTestLoader
                     catch (Exception ex)
                     {
                         transaction.Rollback();
-                        string err = string.Format("Rollback insert on table {0} !", tableName);
+                        string err = string.Format("Rollback insert on table {0} ! ({1})", tableName, ex.Message);
                         throw new DataTestLoaderException(err);
                     }
 

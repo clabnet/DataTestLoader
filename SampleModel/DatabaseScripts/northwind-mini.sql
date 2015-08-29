@@ -40,7 +40,7 @@ SET default_with_oids = false;
 --
 
 CREATE TABLE category (
-    category_id smallint NOT NULL,
+    category_id bigint NOT NULL,
     category_name character varying(15) NOT NULL,
     description text,
     picture bytea

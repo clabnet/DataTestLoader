@@ -42,10 +42,6 @@
       <HintPath>..\packages\Dapper.1.42\lib\net45\Dapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Dapper.SimpleCRUD.clabnet, Version=1.8.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapper.SimpleCRUD.clabnet.1.8.6\lib\net45\Dapper.SimpleCRUD.clabnet.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="FluentAssertions, Version=3.4.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentAssertions.3.4.0\lib\net45\FluentAssertions.dll</HintPath>
       <Private>True</Private>
@@ -153,6 +149,12 @@
     </Content>
     <Content Include="README-DataTestLoader-it.html" />
     <Content Include="README-DataTestLoader.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\dotnet\Dapper.SimpleCRUD\Dapper.SimpleCRUD NET45\Dapper.SimpleCRUD NET45.csproj">
+      <Project>{a54f7ab7-f6de-43aa-9b31-2065cc6f16d8}</Project>
+      <Name>Dapper.SimpleCRUD NET45</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
