@@ -10,7 +10,7 @@ namespace DataTestLoader
 {
     public static class ConnectionFactory
     {
-        private const string PROVIDERNAME = "Npgsql Local";
+        private const string PROVIDERNAME = "Npgsql";
 
         private static string ConnectionStringDBTest
         {

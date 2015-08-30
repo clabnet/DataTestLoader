@@ -66,7 +66,7 @@ namespace DataTestLoader
                 throw new DataTestLoaderException(err);
             }
 
-            logger.Info(string.Format("Will be add data from {0} folder", (testSuite != null) ? @"DataTestFiles\" + testSuite : "DataTestFiles"));
+            logger.Info(string.Format("Adding .json data from {0} folder", (string.IsNullOrEmpty(testSuite)) ? "DataTestFiles" : @"DataTestFiles\" + testSuite));
 
             foreach (string tableName in tablesList)
                 this.TotalRecordsAdded += AddRows(tableName);

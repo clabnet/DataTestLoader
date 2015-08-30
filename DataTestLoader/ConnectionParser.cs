@@ -9,7 +9,7 @@ namespace DataTestLoader
 {
     public class ConnectionParser
     {
-        private const string PROVIDERNAME = "Npgsql Local";
+        private const string PROVIDERNAME = "Npgsql";
 
         public string ConnectionString { get; set; }
         public string Server { get; set; }
