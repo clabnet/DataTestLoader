@@ -46,7 +46,9 @@ CREATE TABLE category (
 --
 
 CREATE TABLE customer (
-    customer_id bpchar NOT NULL,
+    customer_id bigint NOT NULL,
+    customer_code character varying(10) NOT NULL,
+    customer_name character varying(40) NOT NULL,
     company_name character varying(40) NOT NULL,
     contact_name character varying(30),
     contact_title character varying(30),
@@ -65,7 +67,7 @@ CREATE TABLE customer (
 --
 
 CREATE TABLE product (
-    product_id smallint NOT NULL,
+    product_id bigint NOT NULL,
     product_name character varying(40) NOT NULL,
     supplier_id smallint,
     category_id smallint,

@@ -1,6 +1,7 @@
 ﻿[
     {
-        "customer_id": "ALFKI",
+        "customer_id": 1,
+        "customer_code": "ALFKI",
         "company_name": "Alfreds Futterkiste",
         "contact_name": "Maria Anders",
         "contact_title": "Sales Representative",
@@ -13,7 +14,8 @@
         "fax": "030-0076545"
     },
     {
-        "customer_id": "ANATR",
+        "customer_id": 2,
+        "customer_code": "ANATR",
         "company_name": "Ana Trujillo Emparedados y helados",
         "contact_name": "Ana Trujillo",
         "contact_title": "Owner",
@@ -26,7 +28,8 @@
         "fax": "(5) 555-3745"
     },
     {
-        "customer_id": "ANTON",
+        "customer_id": 3,
+        "customer_code": "ANTON",
         "company_name": "Antonio Moreno Taquería",
         "contact_name": "Antonio Moreno",
         "contact_title": "Owner",
@@ -39,7 +42,8 @@
         "fax": null
     },
     {
-        "customer_id": "AROUT",
+        "customer_id": 4,
+        "customer_code": "AROUT",
         "company_name": "Around the Horn",
         "contact_name": "Thomas Hardy",
         "contact_title": "Sales Representative",
@@ -52,7 +56,8 @@
         "fax": "(171) 555-6750"
     },
     {
-        "customer_id": "BERGS",
+        "customer_id": 5,
+        "customer_code": "BERGS",
         "company_name": "Berglunds snabbköp",
         "contact_name": "Christina Berglund",
         "contact_title": "Order Administrator",
@@ -65,7 +70,8 @@
         "fax": "0921-12 34 67"
     },
     {
-        "customer_id": "BLAUS",
+        "customer_id": 6,
+        "customer_code": "BLAUS",
         "company_name": "Blauer See Delikatessen",
         "contact_name": "Hanna Moos",
         "contact_title": "Sales Representative",
@@ -78,7 +84,8 @@
         "fax": "0621-08924"
     },
     {
-        "customer_id": "BLONP",
+        "customer_id": 7,
+        "customer_code": "BLONP",
         "company_name": "Blondesddsl père et fils",
         "contact_name": "Frédérique Citeaux",
         "contact_title": "Marketing Manager",
@@ -91,7 +98,8 @@
         "fax": "88.60.15.32"
     },
     {
-        "customer_id": "BOLID",
+        "customer_id": 8,
+        "customer_code": "BOLID",
         "company_name": "Bólido Comidas preparadas",
         "contact_name": "Martín Sommer",
         "contact_title": "Owner",
@@ -104,7 +112,8 @@
         "fax": "(91) 555 91 99"
     },
     {
-        "customer_id": "BONAP",
+        "customer_id": 9,
+        "customer_code": "BONAP",
         "company_name": "Bon app\u0027",
         "contact_name": "Laurence Lebihan",
         "contact_title": "Owner",
@@ -117,7 +126,8 @@
         "fax": "91.24.45.41"
     },
     {
-        "customer_id": "BOTTM",
+        "customer_id": 10,
+        "customer_code": "BOTTM",
         "company_name": "Bottom-Dollar Markets",
         "contact_name": "Elizabeth Lincoln",
         "contact_title": "Accounting Manager",
@@ -130,7 +140,8 @@
         "fax": "(604) 555-3745"
     },
     {
-        "customer_id": "BSBEV",
+        "customer_id": 11,
+        "customer_code": "BSBEV",
         "company_name": "B\u0027s Beverages",
         "contact_name": "Victoria Ashworth",
         "contact_title": "Sales Representative",
@@ -143,7 +154,8 @@
         "fax": null
     },
     {
-        "customer_id": "CACTU",
+        "customer_id": 12,
+        "customer_code": "CACTU",
         "company_name": "Cactus Comidas para llevar",
         "contact_name": "Patricio Simpson",
         "contact_title": "Sales Agent",
@@ -156,7 +168,8 @@
         "fax": "(1) 135-4892"
     },
     {
-        "customer_id": "CENTC",
+        "customer_id": 13,
+        "customer_code": "CENTC",
         "company_name": "Centro comercial Moctezuma",
         "contact_name": "Francisco Chang",
         "contact_title": "Marketing Manager",
@@ -169,7 +182,8 @@
         "fax": "(5) 555-7293"
     },
     {
-        "customer_id": "CHOPS",
+        "customer_id": 14,
+        "customer_code": "CHOPS",
         "company_name": "Chop-suey Chinese",
         "contact_name": "Yang Wang",
         "contact_title": "Owner",
@@ -182,7 +196,8 @@
         "fax": null
     },
     {
-        "customer_id": "COMMI",
+        "customer_id": 15,
+        "customer_code": "COMMI",
         "company_name": "Comércio Mineiro",
         "contact_name": "Pedro Afonso",
         "contact_title": "Sales Associate",
@@ -195,7 +210,8 @@
         "fax": null
     },
     {
-        "customer_id": "CONSH",
+        "customer_id": 1,
+        "customer_code": "CONSH",
         "company_name": "Consolidated Holdings",
         "contact_name": "Elizabeth Brown",
         "contact_title": "Sales Representative",
@@ -208,7 +224,8 @@
         "fax": "(171) 555-9199"
     },
     {
-        "customer_id": "DRACD",
+        "customer_id": 16,
+        "customer_code": "DRACD",
         "company_name": "Drachenblut Delikatessen",
         "contact_name": "Sven Ottlieb",
         "contact_title": "Order Administrator",
@@ -221,7 +238,8 @@
         "fax": "0241-059428"
     },
     {
-        "customer_id": "DUMON",
+        "customer_id": 17,
+        "customer_code": "DUMON",
         "company_name": "Du monde entier",
         "contact_name": "Janine Labrune",
         "contact_title": "Owner",
@@ -234,7 +252,8 @@
         "fax": "40.67.89.89"
     },
     {
-        "customer_id": "EASTC",
+        "customer_id": 18,
+        "customer_code": "EASTC",
         "company_name": "Eastern Connection",
         "contact_name": "Ann Devon",
         "contact_title": "Sales Agent",
@@ -247,7 +266,8 @@
         "fax": "(171) 555-3373"
     },
     {
-        "customer_id": "ERNSH",
+        "customer_id": 19,
+        "customer_code": "ERNSH",
         "company_name": "Ernst Handel",
         "contact_name": "Roland Mendel",
         "contact_title": "Sales Manager",
@@ -260,7 +280,8 @@
         "fax": "7675-3426"
     },
     {
-        "customer_id": "FAMIA",
+        "customer_id": 20,
+        "customer_code": "FAMIA",
         "company_name": "Familia Arquibaldo",
         "contact_name": "Aria Cruz",
         "contact_title": "Marketing Assistant",
@@ -273,7 +294,8 @@
         "fax": null
     },
     {
-        "customer_id": "FISSA",
+        "customer_id": 21,
+        "customer_code": "FISSA",
         "company_name": "FISSA Fabrica Inter. Salchichas S.A.",
         "contact_name": "Diego Roel",
         "contact_title": "Accounting Manager",
@@ -286,7 +308,8 @@
         "fax": "(91) 555 55 93"
     },
     {
-        "customer_id": "FOLIG",
+        "customer_id": 22,
+        "customer_code": "FOLIG",
         "company_name": "Folies gourmandes",
         "contact_name": "Martine Rancé",
         "contact_title": "Assistant Sales Agent",
@@ -299,7 +322,8 @@
         "fax": "20.16.10.17"
     },
     {
-        "customer_id": "FOLKO",
+        "customer_id": 23,
+        "customer_code": "FOLKO",
         "company_name": "Folk och fä HB",
         "contact_name": "Maria Larsson",
         "contact_title": "Owner",
@@ -312,7 +336,8 @@
         "fax": null
     },
     {
-        "customer_id": "FRANK",
+        "customer_id": 24,
+        "customer_code": "FRANK",
         "company_name": "Frankenversand",
         "contact_name": "Peter Franken",
         "contact_title": "Marketing Manager",
@@ -325,7 +350,8 @@
         "fax": "089-0877451"
     },
     {
-        "customer_id": "FRANR",
+        "customer_id": 25,
+        "customer_code": "FRANR",
         "company_name": "France restauration",
         "contact_name": "Carine Schmitt",
         "contact_title": "Marketing Manager",
@@ -338,7 +364,8 @@
         "fax": "40.32.21.20"
     },
     {
-        "customer_id": "FRANS",
+        "customer_id": 26,
+        "customer_code": "FRANS",
         "company_name": "Franchi S.p.A.",
         "contact_name": "Paolo Accorti",
         "contact_title": "Sales Representative",
@@ -351,7 +378,8 @@
         "fax": "011-4988261"
     },
     {
-        "customer_id": "FURIB",
+        "customer_id": 27,
+        "customer_code": "FURIB",
         "company_name": "Furia Bacalhau e Frutos do Mar",
         "contact_name": "Lino Rodriguez",
         "contact_title": "Sales Manager",
@@ -364,7 +392,8 @@
         "fax": "(1) 354-2535"
     },
     {
-        "customer_id": "GALED",
+        "customer_id": 28,
+        "customer_code": "GALED",
         "company_name": "Galería del gastrónomo",
         "contact_name": "Eduardo Saavedra",
         "contact_title": "Marketing Manager",
@@ -377,7 +406,8 @@
         "fax": "(93) 203 4561"
     },
     {
-        "customer_id": "GODOS",
+        "customer_id": 29,
+        "customer_code": "GODOS",
         "company_name": "Godos Cocina Típica",
         "contact_name": "José Pedro Freyre",
         "contact_title": "Sales Manager",
@@ -390,7 +420,8 @@
         "fax": null
     },
     {
-        "customer_id": "GOURL",
+        "customer_id": 30,
+        "customer_code": "GOURL",
         "company_name": "Gourmet Lanchonetes",
         "contact_name": "André Fonseca",
         "contact_title": "Sales Associate",
@@ -403,7 +434,8 @@
         "fax": null
     },
     {
-        "customer_id": "GREAL",
+        "customer_id": 31,
+        "customer_code": "GREAL",
         "company_name": "Great Lakes Food Market",
         "contact_name": "Howard Snyder",
         "contact_title": "Marketing Manager",
@@ -416,7 +448,8 @@
         "fax": null
     },
     {
-        "customer_id": "GROSR",
+        "customer_id": 32,
+        "customer_code": "GROSR",
         "company_name": "GROSELLA-Restaurante",
         "contact_name": "Manuel Pereira",
         "contact_title": "Owner",
@@ -429,7 +462,8 @@
         "fax": "(2) 283-3397"
     },
     {
-        "customer_id": "HANAR",
+        "customer_id": 33,
+        "customer_code": "HANAR",
         "company_name": "Hanari Carnes",
         "contact_name": "Mario Pontes",
         "contact_title": "Accounting Manager",
@@ -442,7 +476,8 @@
         "fax": "(21) 555-8765"
     },
     {
-        "customer_id": "HILAA",
+        "customer_id": 34,
+        "customer_code": "HILAA",
         "company_name": "HILARION-Abastos",
         "contact_name": "Carlos Hernández",
         "contact_title": "Sales Representative",
@@ -455,7 +490,8 @@
         "fax": "(5) 555-1948"
     },
     {
-        "customer_id": "HUNGC",
+        "customer_id": 35,
+        "customer_code": "HUNGC",
         "company_name": "Hungry Coyote Import Store",
         "contact_name": "Yoshi Latimer",
         "contact_title": "Sales Representative",
@@ -468,7 +504,8 @@
         "fax": "(503) 555-2376"
     },
     {
-        "customer_id": "HUNGO",
+        "customer_id": 36,
+        "customer_code": "HUNGO",
         "company_name": "Hungry Owl All-Night Grocers",
         "contact_name": "Patricia McKenna",
         "contact_title": "Sales Associate",
@@ -481,7 +518,8 @@
         "fax": "2967 3333"
     },
     {
-        "customer_id": "ISLAT",
+        "customer_id": 37,
+        "customer_code": "ISLAT",
         "company_name": "Island Trading",
         "contact_name": "Helen Bennett",
         "contact_title": "Marketing Manager",
@@ -494,7 +532,8 @@
         "fax": null
     },
     {
-        "customer_id": "KOENE",
+        "customer_id": 38,
+        "customer_code": "KOENE",
         "company_name": "Königlich Essen",
         "contact_name": "Philip Cramer",
         "contact_title": "Sales Associate",
@@ -507,7 +546,8 @@
         "fax": null
     },
     {
-        "customer_id": "LACOR",
+        "customer_id": 39,
+        "customer_code": "LACOR",
         "company_name": "La corne d\u0027abondance",
         "contact_name": "Daniel Tonini",
         "contact_title": "Sales Representative",
@@ -520,7 +560,8 @@
         "fax": "30.59.85.11"
     },
     {
-        "customer_id": "LAMAI",
+        "customer_id": 40,
+        "customer_code": "LAMAI",
         "company_name": "La maison d\u0027Asie",
         "contact_name": "Annette Roulet",
         "contact_title": "Sales Manager",
@@ -533,7 +574,8 @@
         "fax": "61.77.61.11"
     },
     {
-        "customer_id": "LAUGB",
+        "customer_id": 41,
+        "customer_code": "LAUGB",
         "company_name": "Laughing Bacchus Wine Cellars",
         "contact_name": "Yoshi Tannamuri",
         "contact_title": "Marketing Assistant",
@@ -546,7 +588,8 @@
         "fax": "(604) 555-7293"
     },
     {
-        "customer_id": "LAZYK",
+        "customer_id": 42,
+        "customer_code": "LAZYK",
         "company_name": "Lazy K Kountry Store",
         "contact_name": "John Steel",
         "contact_title": "Marketing Manager",
@@ -559,7 +602,8 @@
         "fax": "(509) 555-6221"
     },
     {
-        "customer_id": "LEHMS",
+        "customer_id": 43,
+        "customer_code": "LEHMS",
         "company_name": "Lehmanns Marktstand",
         "contact_name": "Renate Messner",
         "contact_title": "Sales Representative",
@@ -572,7 +616,8 @@
         "fax": "069-0245874"
     },
     {
-        "customer_id": "LETSS",
+        "customer_id": 44,
+        "customer_code": "LETSS",
         "company_name": "Let\u0027s Stop N Shop",
         "contact_name": "Jaime Yorres",
         "contact_title": "Owner",
@@ -585,7 +630,8 @@
         "fax": null
     },
     {
-        "customer_id": "LILAS",
+        "customer_id": 45,
+        "customer_code": "LILAS",
         "company_name": "LILA-Supermercado",
         "contact_name": "Carlos González",
         "contact_title": "Accounting Manager",
@@ -598,7 +644,8 @@
         "fax": "(9) 331-7256"
     },
     {
-        "customer_id": "LINOD",
+        "customer_id": 46,
+        "customer_code": "LINOD",
         "company_name": "LINO-Delicateses",
         "contact_name": "Felipe Izquierdo",
         "contact_title": "Owner",
@@ -611,7 +658,8 @@
         "fax": "(8) 34-93-93"
     },
     {
-        "customer_id": "LONEP",
+        "customer_id": 47,
+        "customer_code": "LONEP",
         "company_name": "Lonesome Pine Restaurant",
         "contact_name": "Fran Wilson",
         "contact_title": "Sales Manager",
@@ -624,7 +672,8 @@
         "fax": "(503) 555-9646"
     },
     {
-        "customer_id": "MAGAA",
+        "customer_id": 48,
+        "customer_code": "MAGAA",
         "company_name": "Magazzini Alimentari Riuniti",
         "contact_name": "Giovanni Rovelli",
         "contact_title": "Marketing Manager",
@@ -637,7 +686,8 @@
         "fax": "035-640231"
     },
     {
-        "customer_id": "MAISD",
+        "customer_id": 49,
+        "customer_code": "MAISD",
         "company_name": "Maison Dewey",
         "contact_name": "Catherine Dewey",
         "contact_title": "Sales Agent",
@@ -650,7 +700,8 @@
         "fax": "(02) 201 24 68"
     },
     {
-        "customer_id": "MEREP",
+        "customer_id": 50,
+        "customer_code": "MEREP",
         "company_name": "Mère Paillarde",
         "contact_name": "Jean Fresnière",
         "contact_title": "Marketing Assistant",
@@ -663,7 +714,8 @@
         "fax": "(514) 555-8055"
     },
     {
-        "customer_id": "MORGK",
+        "customer_id": 51,
+        "customer_code": "MORGK",
         "company_name": "Morgenstern Gesundkost",
         "contact_name": "Alexander Feuer",
         "contact_title": "Marketing Assistant",
@@ -676,7 +728,8 @@
         "fax": null
     },
     {
-        "customer_id": "NORTS",
+        "customer_id": 52,
+        "customer_code": "NORTS",
         "company_name": "North/South",
         "contact_name": "Simon Crowther",
         "contact_title": "Sales Associate",
@@ -689,7 +742,8 @@
         "fax": "(171) 555-2530"
     },
     {
-        "customer_id": "OCEAN",
+        "customer_id": 53,
+        "customer_code": "OCEAN",
         "company_name": "Océano Atlántico Ltda.",
         "contact_name": "Yvonne Moncada",
         "contact_title": "Sales Agent",
@@ -702,7 +756,8 @@
         "fax": "(1) 135-5535"
     },
     {
-        "customer_id": "OLDWO",
+        "customer_id": 54,
+        "customer_code": "OLDWO",
         "company_name": "Old World Delicatessen",
         "contact_name": "Rene Phillips",
         "contact_title": "Sales Representative",
@@ -715,7 +770,8 @@
         "fax": "(907) 555-2880"
     },
     {
-        "customer_id": "OTTIK",
+        "customer_id": 55,
+        "customer_code": "OTTIK",
         "company_name": "Ottilies Käseladen",
         "contact_name": "Henriette Pfalzheim",
         "contact_title": "Owner",
@@ -728,7 +784,8 @@
         "fax": "0221-0765721"
     },
     {
-        "customer_id": "PARIS",
+        "customer_id": 56,
+        "customer_code": "PARIS",
         "company_name": "Paris spécialités",
         "contact_name": "Marie Bertrand",
         "contact_title": "Owner",
@@ -741,7 +798,8 @@
         "fax": "(1) 42.34.22.77"
     },
     {
-        "customer_id": "PERIC",
+        "customer_id": 57,
+        "customer_code": "PERIC",
         "company_name": "Pericles Comidas clásicas",
         "contact_name": "Guillermo Fernández",
         "contact_title": "Sales Representative",
@@ -754,7 +812,8 @@
         "fax": "(5) 545-3745"
     },
     {
-        "customer_id": "PICCO",
+        "customer_id": 58,
+        "customer_code": "PICCO",
         "company_name": "Piccolo und mehr",
         "contact_name": "Georg Pipps",
         "contact_title": "Sales Manager",
@@ -767,7 +826,8 @@
         "fax": "6562-9723"
     },
     {
-        "customer_id": "PRINI",
+        "customer_id": 59,
+        "customer_code": "PRINI",
         "company_name": "Princesa Isabel Vinhos",
         "contact_name": "Isabel de Castro",
         "contact_title": "Sales Representative",
@@ -780,7 +840,8 @@
         "fax": null
     },
     {
-        "customer_id": "QUEDE",
+        "customer_id": 60,
+        "customer_code": "QUEDE",
         "company_name": "Que Delícia",
         "contact_name": "Bernardo Batista",
         "contact_title": "Accounting Manager",
@@ -793,7 +854,8 @@
         "fax": "(21) 555-4545"
     },
     {
-        "customer_id": "QUEEN",
+        "customer_id": 61,
+        "customer_code": "QUEEN",
         "company_name": "Queen Cozinha",
         "contact_name": "Lúcia Carvalho",
         "contact_title": "Marketing Assistant",
@@ -806,7 +868,8 @@
         "fax": null
     },
     {
-        "customer_id": "QUICK",
+        "customer_id": 62,
+        "customer_code": "QUICK",
         "company_name": "QUICK-Stop",
         "contact_name": "Horst Kloss",
         "contact_title": "Accounting Manager",
@@ -819,7 +882,8 @@
         "fax": null
     },
     {
-        "customer_id": "RANCH",
+        "customer_id": 63,
+        "customer_code": "RANCH",
         "company_name": "Rancho grande",
         "contact_name": "Sergio Gutiérrez",
         "contact_title": "Sales Representative",
@@ -832,7 +896,8 @@
         "fax": "(1) 123-5556"
     },
     {
-        "customer_id": "RATTC",
+        "customer_id": 64,
+        "customer_code": "RATTC",
         "company_name": "Rattlesnake Canyon Grocery",
         "contact_name": "Paula Wilson",
         "contact_title": "Assistant Sales Representative",
@@ -845,7 +910,8 @@
         "fax": "(505) 555-3620"
     },
     {
-        "customer_id": "REGGC",
+        "customer_id": 65,
+        "customer_code": "REGGC",
         "company_name": "Reggiani Caseifici",
         "contact_name": "Maurizio Moroni",
         "contact_title": "Sales Associate",
@@ -858,7 +924,8 @@
         "fax": "0522-556722"
     },
     {
-        "customer_id": "RICAR",
+        "customer_id": 66,
+        "customer_code": "RICAR",
         "company_name": "Ricardo Adocicados",
         "contact_name": "Janete Limeira",
         "contact_title": "Assistant Sales Agent",
@@ -871,7 +938,8 @@
         "fax": null
     },
     {
-        "customer_id": "RICSU",
+        "customer_id": 1,
+        "customer_code": "RICSU",
         "company_name": "Richter Supermarkt",
         "contact_name": "Michael Holz",
         "contact_title": "Sales Manager",
@@ -884,7 +952,8 @@
         "fax": null
     },
     {
-        "customer_id": "ROMEY",
+        "customer_id": 67,
+        "customer_code": "ROMEY",
         "company_name": "Romero y tomillo",
         "contact_name": "Alejandra Camino",
         "contact_title": "Accounting Manager",
@@ -897,7 +966,8 @@
         "fax": "(91) 745 6210"
     },
     {
-        "customer_id": "SANTG",
+        "customer_id": 68,
+        "customer_code": "SANTG",
         "company_name": "Santé Gourmet",
         "contact_name": "Jonas Bergulfsen",
         "contact_title": "Owner",
@@ -910,7 +980,8 @@
         "fax": "07-98 92 47"
     },
     {
-        "customer_id": "SAVEA",
+        "customer_id": 69,
+        "customer_code": "SAVEA",
         "company_name": "Save-a-lot Markets",
         "contact_name": "Jose Pavarotti",
         "contact_title": "Sales Representative",
@@ -923,7 +994,8 @@
         "fax": null
     },
     {
-        "customer_id": "SEVES",
+        "customer_id": 70,
+        "customer_code": "SEVES",
         "company_name": "Seven Seas Imports",
         "contact_name": "Hari Kumar",
         "contact_title": "Sales Manager",
@@ -936,7 +1008,8 @@
         "fax": "(171) 555-5646"
     },
     {
-        "customer_id": "SIMOB",
+        "customer_id": 71,
+        "customer_code": "SIMOB",
         "company_name": "Simons bistro",
         "contact_name": "Jytte Petersen",
         "contact_title": "Owner",
@@ -949,7 +1022,8 @@
         "fax": "31 13 35 57"
     },
     {
-        "customer_id": "SPECD",
+        "customer_id": 72,
+        "customer_code": "SPECD",
         "company_name": "Spécialités du monde",
         "contact_name": "Dominique Perrier",
         "contact_title": "Marketing Manager",
@@ -962,7 +1036,8 @@
         "fax": "(1) 47.55.60.20"
     },
     {
-        "customer_id": "SPLIR",
+        "customer_id": 73,
+        "customer_code": "SPLIR",
         "company_name": "Split Rail Beer \u0026 Ale",
         "contact_name": "Art Braunschweiger",
         "contact_title": "Sales Manager",
@@ -975,7 +1050,8 @@
         "fax": "(307) 555-6525"
     },
     {
-        "customer_id": "SUPRD",
+        "customer_id": 74,
+        "customer_code": "SUPRD",
         "company_name": "Suprêmes délices",
         "contact_name": "Pascale Cartrain",
         "contact_title": "Accounting Manager",
@@ -988,7 +1064,8 @@
         "fax": "(071) 23 67 22 21"
     },
     {
-        "customer_id": "THEBI",
+        "customer_id": 75,
+        "customer_code": "THEBI",
         "company_name": "The Big Cheese",
         "contact_name": "Liz Nixon",
         "contact_title": "Marketing Manager",
@@ -1001,7 +1078,8 @@
         "fax": null
     },
     {
-        "customer_id": "THECR",
+        "customer_id": 76,
+        "customer_code": "THECR",
         "company_name": "The Cracker Box",
         "contact_name": "Liu Wong",
         "contact_title": "Marketing Assistant",
@@ -1014,7 +1092,8 @@
         "fax": "(406) 555-8083"
     },
     {
-        "customer_id": "TOMSP",
+        "customer_id": 77,
+        "customer_code": "TOMSP",
         "company_name": "Toms Spezialitäten",
         "contact_name": "Karin Josephs",
         "contact_title": "Marketing Manager",
@@ -1027,7 +1106,8 @@
         "fax": "0251-035695"
     },
     {
-        "customer_id": "TORTU",
+        "customer_id": 78,
+        "customer_code": "TORTU",
         "company_name": "Tortuga Restaurante",
         "contact_name": "Miguel Angel Paolino",
         "contact_title": "Owner",
@@ -1040,7 +1120,8 @@
         "fax": null
     },
     {
-        "customer_id": "TRADH",
+        "customer_id": 79,
+        "customer_code": "TRADH",
         "company_name": "Tradição Hipermercados",
         "contact_name": "Anabela Domingues",
         "contact_title": "Sales Representative",
@@ -1053,7 +1134,8 @@
         "fax": "(11) 555-2168"
     },
     {
-        "customer_id": "TRAIH",
+        "customer_id": 80,
+        "customer_code": "TRAIH",
         "company_name": "Trail\u0027s Head Gourmet Provisioners",
         "contact_name": "Helvetius Nagy",
         "contact_title": "Sales Associate",
@@ -1066,7 +1148,8 @@
         "fax": "(206) 555-2174"
     },
     {
-        "customer_id": "VAFFE",
+        "customer_id": 81,
+        "customer_code": "VAFFE",
         "company_name": "Vaffeljernet",
         "contact_name": "Palle Ibsen",
         "contact_title": "Sales Manager",
@@ -1079,7 +1162,8 @@
         "fax": "86 22 33 44"
     },
     {
-        "customer_id": "VICTE",
+        "customer_id": 82,
+        "customer_code": "VICTE",
         "company_name": "Victuailles en stock",
         "contact_name": "Mary Saveley",
         "contact_title": "Sales Agent",
@@ -1092,7 +1176,8 @@
         "fax": "78.32.54.87"
     },
     {
-        "customer_id": "VINET",
+        "customer_id": 83,
+        "customer_code": "VINET",
         "company_name": "Vins et alcools Chevalier",
         "contact_name": "Paul Henriot",
         "contact_title": "Accounting Manager",
@@ -1105,7 +1190,8 @@
         "fax": "26.47.15.11"
     },
     {
-        "customer_id": "WANDK",
+        "customer_id": 84,
+        "customer_code": "WANDK",
         "company_name": "Die Wandernde Kuh",
         "contact_name": "Rita Müller",
         "contact_title": "Sales Representative",
@@ -1118,7 +1204,8 @@
         "fax": "0711-035428"
     },
     {
-        "customer_id": "WARTH",
+        "customer_id": 85,
+        "customer_code": "WARTH",
         "company_name": "Wartian Herkku",
         "contact_name": "Pirkko Koskitalo",
         "contact_title": "Accounting Manager",
@@ -1131,7 +1218,8 @@
         "fax": "981-443655"
     },
     {
-        "customer_id": "WELLI",
+        "customer_id": 86,
+        "customer_code": "WELLI",
         "company_name": "Wellington Importadora",
         "contact_name": "Paula Parente",
         "contact_title": "Sales Manager",
@@ -1144,7 +1232,8 @@
         "fax": null
     },
     {
-        "customer_id": "WHITC",
+        "customer_id": 87,
+        "customer_code": "WHITC",
         "company_name": "White Clover Markets",
         "contact_name": "Karl Jablonski",
         "contact_title": "Owner",
@@ -1157,7 +1246,8 @@
         "fax": "(206) 555-4115"
     },
     {
-        "customer_id": "WILMK",
+        "customer_id": 88,
+        "customer_code": "WILMK",
         "company_name": "Wilman Kala",
         "contact_name": "Matti Karttunen",
         "contact_title": "Owner/Marketing Assistant",
@@ -1170,7 +1260,8 @@
         "fax": "90-224 8858"
     },
     {
-        "customer_id": "WOLZA",
+        "customer_id": 89,
+        "customer_code": "WOLZA",
         "company_name": "Wolski  Zajazd",
         "contact_name": "Zbyszek Piestrzeniewicz",
         "contact_title": "Owner",
